@@ -8,17 +8,17 @@ const ecommerceApi={
         const url=`/ecommerce/${id}`;
         return axiosClient.get(url)
     },
-    Add(data){
+    create(data){
         const url=`/ecommerce`;
         return axiosClient.post(url,data)
     },
-    Edit(id,data){
-        const url=`/ecommerce/${id}`;
-        return axiosClient.put(url,data)
+    Edit(edit){
+        const url=`/ecommerce/${edit.Id}`;
+        return axiosClient.put(url,edit)
     },
      Delete(id){
         const url=`/ecommerce/${id}`;
-        return axiosClient.get(url)
+        return axiosClient.delete(url)
     }
 }
 export default ecommerceApi;

@@ -35,137 +35,187 @@ export default {
                 },
                 {
                     id: 'category-dance',
-                    title: 'Loại điệu nhảy',
-                    type: 'item',
-                    icon: 'feather icon-book',
-                    url: '/category/category-dance'
-                },
-                {
-                    id: 'dance',
-                    title: 'Điệu nhảy',
-                    type: 'item',
-                    icon: 'feather icon-music',
-                    url: '/category/dance'
-                },
-                {
-                    id: 'competition-class',
-                    title: 'Hạng thi đấu',
-                    type: 'item',
-                    icon: 'feather icon-award',
-                    url: '/category/competition-class'
-                },
-                {
-                    id: 'fees',
-                    title: 'Lệ phí',
-                    type: 'item',
-                    icon: 'feather icon-edit',
-                    url: '/category/fees'
-                },
-                {
-                    id: 'category-content',
-                    title: 'Nội dung',
+                    title: 'Quản Lý Loại Sản Phẩm',
                     type: 'item',
                     icon: 'feather icon-file-text',
-                    url: '/category/category-content'
+                    url: ''
+                },
+                {
+                    id: 'ecommerce',
+                    title: 'Quản Lý Thuộc Tính Sản Phẩm',
+                    type: 'item',
+                    icon: 'feather icon-edit',
+                    url: '/'
+                },
+                {
+                    id: 'ecommerce',
+                    title: 'Quản Lý Tính Năng Sản Phẩm',
+                    type: 'item',
+                    icon: 'feather icon-edit',
+                    url: '/'
+                },
+                {
+                    id: 'ecommerce',
+                    title: 'Quản  Lý Thương Hiệu',
+                    type: 'item',
+                    icon: 'feather icon-edit',
+                    url: '/'
+                },
+                {
+                    id: 'ecommerece',
+                    title: 'Quản Lý Sản Phẩm',
+                    type: 'item',
+                    icon: 'feather icon-edit',
+                    url: '/'
                 }
             ]
         },
         {
             id: 'competition',
-            title: 'Quản lý giải đấu',
+            title: 'Quản Đơn Hàng',
             type: 'group',
             icon: 'icon-group',
             children: [
-                {
-                    id: 'tournaments',
-                    title: 'Giải đấu',
-                    type: 'collapse',
-                    icon: 'feather icon-box',
-                    children: [
-                        {
-                            id: 'tournaments-list',
-                            title: 'Danh sách giải đấu',
-                            type: 'item',
-                            url: '/competition/tournaments-list',
-                            icon: 'feather icon-command'
-                        },
-                        {
-                            id: 'competition-content',
-                            title: 'Nội dung thi đấu',
-                            type: 'item',
-                            icon: 'feather icon-file-minus',
-                            url: '/competition/competition-content'
-                        },
-                    ]
-                },
+               
                 {
                     id: 'athletes-event',
-                    title: 'DS VĐV sự kiện',
+                    title: 'Quản Lý Đơn Hàng',
                     type: 'item',
                     icon: 'feather icon-user-check',
-                    url: '/competition/athletes-event'
+                    url: ''
                 },
                 {
                     id: 'competition-program',
-                    title: 'Chương trình thi đấu',
+                    title: 'Quản Lý Đơn Hoàn',
                     type: 'item',
-                    icon: 'feather icon-airplay',
-                    url: '/competition/competition-program'
+                    icon: 'feather icon-user-minus',
+                    url: '/'
                 }
             ]
         },
         {
             id: 'athletes',
-            title: 'Quản lý danh sách VĐV',
+            title: 'Quản lý Bán Hàng',
             type: 'group',
             icon: 'icon-group',
             children: [
                 {
-                    id: 'athletes-list',
-                    title: 'Danh sách VĐV',
+                    id: 'ecommerce-address',
+                    title: 'Quản Lý Địa Chỉ',
                     type: 'item',
-                    url: '/athletes/athletes-list',
+                    url: '',
                     icon: 'feather icon-users'
-                }
+                },
+                {
+                    id: 'ecommerce-address',
+                    title: 'Quản Lý Khách Hàng',
+                    type: 'item',
+                    url: '',
+                    icon: 'feather icon-users'
+                },
+                {
+                    id: 'ecommerce-address',
+                    title: 'Quản Lý Đánh Giá',
+                    type: 'item',
+                    url: '',
+                    icon: 'feather icon-users'
+                },
+                {
+                    id: 'ecommerce-address',
+                    title: 'Quản Lý Event,Marketing',
+                    type: 'item',
+                    url: '',
+                    icon: 'feather icon-users'
+                },
+                {
+                    id: 'ecommerce-address',
+                    title: 'Quản Lý Voucher',
+                    type: 'item',
+                    url: '',
+                    icon: 'feather icon-users'
+                },
+                {
+                    id: 'ecommerce-address',
+                    title: 'Quản Lý Banner',
+                    type: 'item',
+                    url: '',
+                    icon: 'feather icon-users'
+                },
+
             ]
         },
         {
-            id: 'accounts',
-            title: 'Quản lý tài khoản',
+            id: 'System',
+            title: 'Quản lý Hệ Thống',
             type: 'group',
             icon: 'icon-group',
             children: [
                 {
                     id: 'accounts-list',
-                    title: 'Danh sách tài khoản',
+                    title: 'Quản Lý Người Dùng',
                     type: 'item',
                     url: '/accounts/accounts-list',
                     icon: 'feather icon-user-plus'
-                }
-            ]
-        },
-        {
-            id: 'news',
-            title: 'Quản lý tin tức',
-            type: 'group',
-            icon: 'icon-group',
-            children: [
-                {
-                    id: 'new-themes',
-                    title: 'Chủ đề',
-                    type: 'item',
-                    url: '/news/new-themes',
-                    icon: 'feather icon-aperture'
                 },
                 {
-                    id: 'new-list',
-                    title: 'Danh sách tin',
+                    id: 'accounts-list',
+                    title: 'Quản Lý Cửa Hàng',
                     type: 'item',
-                    url: '/news/new-list',
-                    icon: 'feather icon-layout'
-                }
+                    url: '/accounts/accounts-list',
+                    icon: 'feather icon-user-plus'
+                },
+                {
+                    id: 'accounts-list',
+                    title: 'Quabr Lý Hội Nhóm',
+                    type: 'item',
+                    url: '/accounts/accounts-list',
+                    icon: 'feather icon-user-plus'
+                },
+                {
+                    id: 'accounts-list',
+                    title: 'Quản Lý Quyền ',
+                    type: 'item',
+                    url: '/accounts/accounts-list',
+                    icon: 'feather icon-user-plus'
+                },
+                {
+                    id: 'accounts-list',
+                    title: 'Quản lý Menu',
+                    type: 'item',
+                    url: '/accounts/accounts-list',
+                    icon: 'feather icon-user-plus'
+                },
+                {
+                    id: 'accounts-list',
+                    title: 'Quản Lý Tranng',
+                    type: 'item',
+                    url: '/accounts/accounts-list',
+                    icon: 'feather icon-user-plus'
+                },
             ]
         },
+        // {
+        //     id: 'news',
+        //     title: 'Quản lý tin tức',
+        //     type: 'group',
+        //     icon: 'icon-group',
+        //     children: [
+        //         {
+        //             id: 'new-themes',
+        //             title: 'Chủ đề',
+        //             type: 'item',
+        //             url: '/news/new-themes',
+        //             icon: 'feather icon-aperture'
+        //         },
+        //         {
+        //             id: 'new-list',
+        //             title: 'Danh sách tin',
+        //             type: 'item',
+        //             url: '/news/new-list',
+        //             icon: 'feather icon-layout'
+        //         }
+        //     ]
+        // },
         {
             id: 'setting',
             title: 'Cài đặt',
