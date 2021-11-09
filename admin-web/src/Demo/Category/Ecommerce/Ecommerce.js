@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react'
 import { ecommercegetAll, ecommerceAdd, ecommerceEdit, ecommerceDelete } from '../../../store/Category/ecommerce';
+
 import ecommerceApi from '../../../api/Ecommerce/ecommerce';
 import { useEffect } from 'react'
 import { useState } from 'react'
@@ -11,7 +12,10 @@ import { Pagination } from 'antd';
 import { SearchOutlined, SyncOutlined, EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import EcommerceForm from './EcommerceForm';
 import './ecommerce.scss'
+
 const Ecommerce = () => {
+  // const { register,reset ,handleSubmit, setValue,formState:{errors}, } = useForm();
+  
   const { ecommercelist, loadingecom } = useSelector(state => state.ecommerceReducer)
   const dispatch = useDispatch();
   
@@ -94,12 +98,12 @@ const Ecommerce = () => {
     },
     {
       title: 'Image',
-      // dataIndex: <img src="ImageUrl" alt=""/>,
-      dataIndex: 'ImageUrl',
+      
+ dataIndex: 'ImageUrl',
       key: 'Image',
       width: '20%',
-      render: text =>
-        text
+    
+      render: text => <img src={`${process.env.REACT_APP_API_URL}/${text}` }  style={{width:"100%",height:"40%"}} alt=""/>
     },
 
     {
@@ -130,7 +134,7 @@ const Ecommerce = () => {
     {
       title: 'Description',
       dataIndex: 'Description',
-      key: 'Address',
+      key: 'Description',
       width: '20%',
       ...getColumnSearchProps('Description'),
     },
@@ -158,33 +162,31 @@ const Ecommerce = () => {
   ];
   // actionform
   const onFinishAdd = (data) => {
-    // const add = new FormData();
-    // add.append("Name", data.name)
-    // add.append("Email", data.email)
-    // add.append("Phone", data.phone)
-    // add.append("Address", data.address)
-    // add.append("Description", data.description)   
-    // add.append("ImageUrl", data.files[0])  
-    // dispatch(ecommerceAdd(add))
-    // setIsModalAdd(false)
-    // formAdd.resetFields()
-    // console.log(data)
+    console.log(data.files);
+    const files = new FormData();
+    files.append("Name", data.name)
+    files.append("Email", data.email)
+    files.append("Phone", data.phone)
+    files.append("Address", data.address)
+    files.append("Description", data.description)   
+    files.append("ImageUrl", data.files)  
+    
 
-    const newdata = {
-      Name: data.name,
-      Email: data.email,
-      Phone: data.phone,
-      Address: data.address,
-      Description: data.description,
-      ImageUrl:data.files[0]
 
-    }
-    console.log(data)
-    dispatch(ecommerceAdd(newdata))
-    dispatch(ecommercegetAll())
+    // const newdata = {
+    //   Name: data.name,
+    //   Email: data.email,
+    //   Phone: data.phone,
+    //   Address: data.address,
+    //   Description: data.description,
+    //   files: data.files
+    // }
+    console.log(files.getAll('ImageUrl'))
+    dispatch(ecommerceAdd(files))
+   
     setIsModalAdd(false)
     formAdd.resetFields()
-  }
+   }
 
   const handleEditForm = useCallback((record) => {
     const editform = {
@@ -194,28 +196,27 @@ const Ecommerce = () => {
       phone: record.Phone,
       address: record.Address,
       description: record.Description,
-      files: record.ImageUrl
-      
-    
+      // files: record.ImageUrl
+
     }
     formEdit.setFieldsValue(editform)
     setIsModalEdit(true)
 
   }, [formEdit])
   const onFinishEdit = (data) => {
-    const edit = {
-      Id: data.id,
-      Name: data.name,
-      Email: data.email,
-      Phone: data.phone,
-      Address: data.address,
-      Description: data.description,
-      // ImageUrl:data.image
-    }
- 
+    const edit = new FormData();
+
+    edit.append("Name", data.name)
+    edit.append("Email", data.email)
+    edit.append("Phone", data.phone)
+    edit.append("Address", data.address)
+    edit.append("Description", data.description)   
+    edit.append("ImageUrl", data.files[0])  
     dispatch(ecommerceEdit(edit))
     setIsModalEdit(false)
-
+    
+    console.log(edit)
+ 
   }
   const handleDelete = (id) => {
     dispatch(ecommerceDelete(id))
@@ -223,7 +224,9 @@ const Ecommerce = () => {
   return (
     <div>
       <div className='addecommerce' >
-        <Button type="primary" onClick={() => setIsModalAdd(true)}>
+        <Button type="primary" onClick={() => 
+         
+          setIsModalAdd(true)}>
           Thêm Sàn
         </Button>
       </div>

@@ -2,12 +2,25 @@ import React from 'react'
 import { Input, Button, Form, InputNumber, Switch, Upload, message } from 'antd';
 import { UploadOutlined, InboxOutlined } from '@ant-design/icons';
 import { useState } from 'react';
+
 import './ecommerce.scss'
+import { } from 'reactstrap'
 import axios from 'axios';
+import { ecommerceAdd } from '../../../store/Category/ecommerce';
+import { useDispatch } from 'react-redux';
+
 const EcommerceForm = ({ onFinish, form, idEdit }) => {
+   const[formadd]=Form.useForm();
+    const dispatch = useDispatch();
+    const handleSubmit = (values) => {
+        console.log(values);
+        dispatch(ecommerceAdd(values))
+        
+       
+    }
+  
+
     const { TextArea } = Input;
-    const [showAgeTotal, setShowAgeTotal] = useState(false);
-    const [showAgeMore, setShowAgeMore] = useState(false);
     const validateMessages = {
         required: 'Không được để trống !',
         types: {
@@ -29,65 +42,49 @@ const EcommerceForm = ({ onFinish, form, idEdit }) => {
     const [loading, setUploading] = useState(false);
     const [fileList, setFileList] = useState([]);
     const normFile = (e) => {
-            if (Array.isArray(e)) {
-                return e;
-            }
-            return e && e.fileList;
-        };
-    const handleUpload = () => {
-            const formData = new FormData();
-            fileList.fileList ? fileList.fileList.forEach(file => {
-              formData.append('files', file);
-            }) : fileList.forEach(file => {
-                    formData.append('files', file);
-                  }); 
-            setUploading(true);
-            console.log(fileList);
-            axios({
-                method: 'post',
-                url: `${process.env.REACT_APP_API_URL}/ecommerce`,
-                data: formData,
-            }).then(function (response) {
-                    console.log(response);
-                    setFileList([]);
-                    setUploading(false);
-                    message.success('Tải lên thành công !');
-                })
-                .catch(function (error) {
-                    console.log(error);
-                    setUploading(false);
-                    message.error('Tải lên thất bại !');
-                });
-                console.log(formData.getAll('files'));
-        };
-        const propsUpload = {
-            onRemove: file => {
-                setFileList(prevState => {
-                  const index = prevState.indexOf(file);
-                  const newFileList = prevState.slice();
-                  newFileList.splice(index, 1);
-                  return newFileList
-                });
-            },
-            beforeUpload: file => {
-                setFileList(prevState => 
-                    [...prevState, file]
-                );
-                return false;
-            },
-            fileList,
-            name: 'fileUpload',
-        };
+        if (Array.isArray(e)) {
+            return e;
+        }
+        return e && e.fileList;
+    };
+
+    const propsUpload = {
+        onRemove: file => {
+            setFileList(prevState => {
+              const index = prevState.indexOf(file);
+              const newFileList = prevState.slice();
+              newFileList.splice(index, 1);
+              return newFileList
+            });
+        },
+        beforeUpload: file => {
+            setFileList(prevState => 
+                [...prevState, file]
+            );
+            return false;
+        },
+        fileList,
+        name: 'fileUpload',
+    };
+
+  
+    //  method='POST' encType='multipart/form-data'
     return (
         <div>
-            <Form className="ecommerce-form" validateMessages={validateMessages} onFinish={onFinish} form={form} method='POST' encType='multipart/form-data' >
+         
+
+            <Form className="ecommerce-form"
+            
+                onFinish={handleSubmit }
+               
+                validateMessages={validateMessages}
+                form={form} >
                 {
                     idEdit &&
                     <Form.Item name="id" hidden={true}>
                         <Input />
                     </Form.Item>
                 }
-
                 <Form.Item name="name" label="Tên" required rules={[{ required: true, whitespace: true }, { type: 'string', max: 255 }]}
                     style={{ width: '50%', paddingRight: "10px" }}>
                     <Input placeholder="Ví dụ: Eplaza" />
@@ -100,7 +97,7 @@ const EcommerceForm = ({ onFinish, form, idEdit }) => {
                     style={{ width: '50%', paddingRight: "10px" }}>
                     <Input style={{ width: '100%' }} placeholder="Ví dụ: 0902174492" />
                 </Form.Item>
-                <Form.Item name="address" label="Address" required rules={[{ required: true }, { type: 'string', max: 255 }]}
+                <Form.Item name="address" label="Address" required rules={[{ required: true }, { type: 'string', min: 0, max: 255 }]}
                     style={{ width: '50%' }}>
                     <Input placeholder="Ví dụ: 172A Yên Lãng" />
                 </Form.Item>
@@ -111,22 +108,32 @@ const EcommerceForm = ({ onFinish, form, idEdit }) => {
 
                 <Form.Item
                     name="files"
-                    label="Image"
+                    label="Upload"
                     valuePropName="fileList"
                     getValueFromEvent={normFile}
-                    style={{ width: '50%', paddingRight: "10px" }}
                     required rules={[{ required: true }]}
+                    style={{ width: '50%' }}
                 >
-                     <Upload multiple {...propsUpload}>  
-                                    <Button style={{ display: 'flex', alignItems: 'center'}} icon={<UploadOutlined />}>Chọn tài liệu</Button>
-                                </Upload>
+                    <Upload {...propsUpload}>
+                        <Button icon={<UploadOutlined />}>Click to upload</Button>
+                    </Upload>
                 </Form.Item>
+
+                {/* <Form.Item
+               
+                 label="Image" name='files' 
+                //  required rules={[{ required: true }]}
+                    style={{ width: '50%' }}>
+                        
+                      <Input type='file'></Input>
+                </Form.Item>   */}
                 <Form.Item
                     style={{ width: '90%' }}>
 
                 </Form.Item>
                 <Form.Item className='button'>
-                    <Button htmlType="submit" type="primary">Lưu lại</Button>
+                    <Button htmlType="submit"
+                        type="primary">Lưu lại</Button>
                 </Form.Item>
             </Form>
         </div>

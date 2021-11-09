@@ -7,7 +7,7 @@ import queryString from 'query-string';
 const axiosClient = axios.create({ 
     baseURL: process.env.REACT_APP_API_URL, 
     headers: { 
-        'content-type': 'application/json; charset=utf-8', 
+        'content-type': ' application / json; charset=utf-8', 
     }, 
     paramsSerializer: params => queryString.stringify(params), 
 }); 
@@ -27,11 +27,12 @@ axiosClient.interceptors.response.use((response) => {
     if (response && response.data) { 
         return response.data
     }   
+
     return response; 
 }, (error) => { 
     // Handle errors 
     // throw error; 
-    console.log(error);
+    console.log('api error', error);
 }); 
 
 export default axiosClient;

@@ -34,35 +34,36 @@ export default {
                     icon: 'feather icon-calendar'
                 },
                 {
-                    id: 'category-dance',
+                    id: 'category-product',
                     title: 'Quản Lý Loại Sản Phẩm',
                     type: 'item',
                     icon: 'feather icon-file-text',
-                    url: ''
+                    url: '/categories'
                 },
                 {
-                    id: 'ecommerce',
+                    id: 'properties-product',
+                  
                     title: 'Quản Lý Thuộc Tính Sản Phẩm',
                     type: 'item',
                     icon: 'feather icon-edit',
                     url: '/'
                 },
                 {
-                    id: 'ecommerce',
+                    id: 'total-product',
                     title: 'Quản Lý Tính Năng Sản Phẩm',
                     type: 'item',
                     icon: 'feather icon-edit',
                     url: '/'
                 },
                 {
-                    id: 'ecommerce',
+                    id: 'brand-product',
                     title: 'Quản  Lý Thương Hiệu',
                     type: 'item',
                     icon: 'feather icon-edit',
                     url: '/'
                 },
                 {
-                    id: 'ecommerece',
+                    id: 'manage-product',
                     title: 'Quản Lý Sản Phẩm',
                     type: 'item',
                     icon: 'feather icon-edit',
@@ -107,35 +108,35 @@ export default {
                     icon: 'feather icon-users'
                 },
                 {
-                    id: 'ecommerce-address',
+                    id: 'ecommerce-client',
                     title: 'Quản Lý Khách Hàng',
                     type: 'item',
                     url: '',
                     icon: 'feather icon-users'
                 },
                 {
-                    id: 'ecommerce-address',
+                    id: 'ecommerce-evaluate',
                     title: 'Quản Lý Đánh Giá',
                     type: 'item',
                     url: '',
                     icon: 'feather icon-users'
                 },
                 {
-                    id: 'ecommerce-address',
+                    id: 'ecommerce-Marketing',
                     title: 'Quản Lý Event,Marketing',
                     type: 'item',
                     url: '',
                     icon: 'feather icon-users'
                 },
                 {
-                    id: 'ecommerce-address',
+                    id: 'ecommerce-Voucher',
                     title: 'Quản Lý Voucher',
                     type: 'item',
                     url: '',
                     icon: 'feather icon-users'
                 },
                 {
-                    id: 'ecommerce-address',
+                    id: 'ecommerce-Banner',
                     title: 'Quản Lý Banner',
                     type: 'item',
                     url: '',
@@ -158,36 +159,36 @@ export default {
                     icon: 'feather icon-user-plus'
                 },
                 {
-                    id: 'accounts-list',
+                    id: 'accounts-store',
                     title: 'Quản Lý Cửa Hàng',
                     type: 'item',
                     url: '/accounts/accounts-list',
                     icon: 'feather icon-user-plus'
                 },
                 {
-                    id: 'accounts-list',
+                    id: 'accounts-group',
                     title: 'Quabr Lý Hội Nhóm',
                     type: 'item',
                     url: '/accounts/accounts-list',
                     icon: 'feather icon-user-plus'
                 },
                 {
-                    id: 'accounts-list',
+                    id: 'accounts-permission',
                     title: 'Quản Lý Quyền ',
                     type: 'item',
                     url: '/accounts/accounts-list',
                     icon: 'feather icon-user-plus'
                 },
                 {
-                    id: 'accounts-list',
+                    id: 'accounts-menu',
                     title: 'Quản lý Menu',
                     type: 'item',
                     url: '/accounts/accounts-list',
                     icon: 'feather icon-user-plus'
                 },
                 {
-                    id: 'accounts-list',
-                    title: 'Quản Lý Tranng',
+                    id: 'accounts-page',
+                    title: 'Quản Lý Trang',
                     type: 'item',
                     url: '/accounts/accounts-list',
                     icon: 'feather icon-user-plus'

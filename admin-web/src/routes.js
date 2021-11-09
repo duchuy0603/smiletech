@@ -12,7 +12,7 @@ const Nvd3Chart = React.lazy(() => import('./Demo/Charts/Nvd3Chart/index'));
 const OtherSamplePage = React.lazy(() => import('./Demo/Other/SamplePage'));
 const OtherDocs = React.lazy(() => import('./Demo/Other/Docs'));
 const Ecommerce = React.lazy(() => import('./Demo/Category/Ecommerce/Ecommerce'));
-
+const Categories = React.lazy(() => import('./Demo/Category/Categories/categories'));
 // const Age = React.lazy(() => import('./Demo/Category/Age/Age'));
 // const CategoryDance = React.lazy(() => import('./Demo/Category/CategoryDance/CategoryDance'));
 // const Dance = React.lazy(() => import('./Demo/Category/Dance/Dance'));
@@ -37,6 +37,7 @@ const routes = [
     { path: '/sample-page', exact: true, name: 'Sample Page', component: OtherSamplePage },
     { path: '/docs', exact: true, name: 'Documentation', component: OtherDocs },
     { path: '/ecommerce', exact: true, name: 'Ecommerce', component: Ecommerce },
+    {path: '/categories', exact: true, name: 'Categories', component: Categories },
     // { path: '/category/age', exact: true, name: 'Age', component: Age },
     // { path: '/category/category-dance', exact: true, name: 'CategoryDance', component: CategoryDance },
     // { path: '/category/dance', exact: true, name: 'Dance', component: Dance },
