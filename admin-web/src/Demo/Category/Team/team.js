@@ -1,7 +1,5 @@
 import React, { useCallback } from 'react'
-import { ecommercegetAll, ecommerceAdd, ecommerceEdit, ecommerceDelete } from '../../../store/Category/ecommerce';
-
-import ecommerceApi from '../../../api/ecommerce';
+import { teamAdd, teamEdit, teamDelete, teamgetAll } from '../../../store/Category/team';
 import { useEffect } from 'react'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,17 +8,17 @@ import { Button, Form, Modal, Space, Table, Popconfirm, Tag, Input } from 'antd'
 import Highlighter from 'react-highlight-words';
 import { Pagination } from 'antd';
 import { SearchOutlined, SyncOutlined, EditOutlined, DeleteOutlined, PlusOutlined,LoadingOutlined } from '@ant-design/icons';
-import EcommerceForm from './EcommerceForm';
-import './ecommerce.scss'
+import TeamForm from './teamForm';
+import './team.scss'
 
-const Ecommerce = () => {
+const Team = () => {
   // const { register,reset ,handleSubmit, setValue,formState:{errors}, } = useForm();
   
-  const { ecommercelist, loadingecom } = useSelector(state => state.ecommerceReducer)
+  const { teamlist, loadingteam } = useSelector(state => state.teamReducer)
   const dispatch = useDispatch();
   
   useEffect(() => {
-    dispatch(ecommercegetAll())
+    dispatch(teamgetAll())
   }, [dispatch])
   
   const [searchText, setsearchText] = useState('');
@@ -123,12 +121,12 @@ const Ecommerce = () => {
       ...getColumnSearchProps('Email'),
     },
     {
-      title: 'Address',
-      dataIndex: 'Address',
-      key: 'Address',
+      title: 'Owner',
+      dataIndex: 'Owner',
+      key: 'Owner',
       width: '20%',
-      ...getColumnSearchProps('Address'),
-      sorter: (a, b) => a.Address.length - b.Address.length,
+      ...getColumnSearchProps('Owner'),
+      sorter: (a, b) => a.Owner.length - b.Owner.length,
       sortDirections: ['descend', 'ascend'],
     },
     {
@@ -139,8 +137,29 @@ const Ecommerce = () => {
       ...getColumnSearchProps('Description'),
     },
     {
+      title: 'EcomerceId',
+      dataIndex: 'EcomerceId',
+      key: 'EcomerceId',
+      width: '20%',
+      ...getColumnSearchProps('EcomerceId'),
+    },
+    {
+    title:'Status',
+    dataIndex: 'Status',
+    key: 'Status',
+    width: '20%',
+    ...getColumnSearchProps('Status'),
+  },
+  {
+    title:'Deleted',
+    dataIndex: 'Deleted',
+    key: 'Deleted',
+    width: '20%',
+    ...getColumnSearchProps('Deleted'),
+  },
+    {
       key: 'Action',
-      title: <SyncOutlined onClick={() => dispatch(ecommercegetAll())} />,
+      title: <SyncOutlined onClick={() => dispatch(teamgetAll())} />,
       align: 'center',
       width: '10%',
       render: (text, record, index) => (
@@ -174,7 +193,7 @@ const Ecommerce = () => {
     console.log(data.files);
     console.log(files.getAll('ImageUrl'))
     console.log(data)
-    dispatch(ecommerceAdd(files))
+    dispatch(teamAdd(files))
    
     setIsModalAdd(false)
     formAdd.resetFields()
@@ -203,14 +222,14 @@ const Ecommerce = () => {
     edit.append("Address", data.address)
     edit.append("Description", data.description)   
     edit.append("ImageUrl", data.files[0])  
-    dispatch(ecommerceEdit(edit))
+    dispatch(teamEdit(edit))
     setIsModalEdit(false)
     
     console.log(edit)
  
   }
   const handleDelete = (id) => {
-    dispatch(ecommerceDelete(id))
+    dispatch(teamDelete(id))
   }
   return (
     <div>
@@ -218,31 +237,30 @@ const Ecommerce = () => {
         <Button type="primary" onClick={() => 
          
           setIsModalAdd(true)}>
-          Thêm Sàn
+          Thêm Brand
         </Button>
       </div>
       <br />
       <Modal className='modal-add' title="Thêm Sàn" visible={isModalAdd} footer="" centered onCancel={() => setIsModalAdd(false)}>
-        <EcommerceForm
+        <TeamForm
           onFinish={onFinishAdd}
           form={formAdd} />
       </Modal>
 
       <Modal className='modal-edit' title="Sửa Sàn" visible={isModalEdit} onCancel={() => setIsModalEdit(false)} centered footer="">
-        <EcommerceForm
+        <TeamForm
           onFinish={onFinishEdit}
           form={formEdit}
-          form={Form}
           idEdit={true}
           id={handleEditForm}
        
         />
       </Modal>
 
-      <Table scroll={{ x: 900 }} loading={loadingecom} columns={columns} dataSource={ecommercelist} rowKey={record => record.id} bordered />
+      <Table scroll={{ x: 900 }} loading={loadingteam} columns={columns} dataSource={teamlist} rowKey={record => record.id} bordered />
 
     </div>
   )
 }
 
-export default Ecommerce;
+export default Team;

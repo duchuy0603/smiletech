@@ -1,4 +1,4 @@
-import axiosClient from "../axiosClient";
+import axiosClient from "./axiosClient";
 const ecommerceApi={
     getAll(){
         const url=`/ecommerce`;
@@ -10,6 +10,10 @@ const ecommerceApi={
     },
     create(data){
         const url=`/ecommerce`;
+        return axiosClient.post(url,data)
+    },
+    createUrl(data){
+        const url=`ecommerce/create-url`;
         return axiosClient.post(url,data)
     },
     Edit(edit){

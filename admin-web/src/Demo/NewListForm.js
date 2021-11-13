@@ -1,47 +1,33 @@
-import React from 'react'
-import { Input, Button, Form, InputNumber, Switch, Upload, message } from 'antd';
-import { UploadOutlined, InboxOutlined ,LoadingOutlined,PlusOutlined} from '@ant-design/icons';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import './ecommerce.scss'
-import { useEffect } from 'react';
-import axios from 'axios';
-import { ecommerceAdd } from '../../../store/Category/ecommerce';
-import { useDispatch } from 'react-redux';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Input, Button, Form, Select, message, Upload } from 'antd';
+import MarkdownIt from 'markdown-it';
+import MdEditor, { Plugins } from 'react-markdown-editor-lite';
+import {
+    PlusOutlined,
+    LoadingOutlined,
+  } from '@ant-design/icons';
+import { getTokenFromLocalStorage, isEmptyObject } from '../../../helpers/common';
 
-const EcommerceForm = ({ onFinish, form, idEdit}) => {
-   
-    const dispatch = useDispatch();
-    const handleSubmit2 = (values) => {
-        console.log(values);
-        dispatch(ecommerceAdd(values))
+const NewListForm = ({name, onFinish, form, idEdit, loadingNewsThemes, newsThemesList}) => {
+    const { Option } = Select;
+    
+    const [loading, setLoading] = useState(false);
+    const [imageUrl, setImageUrl] = useState('');
+    
+    const mdParser = new MarkdownIt(/* Markdown-it options */);
 
-    }
-
-    const { TextArea } = Input;
     const validateMessages = {
-        required: 'Không được để trống !',
+        required: 'Không được để trống !', 
+        whitespace: 'Không để toàn khoảng trắng !',
         types: {
             string: '${label} không hợp lệ !',
-            number: '${label} không hợp lệ !',
-
         },
         string: {
             max: '${label} tối đa 255 ký tự !',
         },
-        number: {
-            range: '${label} trong khoảng 1-100 !',
-        },
-        pattern: {
-            mismatch: '${label} không hợp lệ !',
-        },
     };
+    const token = getTokenFromLocalStorage();
 
-    const [loading, setLoading] = useState(false);
-    const [fileList, setFileList] = useState([]);
-    const [imageUrl, setImageUrl] = useState('');
-
- 
     useEffect(() => {
         if(idEdit) {
             const imageUrl = form.getFieldValue('image');
@@ -58,8 +44,10 @@ const EcommerceForm = ({ onFinish, form, idEdit}) => {
     const propsUpload = {
         name: 'file',
         maxCount: 1,
-        action: `${process.env.REACT_APP_API_URL}/ecommerce/create-url`,
-    
+        action: `${process.env.REACT_APP_API_URL}/news/create-url`,
+        headers: {
+            'Authorization': 'Bearer ' + token,
+        },
         onSuccess: (result) => {
             console.log(result);
             if(result.success) {
@@ -100,44 +88,50 @@ const EcommerceForm = ({ onFinish, form, idEdit}) => {
     const normFile = (e) => {
         return e && e.file;
     };
-    //  method='POST' encType='multipart/form-data'
-    return (
-        <div>
-       
 
-             <Form className="ecommerce-form"
-            
-                onFinish={onFinish }
-               
+    return (
+        <>
+            <Form
+                name={name}
+                onFinish={onFinish}
+                form={form}
                 validateMessages={validateMessages}
-                form={form} >
-                {
+                layout="vertical"
+            >
+                {   
                     idEdit &&
                     <Form.Item name="id" hidden={true}>
-                        <Input />
+                        <Input/>
                     </Form.Item>
                 }
-                <Form.Item name="name" label="Tên" required rules={[{ required: true, whitespace: true }, { type: 'string', max: 255 }]}
-                    style={{ width: '50%', paddingRight: "10px" }}>
-                    <Input placeholder="Ví dụ: Eplaza" />
+                <Form.Item name="name" label="Tên tin tức" required rules={[{ required: true, whitespace: true }, { type: 'string', max: 255 }]}
+                    style={{ width: '66%'}}>
+                    <Input.TextArea placeholder="Nhập tin tức"/>
                 </Form.Item>
-                <Form.Item name="email" label="Email" required rules={[{ required: true }, { type: 'email', message: "không phải là Email" }, { max: 255 }]}
-                    style={{ width: '50%' }}>
-                    <Input placeholder="Ví dụ: Eplaza@gmail.com" />
+                <Form.Item name="theme_id" label="Chủ đề" 
+                    rules={[{ required: true }]}
+                    style={{ width: '34%'}}>
+                    <Select
+                        showSearch
+                        placeholder="Chọn chủ đề"
+                        optionFilterProp="children"
+                        filterOption={(input, option) =>
+                            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                        }
+                        allowClear
+                        loading={loadingNewsThemes}
+                        >
+                        {
+                            newsThemesList.map(newTheme => (
+                                <Option key={newTheme.id} value={newTheme.id}>{newTheme.name}</Option>
+                            ))
+                        }
+                    </Select>
                 </Form.Item>
-                <Form.Item name="phone" label="Phone" required rules={[{ required: true }, { pattern: /((09|03|07|08|05)+([0-9]{8})\b)/g }]}
-                    style={{ width: '50%', paddingRight: "10px" }}>
-                    <Input style={{ width: '100%' }} placeholder="Ví dụ: 0902174492" />
+                <Form.Item name="content_summary" label="Nội dung tóm tắt" required rules={[{ required: true, whitespace: true }, { type: 'string'}]}
+                    style={{ width: '80%'}}>
+                    <Input.TextArea placeholder="Tóm tắt tin tức"/>
                 </Form.Item>
-                <Form.Item name="address" label="Address" required rules={[{ required: true }, { type: 'string', min: 0, max: 255 }]}
-                    style={{ width: '50%' }}>
-                    <Input placeholder="Ví dụ: 172A Yên Lãng" />
-                </Form.Item>
-                <Form.Item name="description" label="Description" required rules={[{ required: true }, { type: 'string', max: 255 }]}
-                    style={{ width: '50%', paddingRight: "10px" }}>
-                    <TextArea></TextArea>
-                </Form.Item>
-
                 {
                     idEdit ?
                     <Form.Item name="new_img" required label="Ảnh tin tức" valuePropName="file" getValueFromEvent={normFile}
@@ -173,19 +167,21 @@ const EcommerceForm = ({ onFinish, form, idEdit}) => {
                         </Upload>
                     </Form.Item>
                 }
-
-              
-                 <Form.Item
-                    style={{ width: '90%' }}>
-
+                <Form.Item name="content_detail" label="Nội dung chi tiết" getValueFromEvent={normContent}
+                    required rules={[{ required: true, whitespace: true }]} style={{ width: '100%'}}>
+                    <MdEditor style={{ minHeight: '400px' }} 
+                        renderHTML={text => mdParser.render(text)} 
+                        view={{html: false}}
+                        />
                 </Form.Item>
-                <Form.Item className='button'>
-                    <Button htmlType="submit"
-                        type="primary">Lưu lại</Button>
+                <Form.Item name="image" hidden={true}>
+                    <Input/>
                 </Form.Item>
-            </Form>  
-        </div>
-    )
+                <Form.Item>
+                    <Button htmlType="submit" type="primary">Lưu lại</Button>
+                </Form.Item>
+            </Form>
+        </>
+    );
 }
-
-export default EcommerceForm
+export default NewListForm;

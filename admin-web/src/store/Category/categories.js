@@ -1,9 +1,10 @@
-import CategoriesAPI from "../../api/Category/category";
+import CategoriesAPI from "../../api/category";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 
 export const categoriesgetAll = createAsyncThunk('categories/categoriesgetAll', async () => {
     const listcategories = await CategoriesAPI.getAll();
+    console.log(listcategories)
     return listcategories;
 })
 export const categoriesAdd = createAsyncThunk('categories/categoriesgetAdd', async (data,thunkAPI) => {

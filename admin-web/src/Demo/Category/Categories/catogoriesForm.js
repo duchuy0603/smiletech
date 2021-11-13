@@ -4,7 +4,7 @@ import { UploadOutlined, InboxOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 import './categories.scss'
 import axios from 'axios';
-const CategoriesForm = ({ onFinish, form, idEdit }) => {
+const CateforiesForm = ({ onFinish, form, idEdit }) => {
     const { TextArea } = Input;
     const [showAgeTotal, setShowAgeTotal] = useState(false);
     const [showAgeMore, setShowAgeMore] = useState(false);
@@ -28,6 +28,7 @@ const CategoriesForm = ({ onFinish, form, idEdit }) => {
 
     const [loading, setUploading] = useState(false);
     const [fileList, setFileList] = useState([]);
+    const [imageUrl, setImageUrl] = useState('');
     const normFile = (e) => {
         if (Array.isArray(e)) {
             return e;
@@ -82,7 +83,7 @@ const CategoriesForm = ({ onFinish, form, idEdit }) => {
     console.log(fileList)
     return (
         <div>
-            <Form className="ecommerce-form" validateMessages={validateMessages} onFinish={onFinish} form={form} method='POST' encType='multipart/form-data' >
+            <Form className="brand-form" validateMessages={validateMessages} onFinish={onFinish} form={form} method='POST' encType='multipart/form-data' >
                 {
                     idEdit &&
                     <Form.Item name="id" hidden={true}>
@@ -124,11 +125,7 @@ const CategoriesForm = ({ onFinish, form, idEdit }) => {
                     Upload
                     </Button>
                 </Form.Item> */}
-                 <Form.Item
-                 label="Image" name='image' required rules={[{ required: true }]}
-                    style={{ width: '50%' }}>
-                      <Input type='file'></Input>
-                </Form.Item>
+             ]
                 <Form.Item
                     style={{ width: '90%' }}>
 
@@ -141,4 +138,4 @@ const CategoriesForm = ({ onFinish, form, idEdit }) => {
     )
 }
 
-export default CategoriesForm
+export default CateforiesForm

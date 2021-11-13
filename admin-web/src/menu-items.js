@@ -46,7 +46,7 @@ export default {
                     title: 'Quản Lý Thuộc Tính Sản Phẩm',
                     type: 'item',
                     icon: 'feather icon-edit',
-                    url: '/'
+                    url: '/property'
                 },
                 {
                     id: 'total-product',
@@ -60,7 +60,7 @@ export default {
                     title: 'Quản  Lý Thương Hiệu',
                     type: 'item',
                     icon: 'feather icon-edit',
-                    url: '/'
+                    url: '/brand'
                 },
                 {
                     id: 'manage-product',
@@ -167,9 +167,9 @@ export default {
                 },
                 {
                     id: 'accounts-group',
-                    title: 'Quabr Lý Hội Nhóm',
+                    title: 'Quản Lý Hội Nhóm',
                     type: 'item',
-                    url: '/accounts/accounts-list',
+                    url: '/team',
                     icon: 'feather icon-user-plus'
                 },
                 {

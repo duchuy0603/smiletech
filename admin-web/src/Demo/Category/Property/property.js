@@ -1,7 +1,5 @@
 import React, { useCallback } from 'react'
-import { ecommercegetAll, ecommerceAdd, ecommerceEdit, ecommerceDelete } from '../../../store/Category/ecommerce';
-
-import ecommerceApi from '../../../api/ecommerce';
+import { propertyAdd, propertyEdit, propertyDelete, propertygetAll } from '../../../store/Category/property';
 import { useEffect } from 'react'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,17 +8,17 @@ import { Button, Form, Modal, Space, Table, Popconfirm, Tag, Input } from 'antd'
 import Highlighter from 'react-highlight-words';
 import { Pagination } from 'antd';
 import { SearchOutlined, SyncOutlined, EditOutlined, DeleteOutlined, PlusOutlined,LoadingOutlined } from '@ant-design/icons';
-import EcommerceForm from './EcommerceForm';
-import './ecommerce.scss'
+import PropertyForm from './propertyForm';
+import './property.scss'
 
-const Ecommerce = () => {
+const Property = () => {
   // const { register,reset ,handleSubmit, setValue,formState:{errors}, } = useForm();
   
-  const { ecommercelist, loadingecom } = useSelector(state => state.ecommerceReducer)
+  const { propertylist, loadingproperty } = useSelector(state => state.propertyReducer)
   const dispatch = useDispatch();
   
   useEffect(() => {
-    dispatch(ecommercegetAll())
+    dispatch(propertygetAll())
   }, [dispatch])
   
   const [searchText, setsearchText] = useState('');
@@ -96,41 +94,8 @@ const Ecommerce = () => {
       width: '20%',
       ...getColumnSearchProps('Name'),
     },
-    {
-      title: 'Image',
-      
- dataIndex: 'ImageUrl',
-      key: 'Image',
-      width: '20%',
-    
-      render: text => <img src={`${process.env.REACT_APP_API_URL}/${text}` }  style={{width:"100%",height:"40%"}} alt=""/>
-    },
 
-    {
-      title: 'Phone',
-      dataIndex: 'Phone',
-      key: 'Phone',
-      width: '20%',
-      sorter: (a, b) => a.Phone - b.Phone,
-      sortDirections: ['descend', 'ascend'],
-      ...getColumnSearchProps('Phone'),
-    },
-    {
-      title: 'Email',
-      dataIndex: 'Email',
-      key: 'Email',
-      width: '20%',
-      ...getColumnSearchProps('Email'),
-    },
-    {
-      title: 'Address',
-      dataIndex: 'Address',
-      key: 'Address',
-      width: '20%',
-      ...getColumnSearchProps('Address'),
-      sorter: (a, b) => a.Address.length - b.Address.length,
-      sortDirections: ['descend', 'ascend'],
-    },
+ 
     {
       title: 'Description',
       dataIndex: 'Description',
@@ -140,7 +105,7 @@ const Ecommerce = () => {
     },
     {
       key: 'Action',
-      title: <SyncOutlined onClick={() => dispatch(ecommercegetAll())} />,
+      title: <SyncOutlined onClick={() => dispatch(propertygetAll())} />,
       align: 'center',
       width: '10%',
       render: (text, record, index) => (
@@ -166,15 +131,11 @@ const Ecommerce = () => {
    
     const files = new FormData();
     files.append("Name", data.name)
-    files.append("Email", data.email)
-    files.append("Phone", data.phone)
-    files.append("Address", data.address)
     files.append("Description", data.description)   
-    files.append("ImageUrl", data.files[0])  
-    console.log(data.files);
-    console.log(files.getAll('ImageUrl'))
+    
+ 
     console.log(data)
-    dispatch(ecommerceAdd(files))
+    dispatch(propertyAdd(files))
    
     setIsModalAdd(false)
     formAdd.resetFields()
@@ -183,12 +144,9 @@ const Ecommerce = () => {
    const handleEditForm = (record) => {
     const editform = {    
       id: record.Id,
-      name: record.Name,
-      email: record.Email,
-      phone: record.Phone,
-      address: record.Address,
+       name: record.Name,
       description: record.Description,
-      //  files: record.ImageUrl
+      
     }
     formEdit.setFieldsValue(editform)
     setIsModalEdit(true)
@@ -196,21 +154,18 @@ const Ecommerce = () => {
 
   const onFinishEdit = (data) => {
     const edit = new FormData();
-    edit.append("Id", data.id)
+   
     edit.append("Name", data.name)
-    edit.append("Email", data.email)
-    edit.append("Phone", data.phone)
-    edit.append("Address", data.address)
     edit.append("Description", data.description)   
-    edit.append("ImageUrl", data.files[0])  
-    dispatch(ecommerceEdit(edit))
+   
+    dispatch(propertyEdit(edit))
     setIsModalEdit(false)
     
     console.log(edit)
  
   }
   const handleDelete = (id) => {
-    dispatch(ecommerceDelete(id))
+    dispatch(propertyDelete(id))
   }
   return (
     <div>
@@ -218,31 +173,30 @@ const Ecommerce = () => {
         <Button type="primary" onClick={() => 
          
           setIsModalAdd(true)}>
-          Thêm Sàn
+          Thêm Thuộc Tính
         </Button>
       </div>
       <br />
       <Modal className='modal-add' title="Thêm Sàn" visible={isModalAdd} footer="" centered onCancel={() => setIsModalAdd(false)}>
-        <EcommerceForm
+        <PropertyForm
           onFinish={onFinishAdd}
           form={formAdd} />
       </Modal>
 
       <Modal className='modal-edit' title="Sửa Sàn" visible={isModalEdit} onCancel={() => setIsModalEdit(false)} centered footer="">
-        <EcommerceForm
+        <PropertyForm
           onFinish={onFinishEdit}
           form={formEdit}
-          form={Form}
           idEdit={true}
           id={handleEditForm}
        
         />
       </Modal>
 
-      <Table scroll={{ x: 900 }} loading={loadingecom} columns={columns} dataSource={ecommercelist} rowKey={record => record.id} bordered />
+      <Table scroll={{ x: 900 }} loading={loadingproperty} columns={columns} dataSource={propertylist} rowKey={record => record.id} bordered />
 
     </div>
   )
 }
 
-export default Ecommerce;
+export default Property;

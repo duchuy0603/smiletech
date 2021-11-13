@@ -1,26 +1,25 @@
 import React, { useCallback } from 'react'
-import { ecommercegetAll, ecommerceAdd, ecommerceEdit, ecommerceDelete } from '../../../store/Category/ecommerce';
+import { brandAdd, categoriesgetEdit, categoriesgetDelete, categoriesgetAll, brandgetAll, brandEdit, brandDelete } from '../../../store/Category/brand';
 
-import ecommerceApi from '../../../api/ecommerce';
 import { useEffect } from 'react'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import reactRouterDom, { useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { Button, Form, Modal, Space, Table, Popconfirm, Tag, Input } from 'antd';
 import Highlighter from 'react-highlight-words';
 import { Pagination } from 'antd';
-import { SearchOutlined, SyncOutlined, EditOutlined, DeleteOutlined, PlusOutlined,LoadingOutlined } from '@ant-design/icons';
-import EcommerceForm from './EcommerceForm';
-import './ecommerce.scss'
+import { SearchOutlined, SyncOutlined, EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
+import './brand.scss'
+import BrandForm from './brandForm';
 
-const Ecommerce = () => {
-  // const { register,reset ,handleSubmit, setValue,formState:{errors}, } = useForm();
+const Brand = () => {
+  const { brandlist, loadingbrand } = useSelector(state => state.brandReducer)
   
-  const { ecommercelist, loadingecom } = useSelector(state => state.ecommerceReducer)
+  console.log(brandlist)
   const dispatch = useDispatch();
   
   useEffect(() => {
-    dispatch(ecommercegetAll())
+    dispatch(brandgetAll())
   }, [dispatch])
   
   const [searchText, setsearchText] = useState('');
@@ -28,7 +27,7 @@ const Ecommerce = () => {
   //modal
   const [isModalAdd, setIsModalAdd] = useState(false);
   const [isModalEdit, setIsModalEdit] = useState(false);
-  const [formAdd] = Form.useForm();    
+  const [formAdd] = Form.useForm();    //form
   const [formEdit] = Form.useForm();
   const getColumnSearchProps = dataIndex => ({
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
@@ -91,56 +90,42 @@ const Ecommerce = () => {
   const columns = [
     {
       title: 'Name',
-      dataIndex: 'Name',
+      dataIndex: 'name',
       key: 'Name',
       width: '20%',
       ...getColumnSearchProps('Name'),
     },
     {
       title: 'Image',
-      
- dataIndex: 'ImageUrl',
+      // dataIndex: <img src="ImageUrl" alt=""/>,
+      dataIndex: 'ImageUrl',
       key: 'Image',
       width: '20%',
-    
-      render: text => <img src={`${process.env.REACT_APP_API_URL}/${text}` }  style={{width:"100%",height:"40%"}} alt=""/>
+      render: text =>  <img src={`${process.env.REACT_APP_API_URL}/${text}` }  style={{width:"100%",height:"40%"}} alt=""/>
+        
     },
 
     {
-      title: 'Phone',
-      dataIndex: 'Phone',
-      key: 'Phone',
+      title: 'EcomerceId',
+      dataIndex: 'EcomerceId',
+      key: 'EcomerceId',
       width: '20%',
-      sorter: (a, b) => a.Phone - b.Phone,
+      sorter: (a, b) => a.EcomerceId - b.EcomerceId,
       sortDirections: ['descend', 'ascend'],
-      ...getColumnSearchProps('Phone'),
+      ...getColumnSearchProps('EcomerceId'),
     },
-    {
-      title: 'Email',
-      dataIndex: 'Email',
-      key: 'Email',
-      width: '20%',
-      ...getColumnSearchProps('Email'),
-    },
-    {
-      title: 'Address',
-      dataIndex: 'Address',
-      key: 'Address',
-      width: '20%',
-      ...getColumnSearchProps('Address'),
-      sorter: (a, b) => a.Address.length - b.Address.length,
-      sortDirections: ['descend', 'ascend'],
-    },
+   
+
     {
       title: 'Description',
       dataIndex: 'Description',
-      key: 'Description',
+      key: 'Address',
       width: '20%',
       ...getColumnSearchProps('Description'),
     },
     {
       key: 'Action',
-      title: <SyncOutlined onClick={() => dispatch(ecommercegetAll())} />,
+      title: <SyncOutlined onClick={() => dispatch(brandgetAll())} />,
       align: 'center',
       width: '10%',
       render: (text, record, index) => (
@@ -151,7 +136,6 @@ const Ecommerce = () => {
             title={`Bạn muốn xóa ${record.Name} ?`}
             onConfirm={() => handleDelete(record.Id)}
             okText="Xóa"
-        
             cancelText="Hủy"
           >
             <DeleteOutlined style={{ color: "red" }} />
@@ -163,86 +147,88 @@ const Ecommerce = () => {
   ];
   // actionform
   const onFinishAdd = (data) => {
+    const add = new FormData();
+    add.append("Name", data.name)
+    add.append("EcomerceId", data.EcomerceId)
    
-    const files = new FormData();
-    files.append("Name", data.name)
-    files.append("Email", data.email)
-    files.append("Phone", data.phone)
-    files.append("Address", data.address)
-    files.append("Description", data.description)   
-    files.append("ImageUrl", data.files[0])  
-    console.log(data.files);
-    console.log(files.getAll('ImageUrl'))
-    console.log(data)
-    dispatch(ecommerceAdd(files))
-   
+    add.append("Description", data.description)   
+    add.append("ImageUrl", data.image[0])  
+    dispatch(brandAdd(add))
     setIsModalAdd(false)
     formAdd.resetFields()
+    console.log(add)
+
+  //   const newdata = {
+  //     Name: data.name,
+  //     Email: data.email,
+  //     Phone: data.phone,
+  //     Address: data.address,
+  //     Description: data.description,
+  //     // ImageUrl:data.files[0]
+
+  //   }
+  //   console.log(data)
+  //   dispatch(ecommerceAdd(newdata))
+   
+  //   setIsModalAdd(false)
+  //   formAdd.resetFields()
    }
 
-   const handleEditForm = (record) => {
-    const editform = {    
+  const handleEditForm = useCallback((record) => {
+    const editform = {
       id: record.Id,
       name: record.Name,
-      email: record.Email,
-      phone: record.Phone,
-      address: record.Address,
+      ecomerceid: record.EcomerceId,
+      
       description: record.Description,
-      //  files: record.ImageUrl
+      files: record.ImageUrl
+      
+    
     }
     formEdit.setFieldsValue(editform)
     setIsModalEdit(true)
-  }
 
+  }, [formEdit])
   const onFinishEdit = (data) => {
     const edit = new FormData();
-    edit.append("Id", data.id)
     edit.append("Name", data.name)
-    edit.append("Email", data.email)
-    edit.append("Phone", data.phone)
-    edit.append("Address", data.address)
+    edit.append("EcomerceId", data.EcomerceId)
     edit.append("Description", data.description)   
-    edit.append("ImageUrl", data.files[0])  
-    dispatch(ecommerceEdit(edit))
+    edit.append("ImageUrl", data.image[0])  
+    dispatch(brandEdit(edit))
     setIsModalEdit(false)
-    
+    formAdd.resetFields()
     console.log(edit)
- 
   }
   const handleDelete = (id) => {
-    dispatch(ecommerceDelete(id))
+    dispatch(brandDelete(id))
   }
   return (
     <div>
       <div className='addecommerce' >
-        <Button type="primary" onClick={() => 
-         
-          setIsModalAdd(true)}>
-          Thêm Sàn
+        <Button type="primary" onClick={() => setIsModalAdd(true)}>
+          Thêm Brand
         </Button>
       </div>
       <br />
-      <Modal className='modal-add' title="Thêm Sàn" visible={isModalAdd} footer="" centered onCancel={() => setIsModalAdd(false)}>
-        <EcommerceForm
+      <Modal className='modal-add' title="Thêm Brand" visible={isModalAdd} footer="" centered onCancel={() => setIsModalAdd(false)}>
+        <BrandForm
           onFinish={onFinishAdd}
           form={formAdd} />
       </Modal>
 
-      <Modal className='modal-edit' title="Sửa Sàn" visible={isModalEdit} onCancel={() => setIsModalEdit(false)} centered footer="">
-        <EcommerceForm
+      <Modal className='modal-edit' title="Sửa Brand" visible={isModalEdit} onCancel={() => setIsModalEdit(false)} centered footer="">
+        <BrandForm
           onFinish={onFinishEdit}
           form={formEdit}
-          form={Form}
           idEdit={true}
-          id={handleEditForm}
-       
         />
       </Modal>
 
-      <Table scroll={{ x: 900 }} loading={loadingecom} columns={columns} dataSource={ecommercelist} rowKey={record => record.id} bordered />
+      <Table scroll={{ x: 900 }} loading={loadingbrand} columns={columns} dataSource={brandlist} rowKey={record => record.id} bordered />
 
     </div>
   )
 }
 
-export default Ecommerce;
+export default Brand;

@@ -1,24 +1,17 @@
 import React from 'react'
 import { Input, Button, Form, InputNumber, Switch, Upload, message } from 'antd';
-import { UploadOutlined, InboxOutlined ,LoadingOutlined,PlusOutlined} from '@ant-design/icons';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import './ecommerce.scss'
+import { UploadOutlined, InboxOutlined ,PlusOutlined,LoadingOutlined} from '@ant-design/icons';
 import { useEffect } from 'react';
+import { useState } from 'react';
+import './brand.scss'
 import axios from 'axios';
-import { ecommerceAdd } from '../../../store/Category/ecommerce';
-import { useDispatch } from 'react-redux';
 
-const EcommerceForm = ({ onFinish, form, idEdit}) => {
-   
-    const dispatch = useDispatch();
-    const handleSubmit2 = (values) => {
-        console.log(values);
-        dispatch(ecommerceAdd(values))
 
-    }
-
+const BrandForm = ({ onFinish, form, idEdit }) => {
     const { TextArea } = Input;
+    const [showAgeTotal, setShowAgeTotal] = useState(false);
+    const [showAgeMore, setShowAgeMore] = useState(false);
+   
     const validateMessages = {
         required: 'Không được để trống !',
         types: {
@@ -41,7 +34,6 @@ const EcommerceForm = ({ onFinish, form, idEdit}) => {
     const [fileList, setFileList] = useState([]);
     const [imageUrl, setImageUrl] = useState('');
 
- 
     useEffect(() => {
         if(idEdit) {
             const imageUrl = form.getFieldValue('image');
@@ -58,8 +50,10 @@ const EcommerceForm = ({ onFinish, form, idEdit}) => {
     const propsUpload = {
         name: 'file',
         maxCount: 1,
-        action: `${process.env.REACT_APP_API_URL}/ecommerce/create-url`,
-    
+        action: `${process.env.REACT_APP_API_URL}/ecommerce`,
+        headers: {
+            'Authorization': 'Bearer ' ,
+        },
         onSuccess: (result) => {
             console.log(result);
             if(result.success) {
@@ -100,48 +94,39 @@ const EcommerceForm = ({ onFinish, form, idEdit}) => {
     const normFile = (e) => {
         return e && e.file;
     };
-    //  method='POST' encType='multipart/form-data'
+  
+  
+
+    console.log(fileList)
     return (
         <div>
-       
-
-             <Form className="ecommerce-form"
-            
-                onFinish={onFinish }
-               
-                validateMessages={validateMessages}
-                form={form} >
+            <Form className="ecommerce-form" validateMessages={validateMessages} onFinish={onFinish} form={form} method='POST' encType='multipart/form-data' >
                 {
                     idEdit &&
                     <Form.Item name="id" hidden={true}>
                         <Input />
                     </Form.Item>
                 }
+
                 <Form.Item name="name" label="Tên" required rules={[{ required: true, whitespace: true }, { type: 'string', max: 255 }]}
                     style={{ width: '50%', paddingRight: "10px" }}>
                     <Input placeholder="Ví dụ: Eplaza" />
                 </Form.Item>
-                <Form.Item name="email" label="Email" required rules={[{ required: true }, { type: 'email', message: "không phải là Email" }, { max: 255 }]}
-                    style={{ width: '50%' }}>
-                    <Input placeholder="Ví dụ: Eplaza@gmail.com" />
-                </Form.Item>
-                <Form.Item name="phone" label="Phone" required rules={[{ required: true }, { pattern: /((09|03|07|08|05)+([0-9]{8})\b)/g }]}
-                    style={{ width: '50%', paddingRight: "10px" }}>
-                    <Input style={{ width: '100%' }} placeholder="Ví dụ: 0902174492" />
-                </Form.Item>
-                <Form.Item name="address" label="Address" required rules={[{ required: true }, { type: 'string', min: 0, max: 255 }]}
-                    style={{ width: '50%' }}>
-                    <Input placeholder="Ví dụ: 172A Yên Lãng" />
-                </Form.Item>
+            
+            
                 <Form.Item name="description" label="Description" required rules={[{ required: true }, { type: 'string', max: 255 }]}
                     style={{ width: '50%', paddingRight: "10px" }}>
                     <TextArea></TextArea>
                 </Form.Item>
 
+                <Form.Item name="EcomerceId" label="EcomerceId" required rules={[{ required: true }, { type: 'string', max: 255 }]}
+                    style={{ width: '50%', paddingRight: "10px" }}>
+                     <Input placeholder="" />
+                </Form.Item>
                 {
                     idEdit ?
                     <Form.Item name="new_img" required label="Ảnh tin tức" valuePropName="file" getValueFromEvent={normFile}
-                        style={{ width: '20%'}} >
+                        style={{ width: '50%',paddingRight: "10px"}} >
                         <Upload
                             {...propsUpload}
                             listType="picture-card"
@@ -157,7 +142,7 @@ const EcommerceForm = ({ onFinish, form, idEdit}) => {
                         </Upload>
                     </Form.Item>
                     :<Form.Item name="new_img" label="Ảnh tin tức" valuePropName="file" getValueFromEvent={normFile}
-                    rules={[{ required: true }]} style={{ width: '20%'}} >
+                    rules={[{ required: true }]} style={{ width: '50%',paddingRight: "10px"}} >
                         <Upload
                             {...propsUpload}
                             listType="picture-card"
@@ -174,18 +159,17 @@ const EcommerceForm = ({ onFinish, form, idEdit}) => {
                     </Form.Item>
                 }
 
-              
-                 <Form.Item
+            
+                <Form.Item
                     style={{ width: '90%' }}>
 
                 </Form.Item>
                 <Form.Item className='button'>
-                    <Button htmlType="submit"
-                        type="primary">Lưu lại</Button>
+                    <Button htmlType="submit" type="primary">Lưu lại</Button>
                 </Form.Item>
-            </Form>  
+            </Form>
         </div>
     )
 }
 
-export default EcommerceForm
+export default BrandForm

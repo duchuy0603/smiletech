@@ -3,18 +3,18 @@ import { Input, Button, Form, InputNumber, Switch, Upload, message } from 'antd'
 import { UploadOutlined, InboxOutlined ,LoadingOutlined,PlusOutlined} from '@ant-design/icons';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import './ecommerce.scss'
+import './team'
 import { useEffect } from 'react';
 import axios from 'axios';
-import { ecommerceAdd } from '../../../store/Category/ecommerce';
+import {teamAdd } from '../../../store/Category/team';
 import { useDispatch } from 'react-redux';
 
-const EcommerceForm = ({ onFinish, form, idEdit}) => {
+const TeamForm = ({ onFinish, form, idEdit}) => {
    
     const dispatch = useDispatch();
     const handleSubmit2 = (values) => {
         console.log(values);
-        dispatch(ecommerceAdd(values))
+        dispatch(teamAdd(values))
 
     }
 
@@ -41,7 +41,6 @@ const EcommerceForm = ({ onFinish, form, idEdit}) => {
     const [fileList, setFileList] = useState([]);
     const [imageUrl, setImageUrl] = useState('');
 
- 
     useEffect(() => {
         if(idEdit) {
             const imageUrl = form.getFieldValue('image');
@@ -58,8 +57,10 @@ const EcommerceForm = ({ onFinish, form, idEdit}) => {
     const propsUpload = {
         name: 'file',
         maxCount: 1,
-        action: `${process.env.REACT_APP_API_URL}/ecommerce/create-url`,
-    
+        action: `${process.env.REACT_APP_API_URL}/ecommerce`,
+        headers: {
+            'Authorization': 'Bearer ' ,
+        },
         onSuccess: (result) => {
             console.log(result);
             if(result.success) {
@@ -100,6 +101,7 @@ const EcommerceForm = ({ onFinish, form, idEdit}) => {
     const normFile = (e) => {
         return e && e.file;
     };
+  
     //  method='POST' encType='multipart/form-data'
     return (
         <div>
@@ -141,7 +143,7 @@ const EcommerceForm = ({ onFinish, form, idEdit}) => {
                 {
                     idEdit ?
                     <Form.Item name="new_img" required label="Ảnh tin tức" valuePropName="file" getValueFromEvent={normFile}
-                        style={{ width: '20%'}} >
+                        style={{ width: '50%',paddingRight: "10px"}} >
                         <Upload
                             {...propsUpload}
                             listType="picture-card"
@@ -157,7 +159,7 @@ const EcommerceForm = ({ onFinish, form, idEdit}) => {
                         </Upload>
                     </Form.Item>
                     :<Form.Item name="new_img" label="Ảnh tin tức" valuePropName="file" getValueFromEvent={normFile}
-                    rules={[{ required: true }]} style={{ width: '20%'}} >
+                    rules={[{ required: true }]} style={{ width: '50%',paddingRight: "10px"}} >
                         <Upload
                             {...propsUpload}
                             listType="picture-card"
@@ -188,4 +190,4 @@ const EcommerceForm = ({ onFinish, form, idEdit}) => {
     )
 }
 
-export default EcommerceForm
+export default TeamForm;

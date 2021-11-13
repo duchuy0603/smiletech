@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
-import { ecommercegetAll, ecommerceAdd, ecommerceEdit, ecommerceDelete } from '../../../store/Category/ecommerce';
-import ecommerceApi from '../../../api/Ecommerce/ecommerce';
+import { categoriesAdd, categoriesgetEdit, categoriesgetDelete, categoriesgetAll } from '../../../store/Category/categories';
+
 import { useEffect } from 'react'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,12 +11,15 @@ import { Pagination } from 'antd';
 import { SearchOutlined, SyncOutlined, EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import CategoriesForm from './catogoriesForm';
 import './categories.scss'
+
 const Categories = () => {
-  const { ecommercelist, loadingecom } = useSelector(state => state.ecommerceReducer)
+  const { categorieslist, loadingecom } = useSelector(state => state.categoriesReducer)
+  
+  console.log(categorieslist)
   const dispatch = useDispatch();
   
   useEffect(() => {
-    dispatch(ecommercegetAll())
+    dispatch(categoriesgetAll())
   }, [dispatch])
   
   const [searchText, setsearchText] = useState('');
@@ -87,7 +90,7 @@ const Categories = () => {
   const columns = [
     {
       title: 'Name',
-      dataIndex: 'Name',
+      dataIndex: 'name',
       key: 'Name',
       width: '20%',
       ...getColumnSearchProps('Name'),
@@ -98,33 +101,25 @@ const Categories = () => {
       dataIndex: 'ImageUrl',
       key: 'Image',
       width: '20%',
-      render: text =>
-        text
+      render: text =>  <img src={`${process.env.REACT_APP_API_URL}/${text}` }  style={{width:"100%",height:"40%"}} alt=""/>
+        
     },
 
+
     {
-      title: 'Phone',
-      dataIndex: 'Phone',
-      key: 'Phone',
+      title: 'Content',
+      dataIndex: 'Content',
+      key: 'Content',
       width: '20%',
-      sorter: (a, b) => a.Phone - b.Phone,
-      sortDirections: ['descend', 'ascend'],
-      ...getColumnSearchProps('Phone'),
+      ...getColumnSearchProps('Content'),
     },
     {
-      title: 'Email',
-      dataIndex: 'Email',
-      key: 'Email',
+      title: 'ParentId',
+      dataIndex: 'ParentId',
+      key: 'ParentId',
       width: '20%',
-      ...getColumnSearchProps('Email'),
-    },
-    {
-      title: 'Address',
-      dataIndex: 'Address',
-      key: 'Address',
-      width: '20%',
-      ...getColumnSearchProps('Address'),
-      sorter: (a, b) => a.Address.length - b.Address.length,
+      ...getColumnSearchProps('ParentId'),
+      sorter: (a, b) => a.ParentId.length - b.ParentId.length,
       sortDirections: ['descend', 'ascend'],
     },
     {
@@ -136,7 +131,7 @@ const Categories = () => {
     },
     {
       key: 'Action',
-      title: <SyncOutlined onClick={() => dispatch(ecommercegetAll())} />,
+      title: <SyncOutlined onClick={() => dispatch(categoriesgetAll())} />,
       align: 'center',
       width: '10%',
       render: (text, record, index) => (
@@ -165,7 +160,7 @@ const Categories = () => {
     add.append("Address", data.address)
     add.append("Description", data.description)   
     add.append("ImageUrl", data.image[0])  
-    dispatch(ecommerceAdd(add))
+    dispatch(categoriesAdd(add))
     setIsModalAdd(false)
     formAdd.resetFields()
     console.log(add)
@@ -213,18 +208,18 @@ const Categories = () => {
       // ImageUrl:data.image
     }
  
-    dispatch(ecommerceEdit(edit))
+    dispatch(categoriesgetEdit(edit))
     setIsModalEdit(false)
 
   }
   const handleDelete = (id) => {
-    dispatch(ecommerceDelete(id))
+    dispatch(categoriesgetDelete(id))
   }
   return (
     <div>
       <div className='addecommerce' >
         <Button type="primary" onClick={() => setIsModalAdd(true)}>
-          Thêm Sàn
+          Thêm Danh Mục
         </Button>
       </div>
       <br />
@@ -242,7 +237,7 @@ const Categories = () => {
         />
       </Modal>
 
-      <Table scroll={{ x: 900 }} loading={loadingecom} columns={columns} dataSource={ecommercelist} rowKey={record => record.id} bordered />
+      <Table scroll={{ x: 900 }} loading={loadingecom} columns={columns} dataSource={categorieslist} rowKey={record => record.id} bordered />
 
     </div>
   )
