@@ -3,13 +3,12 @@ import { Input, Button, Form, InputNumber, Switch, Upload, message } from 'antd'
 import { UploadOutlined, InboxOutlined ,LoadingOutlined,PlusOutlined} from '@ant-design/icons';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import './ecommerce.scss'
+import './store.scss'
 import { useEffect } from 'react';
 import axios from 'axios';
-import { ecommerceAdd } from '../../../store/Category/ecommerce';
 import { useDispatch } from 'react-redux';
 
-const EcommerceForm = ({ onFinish, form, idEdit}) => {
+const StoreForm = ({ onFinish, form, idEdit}) => {
    
     const dispatch = useDispatch();
  
@@ -34,68 +33,7 @@ const EcommerceForm = ({ onFinish, form, idEdit}) => {
 
     const [loading, setLoading] = useState(false);
     const [fileList, setFileList] = useState([]);
-    const [imageUrl, setImageUrl] = useState('');
-
- 
-    useEffect(() => {
-        if(idEdit) {
-            const imageUrl = form.getFieldValue('image');
-            setImageUrl(imageUrl)
-            console.log(imageUrl);
-        }
-    }, [form, idEdit])
-
-    const handleChange = info => {
-        console.log(info.file);
-        if (info.file.status === 'uploading') {
-            setLoading(true);
-          }
-    };
-    const propsUpload = {
-        name: 'file',
-        maxCount: 1,
-        action: `${process.env.REACT_APP_API_URL}/ecommerce/create-url`,
-    
-        onSuccess: (result, file) => {
-            console.log('okk', result);
-            if(result.success) {
-                form.setFieldsValue({
-                    image: result.url,
-                })
-                setImageUrl(result.url);
-                message.success('Tải ảnh lên thành công !');
-            } else {
-                form.setFieldsValue({
-                    image: '',
-                })
-                setImageUrl('');
-                if(result.error.message === "File too large") {
-                    message.error('Dung lượng ảnh không quá 5mb !');
-                } if(result.error.message === "Images Only!") {
-                    message.error('Chỉ tải lên định dạng ảnh .jpg, .png, .jpeg !');
-                } else {
-                    message.error('Tải ảnh lên thất bại ! Hãy thử lại !');
-                }
-            }
-            setLoading(false);
-        },
-        onError: (err, response) => {
-            form.setFieldsValue({
-                image: '',
-            })
-            setImageUrl('');
-            message.error('Tải ảnh lên thất bại ! Hãy thử lại');
-            setLoading(false);
-        }
-    };
-
-
-    const normContent = (value) => {
-        return value.text;
-    };
-    const normFile = (e) => {
-        return e && e.file;
-    };
+  
     //  method='POST' encType='multipart/form-data'
     return (
         <div>
@@ -125,31 +63,32 @@ const EcommerceForm = ({ onFinish, form, idEdit}) => {
                     style={{ width: '50%', paddingRight: "10px" }}>
                     <Input style={{ width: '100%' }} placeholder="Ví dụ: 0902174492" />
                 </Form.Item>
-                <Form.Item name="address" label="Address" required rules={[{ required: true }, { type: 'string', min: 0, max: 255 }]}
+                <Form.Item name="content" label="Content" required rules={[{ required: true }, { type: 'string', min: 0, max: 255 }]}
                     style={{ width: '50%' }}>
-                    <Input placeholder="Ví dụ: 172A Yên Lãng" />
+                    <Input placeholder="" />
                 </Form.Item>
                 <Form.Item name="description" label="Description" required rules={[{ required: true }, { type: 'string', max: 255 }]}
                     style={{ width: '50%', paddingRight: "10px" }}>
                     <TextArea></TextArea>
                 </Form.Item>
-
-                <Form.Item name="new_img" label="Ảnh tin tức" valuePropName="file" getValueFromEvent={normFile}
-                  style={{ width: '50%'}} >
-                        <Upload
-                            {...propsUpload}
-                            listType="picture-card"
-                            className="avatar-uploader"
-                            showUploadList={false}
-                            onChange={handleChange}
-                        >
-                            {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> 
-                                    : <div>
-                                        {loading ? <LoadingOutlined /> : <PlusOutlined />}
-                                        <div style={{ marginTop: 8 }}>Upload</div>
-                                    </div>}
-                        </Upload>
-                    </Form.Item>
+                <Form.Item name="gmap" label="GMap" required rules={[{ required: true }, { type: 'string', min: 0, max: 255 }]}
+                    style={{ width: '50%' }}>
+                    <Input placeholder="Ví dụ: 172A Yên Lãng" />
+                </Form.Item>
+                <Form.Item name="facebook" label="Facebook" required rules={[{ required: true }, { type: 'string', min: 0, max: 255 }]}
+                    style={{ width: '50%' }}>
+                    <Input placeholder="Ví dụ: Facebook" />
+                </Form.Item>
+                <Form.Item name="shopee" label="Shopee" required rules={[{ required: true }, { type: 'string', min: 0, max: 255 }]}
+                    style={{ width: '50%' }}>
+                    <Input placeholder="Ví dụ: Nguyễn Đức Huy" />
+                </Form.Item>
+                <Form.Item name="youtube" label="Youtube" required rules={[{ required: true }, { type: 'string', min: 0, max: 255 }]}
+                    style={{ width: '50%' }}>
+                    <Input placeholder="Ví dụ: Nguyễn Đức Huy" />
+                </Form.Item>
+               
+            
                     <Form.Item  style={{width:'90%'}}>
                         
                     </Form.Item>
@@ -166,4 +105,4 @@ const EcommerceForm = ({ onFinish, form, idEdit}) => {
     )
 }
 
-export default EcommerceForm
+export default StoreForm

@@ -1,24 +1,26 @@
 import React, { useCallback } from 'react'
-import { categoriesAdd, categoriesEdit, categoriesDelete, categoriesgetAll } from '../../../store/Category/categories';
+import { storeAdd, storeEdit, storeDelete, storegetAll } from '../../../store/Category/stores';
+
+import ecommerceApi from '../../../api/ecommerce';
 import { useEffect } from 'react'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
+import reactRouterDom, { useHistory } from 'react-router-dom';
 import { Button, Form, Modal, Space, Table, Popconfirm, Tag, Input } from 'antd';
 import Highlighter from 'react-highlight-words';
 import { Pagination } from 'antd';
 import { SearchOutlined, SyncOutlined, EditOutlined, DeleteOutlined, PlusOutlined,LoadingOutlined } from '@ant-design/icons';
-import CategoriesForm from './catogoriesForm';
-import './categories.scss'
+import StoreForm from './storeForm';
+import './store.scss'
 
-const Categories = () => {
+const Store = () => {
   // const { register,reset ,handleSubmit, setValue,formState:{errors}, } = useForm();
   
-  const { categorieslist, loadingcategories } = useSelector(state => state.categoriesReducer)
-  console.log(categorieslist)
+  const { storelist, loadingstore } = useSelector(state => state.storeReducer)
   const dispatch = useDispatch();
   
   useEffect(() => {
-    dispatch(categoriesgetAll())
+    dispatch(storegetAll())
   }, [dispatch])
   
   const [searchText, setsearchText] = useState('');
@@ -96,40 +98,39 @@ const Categories = () => {
       ...getColumnSearchProps('Name'),
     },
     {
-      title: 'Image',
-      
- dataIndex: 'ImageUrl',
-      key: 'Image',
-      width: '12%',
-    
-      render: text => <img src={`${process.env.REACT_APP_API_URL}/${text}` }  style={{width:"100%",height:"40%"}} alt=""/>
-    },
+        title: 'Email',
+        dataIndex: 'Email',
+        key: 'Email',
+        width: '20%',
+        ...getColumnSearchProps('Email'),
+      },
 
+    {
+      title: 'Phone',
+      dataIndex: 'Phone',
+      key: 'Phone',
+      width: '20%',
+      sorter: (a, b) => a.Phone - b.Phone,
+      sortDirections: ['descend', 'ascend'],
+      ...getColumnSearchProps('Phone'),
+    },
     {
       title: 'Content',
       dataIndex: 'Content',
       key: 'Content',
       width: '20%',
-      sorter: (a, b) => a.Content - b.Content,
-      sortDirections: ['descend', 'ascend'],
       ...getColumnSearchProps('Content'),
     },
     {
-      title: 'ParentId',
-      dataIndex: 'ParentId',
-      key: 'ParentId',
-      width: '20%',
-      ...getColumnSearchProps('ParentId'),
-    },
-    {
-      title: 'EcomerceId',
-      dataIndex: 'EcomerceId',
-      key: 'EcomerceId',
-      width: '20%',
-      ...getColumnSearchProps('EcomerceId'),
-      sorter: (a, b) => a.EcomerceId.length - b.EcomerceId.length,
+      title: 'GMap',
+      dataIndex: 'GMap',
+      key: 'GMap',
+      width:'1%',
+      ...getColumnSearchProps('GMap'),
+      sorter: (a, b) => a.GMap.length - b.GMap.length,
       sortDirections: ['descend', 'ascend'],
     },
+    
     {
       title: 'Description',
       dataIndex: 'Description',
@@ -138,8 +139,30 @@ const Categories = () => {
       ...getColumnSearchProps('Description'),
     },
     {
+    title: 'Facebook',
+    dataIndex: 'Facebook',
+    key: 'Facebook',
+    width: '20%',
+    ...getColumnSearchProps('Facebook'),
+  },
+  {
+    title: 'Shopee',
+    dataIndex: 'Shopee',
+    key: 'Shopee',
+    width: '20%',
+    ...getColumnSearchProps('Shopee'),
+  },
+  {
+    title: 'Youtube',
+    dataIndex: 'Youtube',
+    key: 'Youtube',
+    width: '20%',
+    ...getColumnSearchProps('Youtube'),
+  },
+  
+    {
       key: 'Action',
-      title: <SyncOutlined onClick={() => dispatch(categoriesgetAll())} />,
+      title: <SyncOutlined onClick={() => dispatch(storegetAll())} />,
       align: 'center',
       width: '10%',
       render: (text, record, index) => (
@@ -164,13 +187,16 @@ const Categories = () => {
   const onFinishAdd = (data) => {
    const dataNews = {
     Name: data.name,
+    Email: data.email,
+    Phone: data.phone,
     Content: data.content,
-    ParentlId: data.parentId,
-    EcomerceId: data.ecomerceId,
     Description: data.description,
-    image: data.image,
+    GMap: data.gmap,
+    Facebook: data.facebook,
+    Shopee: data.shopee,
+    Youtube: data.youtube,
    }
-    dispatch(categoriesAdd(dataNews))
+    dispatch(storeAdd(dataNews))
    
     setIsModalAdd(false)
     formAdd.resetFields()
@@ -180,11 +206,14 @@ const Categories = () => {
     const editform = {    
       id: record.Id,
       name: record.Name,
+      email: record.Email,
+      phone: record.Phone,
       content: record.Content,
-      ecommerceId: record.EcommerceId,
-      address: record.Address,
       description: record.Description,
-      image: record.ImageUrl,
+      gmap: record.GMap,
+      facebook: record.Facebook,
+      youtube: record.Description,
+      shopee: record.Description,
     }
     console.log(editform)
     setIdEdit(record.Id);
@@ -196,24 +225,27 @@ const Categories = () => {
     const edit = {
       Id:data.id,
       Name: data.name,
-      Content: data.content,
-      ParentlId: data.parentId,
-      EcomerceId: data.ecomerceId,
-      Description: data.description,
-      image: data.image,
+    Email: data.email,
+    Phone: data.phone,
+    Content: data.content,
+    Description: data.description,
+    GMap: data.gmap,
+    Facebook: data.facebook,
+    Shopee: data.shopee,
+    Youtube: data.youtube,
      }
-    dispatch(categoriesEdit(edit))
+    dispatch(storeEdit(edit))
     setIsModalEdit(false)
     
     console.log(edit)
  
   }
   const handleDelete = (id) => {
-    dispatch(categoriesDelete(id))
+    dispatch(storeDelete(id))
   }
   return (
     <div>
-      <div className='addecommerce' >
+      <div className='addstore' >
         <Button type="primary" onClick={() => 
          
           setIsModalAdd(true)}>
@@ -222,13 +254,13 @@ const Categories = () => {
       </div>
       <br />
       <Modal className='modal-add' title="Thêm Sàn" visible={isModalAdd} footer="" centered onCancel={() => setIsModalAdd(false)}>
-        <CategoriesForm
+        <StoreForm
           onFinish={onFinishAdd}
           form={formAdd} />
       </Modal>
 
       <Modal className='modal-edit' title="Sửa Sàn" visible={isModalEdit} onCancel={() => setIsModalEdit(false)} centered footer="">
-        <CategoriesForm
+        <StoreForm
           onFinish={onFinishEdit}
           form={formEdit}
         
@@ -240,10 +272,10 @@ const Categories = () => {
 
       <Table scroll={{ x: 900 }}
        pagination= {{defaultCurrent:30,defaultPageSize:10,hideOnSinglePage:true,pageSizeOptions:[10,30,50,100]}}
-      loading={loadingcategories} columns={columns} dataSource={categorieslist} rowKey={record => record.id} bordered />
+      loading={loadingstore} columns={columns} dataSource={storelist} rowKey={record => record.id} bordered />
 
     </div>
   )
 }
 
-export default Categories;
+export default Store;

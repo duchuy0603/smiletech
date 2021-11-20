@@ -25,6 +25,7 @@ const Ecommerce = () => {
   
   const [searchText, setsearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
+  const [idEdit,setIdEdit]=useState(0)
   //modal
   const [isModalAdd, setIsModalAdd] = useState(false);
   const [isModalEdit, setIsModalEdit] = useState(false);
@@ -101,7 +102,7 @@ const Ecommerce = () => {
       
  dataIndex: 'ImageUrl',
       key: 'Image',
-      width: '20%',
+      width: '12%',
     
       render: text => <img src={`${process.env.REACT_APP_API_URL}/${text}` }  style={{width:"100%",height:"40%"}} alt=""/>
     },
@@ -163,18 +164,15 @@ const Ecommerce = () => {
   ];
   // actionform
   const onFinishAdd = (data) => {
-   
-    const files = new FormData();
-    files.append("Name", data.name)
-    files.append("Email", data.email)
-    files.append("Phone", data.phone)
-    files.append("Address", data.address)
-    files.append("Description", data.description)   
-    files.append("ImageUrl", data.files[0])  
-    console.log(data.files);
-    console.log(files.getAll('ImageUrl'))
-    console.log(data)
-    dispatch(ecommerceAdd(files))
+   const dataNews = {
+    Name: data.name,
+    Email: data.email,
+    Phone: data.phone,
+    Address: data.address,
+    Description: data.description,
+    image: data.image,
+   }
+    dispatch(ecommerceAdd(dataNews))
    
     setIsModalAdd(false)
     formAdd.resetFields()
@@ -188,21 +186,24 @@ const Ecommerce = () => {
       phone: record.Phone,
       address: record.Address,
       description: record.Description,
-      //  files: record.ImageUrl
+      image: record.ImageUrl,
     }
+    console.log(editform)
+    setIdEdit(record.Id);
     formEdit.setFieldsValue(editform)
     setIsModalEdit(true)
   }
 
   const onFinishEdit = (data) => {
-    const edit = new FormData();
-    edit.append("Id", data.id)
-    edit.append("Name", data.name)
-    edit.append("Email", data.email)
-    edit.append("Phone", data.phone)
-    edit.append("Address", data.address)
-    edit.append("Description", data.description)   
-    edit.append("ImageUrl", data.files[0])  
+    const edit = {
+      Id:data.id,
+      Name: data.name,
+      Email: data.email,
+      Phone: data.phone,
+      Address: data.address,
+      Description: data.description,
+      image: data.image,
+     }
     dispatch(ecommerceEdit(edit))
     setIsModalEdit(false)
     
@@ -232,14 +233,16 @@ const Ecommerce = () => {
         <EcommerceForm
           onFinish={onFinishEdit}
           form={formEdit}
-          form={Form}
-          idEdit={true}
-          id={handleEditForm}
+        
+          idEdit={idEdit}
+         
        
         />
       </Modal>
 
-      <Table scroll={{ x: 900 }} loading={loadingecom} columns={columns} dataSource={ecommercelist} rowKey={record => record.id} bordered />
+      <Table scroll={{ x: 900 }}
+       pagination= {{defaultCurrent:30,defaultPageSize:10,hideOnSinglePage:true,pageSizeOptions:[10,30,50,100]}}
+      loading={loadingecom} columns={columns} dataSource={ecommercelist} rowKey={record => record.id} bordered />
 
     </div>
   )

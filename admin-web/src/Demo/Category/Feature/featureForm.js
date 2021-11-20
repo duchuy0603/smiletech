@@ -1,16 +1,17 @@
 import React from 'react'
 import { Input, Button, Form, InputNumber, Switch, Upload, message } from 'antd';
-import { UploadOutlined, InboxOutlined ,LoadingOutlined,PlusOutlined} from '@ant-design/icons';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import './property.scss'
+import { UploadOutlined, InboxOutlined, PlusOutlined, LoadingOutlined } from '@ant-design/icons';
 import { useEffect } from 'react';
+import { useState } from 'react';
+import './feature.scss'
 import axios from 'axios';
-import { ecommerceAdd } from '../../../store/Category/ecommerce';
-import { useDispatch } from 'react-redux';
 
-const PropertyForm = ({ onFinish, form, idEdit}) => {
+
+const FeatureForm = ({ onFinish, form, idEdit }) => {
     const { TextArea } = Input;
+    const [showAgeTotal, setShowAgeTotal] = useState(false);
+    const [showAgeMore, setShowAgeMore] = useState(false);
+
     const validateMessages = {
         required: 'Không được để trống !',
         types: {
@@ -28,40 +29,49 @@ const PropertyForm = ({ onFinish, form, idEdit}) => {
             mismatch: '${label} không hợp lệ !',
         },
     };
+
     const [loading, setLoading] = useState(false);
+    const [fileList, setFileList] = useState([]);
+ 
     return (
         <div>
-       
-
-             <Form className="property-form"
-                onFinish={onFinish }
-                validateMessages={validateMessages}
-                form={form} >
+            <Form className="ecommerce-form" validateMessages={validateMessages} onFinish={onFinish} form={form} method='POST' encType='multipart/form-data' >
                 {
                     idEdit &&
                     <Form.Item name="id" hidden={true}>
                         <Input />
                     </Form.Item>
                 }
+
                 <Form.Item name="name" label="Tên" required rules={[{ required: true, whitespace: true }, { type: 'string', max: 255 }]}
                     style={{ width: '50%', paddingRight: "10px" }}>
                     <Input placeholder="Ví dụ: Eplaza" />
                 </Form.Item>
+
+
                 <Form.Item name="description" label="Description" required rules={[{ required: true }, { type: 'string', max: 255 }]}
                     style={{ width: '50%', paddingRight: "10px" }}>
                     <TextArea></TextArea>
                 </Form.Item>
-                 <Form.Item
+                {/* 
+                <Form.Item name="EcomerceId" label="EcomerceId" required rules={[{ required: true }, { type: 'string', max: 255 }]}
+                    style={{ width: '50%', paddingRight: "10px" }}>
+                     <Input placeholder="" />
+                </Form.Item> */}
+
+
+                
+               
+                <Form.Item
                     style={{ width: '90%' }}>
 
                 </Form.Item>
                 <Form.Item className='button'>
-                    <Button htmlType="submit"
-                        type="primary">Lưu lại</Button>
+                    <Button htmlType="submit" type="primary">Lưu lại</Button>
                 </Form.Item>
-            </Form>  
+            </Form>
         </div>
     )
 }
 
-export default PropertyForm
+export default FeatureForm

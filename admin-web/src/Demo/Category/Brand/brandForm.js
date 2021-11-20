@@ -1,6 +1,6 @@
 import React from 'react'
 import { Input, Button, Form, InputNumber, Switch, Upload, message } from 'antd';
-import { UploadOutlined, InboxOutlined ,PlusOutlined,LoadingOutlined} from '@ant-design/icons';
+import { UploadOutlined, InboxOutlined, PlusOutlined, LoadingOutlined } from '@ant-design/icons';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import './brand.scss'
@@ -11,7 +11,7 @@ const BrandForm = ({ onFinish, form, idEdit }) => {
     const { TextArea } = Input;
     const [showAgeTotal, setShowAgeTotal] = useState(false);
     const [showAgeMore, setShowAgeMore] = useState(false);
-   
+
     const validateMessages = {
         required: 'Không được để trống !',
         types: {
@@ -34,6 +34,7 @@ const BrandForm = ({ onFinish, form, idEdit }) => {
     const [fileList, setFileList] = useState([]);
     const [imageUrl, setImageUrl] = useState('');
 
+ 
     useEffect(() => {
         if(idEdit) {
             const imageUrl = form.getFieldValue('image');
@@ -43,6 +44,7 @@ const BrandForm = ({ onFinish, form, idEdit }) => {
     }, [form, idEdit])
 
     const handleChange = info => {
+        console.log(info.file);
         if (info.file.status === 'uploading') {
             setLoading(true);
           }
@@ -50,17 +52,15 @@ const BrandForm = ({ onFinish, form, idEdit }) => {
     const propsUpload = {
         name: 'file',
         maxCount: 1,
-        action: `${process.env.REACT_APP_API_URL}/ecommerce`,
-        headers: {
-            'Authorization': 'Bearer ' ,
-        },
-        onSuccess: (result) => {
-            console.log(result);
+        action: `${process.env.REACT_APP_API_URL}/brands/create-url`,
+    
+        onSuccess: (result, file) => {
+            console.log('ok', result);
             if(result.success) {
                 form.setFieldsValue({
-                    image: result.data,
+                    image: result.url,
                 })
-                setImageUrl(result.data);
+                setImageUrl(result.url);
                 message.success('Tải ảnh lên thành công !');
             } else {
                 form.setFieldsValue({
@@ -77,7 +77,7 @@ const BrandForm = ({ onFinish, form, idEdit }) => {
             }
             setLoading(false);
         },
-        onError: () => {
+        onError: (err, response) => {
             form.setFieldsValue({
                 image: '',
             })
@@ -94,10 +94,6 @@ const BrandForm = ({ onFinish, form, idEdit }) => {
     const normFile = (e) => {
         return e && e.file;
     };
-  
-  
-
-    console.log(fileList)
     return (
         <div>
             <Form className="ecommerce-form" validateMessages={validateMessages} onFinish={onFinish} form={form} method='POST' encType='multipart/form-data' >
@@ -112,37 +108,15 @@ const BrandForm = ({ onFinish, form, idEdit }) => {
                     style={{ width: '50%', paddingRight: "10px" }}>
                     <Input placeholder="Ví dụ: Eplaza" />
                 </Form.Item>
-            
-            
+
+
                 <Form.Item name="description" label="Description" required rules={[{ required: true }, { type: 'string', max: 255 }]}
                     style={{ width: '50%', paddingRight: "10px" }}>
                     <TextArea></TextArea>
                 </Form.Item>
-
-                <Form.Item name="EcomerceId" label="EcomerceId" required rules={[{ required: true }, { type: 'string', max: 255 }]}
-                    style={{ width: '50%', paddingRight: "10px" }}>
-                     <Input placeholder="" />
-                </Form.Item>
-                {
-                    idEdit ?
-                    <Form.Item name="new_img" required label="Ảnh tin tức" valuePropName="file" getValueFromEvent={normFile}
-                        style={{ width: '50%',paddingRight: "10px"}} >
-                        <Upload
-                            {...propsUpload}
-                            listType="picture-card"
-                            className="avatar-uploader"
-                            showUploadList={false}
-                            onChange={handleChange}
-                        >
-                            {imageUrl && imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%', height: '100%', objectFit: 'cover'  }} /> 
-                                    : <div>
-                                        {loading ? <LoadingOutlined /> : <PlusOutlined />}
-                                        <div style={{ marginTop: 8 }}>Upload</div>
-                                    </div>}
-                        </Upload>
-                    </Form.Item>
-                    :<Form.Item name="new_img" label="Ảnh tin tức" valuePropName="file" getValueFromEvent={normFile}
-                    rules={[{ required: true }]} style={{ width: '50%',paddingRight: "10px"}} >
+             
+      <Form.Item name="new_img" label="Ảnh tin tức" valuePropName="file" getValueFromEvent={normFile}
+                    rules={[{ required: true }]} style={{ width: '50%'}} >
                         <Upload
                             {...propsUpload}
                             listType="picture-card"
@@ -157,9 +131,10 @@ const BrandForm = ({ onFinish, form, idEdit }) => {
                                     </div>}
                         </Upload>
                     </Form.Item>
-                }
-
-            
+                
+                <Form.Item name="image" hidden={true}>
+                    <Input />
+                </Form.Item>
                 <Form.Item
                     style={{ width: '90%' }}>
 

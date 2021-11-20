@@ -3,7 +3,6 @@ import { propertyAdd, propertyEdit, propertyDelete, propertygetAll } from '../..
 import { useEffect } from 'react'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import reactRouterDom, { useHistory } from 'react-router-dom';
 import { Button, Form, Modal, Space, Table, Popconfirm, Tag, Input } from 'antd';
 import Highlighter from 'react-highlight-words';
 import { Pagination } from 'antd';
@@ -20,6 +19,7 @@ const Property = () => {
   useEffect(() => {
     dispatch(propertygetAll())
   }, [dispatch])
+  console.log(propertylist);
   
   const [searchText, setsearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
@@ -127,15 +127,15 @@ const Property = () => {
     },
   ];
   // actionform
-  const onFinishAdd = (data) => {
-   
-    const files = new FormData();
-    files.append("Name", data.name)
-    files.append("Description", data.description)   
-    
- 
-    console.log(data)
-    dispatch(propertyAdd(files))
+  const onFinishAdd = (values) => {
+    // const files = new FormData();
+    // files.append("Name", data.name)
+    // files.append("Description", data.description)   
+    const dataAdd ={
+      Name: values.name,
+      Description: values.description,
+    }
+    dispatch(propertyAdd(dataAdd))
    
     setIsModalAdd(false)
     formAdd.resetFields()
@@ -143,25 +143,27 @@ const Property = () => {
 
    const handleEditForm = (record) => {
     const editform = {    
-      id: record.Id,
-       name: record.Name,
-      description: record.Description,
+      id:record.Id,
+       name:record.Name,
+      description:record.Description,
       
     }
+    
     formEdit.setFieldsValue(editform)
     setIsModalEdit(true)
   }
 
-  const onFinishEdit = (data) => {
-    const edit = new FormData();
+  const onFinishEdit = (values) => {
+    const dataEdit ={
+    Id:values.id,
+      Name: values.name,
+      Description: values.description,
+    }
    
-    edit.append("Name", data.name)
-    edit.append("Description", data.description)   
-   
-    dispatch(propertyEdit(edit))
+    dispatch(propertyEdit(dataEdit))
     setIsModalEdit(false)
     
-    console.log(edit)
+    console.log(dataEdit)
  
   }
   const handleDelete = (id) => {
@@ -193,7 +195,13 @@ const Property = () => {
         />
       </Modal>
 
-      <Table scroll={{ x: 900 }} loading={loadingproperty} columns={columns} dataSource={propertylist} rowKey={record => record.id} bordered />
+      <Table scroll={{ x: 900 }} 
+      loading={loadingproperty}
+       columns={columns} 
+       dataSource={propertylist}
+        rowKey={record => record.id} 
+        pagination= {{defaultCurrent:30,defaultPageSize:10,hideOnSinglePage:true,pageSizeOptions:[10,30,50,100]}}
+        bordered />
 
     </div>
   )

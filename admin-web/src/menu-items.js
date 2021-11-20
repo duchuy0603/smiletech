@@ -53,7 +53,7 @@ export default {
                     title: 'Quản Lý Tính Năng Sản Phẩm',
                     type: 'item',
                     icon: 'feather icon-edit',
-                    url: '/'
+                    url: '/feature'
                 },
                 {
                     id: 'brand-product',
@@ -67,7 +67,7 @@ export default {
                     title: 'Quản Lý Sản Phẩm',
                     type: 'item',
                     icon: 'feather icon-edit',
-                    url: '/'
+                    url: '/product'
                 }
             ]
         },
@@ -155,14 +155,14 @@ export default {
                     id: 'accounts-list',
                     title: 'Quản Lý Người Dùng',
                     type: 'item',
-                    url: '/accounts/accounts-list',
+                    url: '/',
                     icon: 'feather icon-user-plus'
                 },
                 {
                     id: 'accounts-store',
                     title: 'Quản Lý Cửa Hàng',
                     type: 'item',
-                    url: '/accounts/accounts-list',
+                    url: '/store',
                     icon: 'feather icon-user-plus'
                 },
                 {

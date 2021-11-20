@@ -1,33 +1,34 @@
 import React, { useCallback } from 'react'
-import { categoriesAdd, categoriesEdit, categoriesDelete, categoriesgetAll } from '../../../store/Category/categories';
+import { productAdd,productEdit,productDelete,productgetAll } from '../../../store/Category/product';
+
 import { useEffect } from 'react'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, Form, Modal, Space, Table, Popconfirm, Tag, Input } from 'antd';
+
+import { Button, Form, Modal, Space, Table, Popconfirm, Tag, Input,Select } from 'antd';
 import Highlighter from 'react-highlight-words';
 import { Pagination } from 'antd';
-import { SearchOutlined, SyncOutlined, EditOutlined, DeleteOutlined, PlusOutlined,LoadingOutlined } from '@ant-design/icons';
-import CategoriesForm from './catogoriesForm';
-import './categories.scss'
+import { SearchOutlined, SyncOutlined, EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
+import './product.scss'
+import ProductForm from './productForm';
+import PropertyForm from '../Property/propertyForm';
 
-const Categories = () => {
-  // const { register,reset ,handleSubmit, setValue,formState:{errors}, } = useForm();
+const Product = () => {
+  const { productlist, loadingproduct } = useSelector(state => state.productReducer)
   
-  const { categorieslist, loadingcategories } = useSelector(state => state.categoriesReducer)
-  console.log(categorieslist)
+  const { Option } = Select;
   const dispatch = useDispatch();
   
   useEffect(() => {
-    dispatch(categoriesgetAll())
+    dispatch(productgetAll())
   }, [dispatch])
   
   const [searchText, setsearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
-  const [idEdit,setIdEdit]=useState(0)
   //modal
   const [isModalAdd, setIsModalAdd] = useState(false);
   const [isModalEdit, setIsModalEdit] = useState(false);
-  const [formAdd] = Form.useForm();    
+  const [formAdd] = Form.useForm();    //form
   const [formEdit] = Form.useForm();
   const getColumnSearchProps = dataIndex => ({
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
@@ -97,38 +98,29 @@ const Categories = () => {
     },
     {
       title: 'Image',
-      
- dataIndex: 'ImageUrl',
-      key: 'Image',
-      width: '12%',
-    
-      render: text => <img src={`${process.env.REACT_APP_API_URL}/${text}` }  style={{width:"100%",height:"40%"}} alt=""/>
+      // dataIndex: <img src="ImageUrl" alt=""/>,
+      dataIndex: 'ImageUrl',
+      key: 'ImageUrl',
+      width:'20%',
+      render: text =>  <img src={`${process.env.REACT_APP_API_URL}/${text}` }  style={{width:"100%",height:"100%"}} alt=""/>
+        
     },
-
+   
+    {
+      title: 'Price',
+      dataIndex: 'Price',
+      key: 'Price',
+      width: '20%',
+      sorter: (a, b) => a.Price - b.Price,
+      sortDirections: ['descend', 'ascend'],
+      ...getColumnSearchProps('Price'),
+    },
     {
       title: 'Content',
       dataIndex: 'Content',
       key: 'Content',
       width: '20%',
-      sorter: (a, b) => a.Content - b.Content,
-      sortDirections: ['descend', 'ascend'],
       ...getColumnSearchProps('Content'),
-    },
-    {
-      title: 'ParentId',
-      dataIndex: 'ParentId',
-      key: 'ParentId',
-      width: '20%',
-      ...getColumnSearchProps('ParentId'),
-    },
-    {
-      title: 'EcomerceId',
-      dataIndex: 'EcomerceId',
-      key: 'EcomerceId',
-      width: '20%',
-      ...getColumnSearchProps('EcomerceId'),
-      sorter: (a, b) => a.EcomerceId.length - b.EcomerceId.length,
-      sortDirections: ['descend', 'ascend'],
     },
     {
       title: 'Description',
@@ -137,9 +129,18 @@ const Categories = () => {
       width: '20%',
       ...getColumnSearchProps('Description'),
     },
+      {
+      title: 'EcomerceId',
+      dataIndex: 'EcomerceId',
+      key: 'EcomerceId',
+      width: '20%',
+      sorter: (a, b) => a.EcomerceId - b.EcomerceId,
+      sortDirections: ['descend', 'ascend'],
+      ...getColumnSearchProps('EcomerceId'),
+    },
     {
       key: 'Action',
-      title: <SyncOutlined onClick={() => dispatch(categoriesgetAll())} />,
+      title: <SyncOutlined onClick={() => dispatch(productgetAll())} />,
       align: 'center',
       width: '10%',
       render: (text, record, index) => (
@@ -150,7 +151,6 @@ const Categories = () => {
             title={`Bạn muốn xóa ${record.Name} ?`}
             onConfirm={() => handleDelete(record.Id)}
             okText="Xóa"
-        
             cancelText="Hủy"
           >
             <DeleteOutlined style={{ color: "red" }} />
@@ -162,88 +162,103 @@ const Categories = () => {
   ];
   // actionform
   const onFinishAdd = (data) => {
-   const dataNews = {
-    Name: data.name,
-    Content: data.content,
-    ParentlId: data.parentId,
-    EcomerceId: data.ecomerceId,
-    Description: data.description,
-    image: data.image,
-   }
-    dispatch(categoriesAdd(dataNews))
-   
+const add={
+  Name:data.name,
+  Price:data.price,
+  Description:data.description,
+  Content:data.content,
+  StoreId:data.storeId,
+  CategoryId:data.categoryId,
+  ParentId:data.parentId,
+  image:data.image
+}
+    dispatch(productAdd(add))
     setIsModalAdd(false)
     formAdd.resetFields()
+    console.log(add)
+
+  //   const newdata = {
+  //     Name: data.name,
+  //     Email: data.email,
+  //     Phone: data.phone,
+  //     Address: data.address,
+  //     Description: data.description,
+  //     // ImageUrl:data.files[0]
+
+  //   }
+  //   console.log(data)
+  //   dispatch(ecommerceAdd(newdata))
+   
+  //   setIsModalAdd(false)
+  //   formAdd.resetFields()
    }
 
-   const handleEditForm = (record) => {
-    const editform = {    
-      id: record.Id,
-      name: record.Name,
-      content: record.Content,
-      ecommerceId: record.EcommerceId,
-      address: record.Address,
-      description: record.Description,
-      image: record.ImageUrl,
+  const handleEditForm = useCallback((record) => {
+    const editform = {
+      
+      name:record.Name,
+      price:record.Price,
+      description:record.Description,
+      content:record.Content,
+      storeId:record.StoreId,
+      categoryId:record.CategoryId,
+      parentId:record.ParentId,
+      image:record.image
+      
+    
     }
-    console.log(editform)
-    setIdEdit(record.Id);
     formEdit.setFieldsValue(editform)
     setIsModalEdit(true)
-  }
 
+  }, [formEdit])
   const onFinishEdit = (data) => {
-    const edit = {
+    const edit={
       Id:data.id,
-      Name: data.name,
-      Content: data.content,
-      ParentlId: data.parentId,
-      EcomerceId: data.ecomerceId,
-      Description: data.description,
-      image: data.image,
-     }
-    dispatch(categoriesEdit(edit))
+      Name:data.name,
+      Price:data.price,
+      Description:data.description,
+      Content:data.content,
+      StoreId:data.storeId,
+      CategoryId:data.categoryId,
+      ParentId:data.parentId,
+      image:data.image
+    }
+    dispatch(productEdit(edit))
     setIsModalEdit(false)
-    
+    formAdd.resetFields()
     console.log(edit)
- 
   }
   const handleDelete = (id) => {
-    dispatch(categoriesDelete(id))
+    dispatch(productDelete(id))
   }
   return (
     <div>
       <div className='addecommerce' >
-        <Button type="primary" onClick={() => 
-         
-          setIsModalAdd(true)}>
-          Thêm Sàn
+        <Button type="primary" onClick={() => setIsModalAdd(true)}>
+          Thêm Brand
         </Button>
       </div>
       <br />
-      <Modal className='modal-add' title="Thêm Sàn" visible={isModalAdd} footer="" centered onCancel={() => setIsModalAdd(false)}>
-        <CategoriesForm
+      <Modal className='modal-add' title="Thêm Brand" visible={isModalAdd} footer="" centered onCancel={() => setIsModalAdd(false)}>
+        <ProductForm
           onFinish={onFinishAdd}
           form={formAdd} />
       </Modal>
 
-      <Modal className='modal-edit' title="Sửa Sàn" visible={isModalEdit} onCancel={() => setIsModalEdit(false)} centered footer="">
-        <CategoriesForm
+      <Modal className='modal-edit' title="Sửa Brand" visible={isModalEdit} onCancel={() => setIsModalEdit(false)} centered footer="">
+        <ProductForm
           onFinish={onFinishEdit}
           form={formEdit}
-        
-          idEdit={idEdit}
-         
-       
+          idEdit={true}
         />
       </Modal>
 
-      <Table scroll={{ x: 900 }}
+      <Table scroll={{ x: 900 }} 
        pagination= {{defaultCurrent:30,defaultPageSize:10,hideOnSinglePage:true,pageSizeOptions:[10,30,50,100]}}
-      loading={loadingcategories} columns={columns} dataSource={categorieslist} rowKey={record => record.id} bordered />
+      loading={loadingproduct} columns={columns} dataSource={productlist} rowKey={record => record.id} bordered />
 
     </div>
   )
 }
 
-export default Categories;
+export default Product;

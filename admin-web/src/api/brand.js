@@ -1,23 +1,23 @@
 import axiosClient from "./axiosClient";
 const BrandApi={
     getAll(){
-        const url=`/brand`;
+        const url=`/brands`;
         return axiosClient.get(url)
     },
     get(id){
-        const url=`/brand/${id}`;
+        const url=`/brands/${id}`;
         return axiosClient.get(url)
     },
     create(data){
-        const url=`/brand`;
+        const url=`/brands`;
         return axiosClient.post(url,data)
     },
     Edit(edit){
-        const url=`/brand/${edit.Id}`;
+        const url=`/brands/${edit.Id}`;
         return axiosClient.put(url,edit)
     },
      Delete(id){
-        const url=`/brand/${id}`;
+        const url=`/brands/delete/${id}`;
         return axiosClient.delete(url)
     }
 }

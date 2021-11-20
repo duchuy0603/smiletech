@@ -6,12 +6,12 @@ export const propertygetAll = createAsyncThunk('property/propertygetAllAction', 
     return listproperty;
     
 })
-export const propertyAdd = createAsyncThunk('property/propertyAdd', async (newdata,thunkAPI) => {
-    await PropertyAPi.create(newdata);
+export const propertyAdd = createAsyncThunk('property/propertyAdd', async (dataAdd,thunkAPI) => {
+    await PropertyAPi.create(dataAdd);
     thunkAPI.dispatch(propertygetAll())
 })
-export  const propertyEdit=createAsyncThunk('property/propertyEdit',async(newdata,thunkAPI)=>{
-    await PropertyAPi.Edit(newdata);
+export  const propertyEdit=createAsyncThunk('property/propertyEdit',async(dataEdit,thunkAPI)=>{
+    await PropertyAPi.Edit(dataEdit);
     thunkAPI.dispatch(propertygetAll())
 })
 export  const propertyDelete=createAsyncThunk('property/propertyDelete',async(Id,thunkAPI)=>{

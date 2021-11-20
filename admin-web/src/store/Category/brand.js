@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import BrandApi from "../../api/brand";
 export const brandgetAll = createAsyncThunk('brand/brandgetAllAction', async () => {
     const listbrand = await BrandApi.getAll();  
+    console.log(listbrand)
     return listbrand;
     
 })

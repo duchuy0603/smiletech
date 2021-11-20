@@ -5,6 +5,9 @@ import ecommerceReducer from './Category/ecommerce';
 import teamReducer from './Category/team';
 import brandReducer from './Category/brand';
 import propertyReducer from './Category/property';
+import featureReducer from './Category/feature';
+import storeReducer from './Category/stores';
+import productReducer from './Category/product';
 const store = configureStore({
     reducer: {
         mainReducer: mainReducer,
@@ -12,7 +15,11 @@ const store = configureStore({
         categoriesReducer:categoriesReducer,
         teamReducer:teamReducer,
         brandReducer:brandReducer,
-        propertyReducer:propertyReducer
+        propertyReducer:propertyReducer,
+        featureReducer:featureReducer,
+        storeReducer,storeReducer,
+        productReducer:productReducer
+
        
     }
 });

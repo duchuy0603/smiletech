@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { brandAdd, categoriesgetEdit, categoriesgetDelete, categoriesgetAll, brandgetAll, brandEdit, brandDelete } from '../../../store/Category/brand';
+import { brandAdd, brandgetAll, brandEdit, brandDelete } from '../../../store/Category/brand';
 
 import { useEffect } from 'react'
 import { useState } from 'react'
@@ -15,7 +15,7 @@ import BrandForm from './brandForm';
 const Brand = () => {
   const { brandlist, loadingbrand } = useSelector(state => state.brandReducer)
   
-  console.log(brandlist)
+  
   const dispatch = useDispatch();
   
   useEffect(() => {
@@ -90,7 +90,7 @@ const Brand = () => {
   const columns = [
     {
       title: 'Name',
-      dataIndex: 'name',
+      dataIndex: 'Name',
       key: 'Name',
       width: '20%',
       ...getColumnSearchProps('Name'),
@@ -99,27 +99,27 @@ const Brand = () => {
       title: 'Image',
       // dataIndex: <img src="ImageUrl" alt=""/>,
       dataIndex: 'ImageUrl',
-      key: 'Image',
-      width: '20%',
-      render: text =>  <img src={`${process.env.REACT_APP_API_URL}/${text}` }  style={{width:"100%",height:"40%"}} alt=""/>
+      key: 'ImageUrl',
+      width:'5%',
+      render: text =>  <img src={`${process.env.REACT_APP_API_URL}/${text}` }  style={{width:"100%",height:"100%"}} alt=""/>
         
     },
 
-    {
-      title: 'EcomerceId',
-      dataIndex: 'EcomerceId',
-      key: 'EcomerceId',
-      width: '20%',
-      sorter: (a, b) => a.EcomerceId - b.EcomerceId,
-      sortDirections: ['descend', 'ascend'],
-      ...getColumnSearchProps('EcomerceId'),
-    },
+    // {
+    //   title: 'EcomerceId',
+    //   dataIndex: 'EcomerceId',
+    //   key: 'EcomerceId',
+    //   width: '20%',
+    //   sorter: (a, b) => a.EcomerceId - b.EcomerceId,
+    //   sortDirections: ['descend', 'ascend'],
+    //   ...getColumnSearchProps('EcomerceId'),
+    // },
    
 
     {
       title: 'Description',
       dataIndex: 'Description',
-      key: 'Address',
+      key: 'Description',
       width: '20%',
       ...getColumnSearchProps('Description'),
     },
@@ -147,12 +147,11 @@ const Brand = () => {
   ];
   // actionform
   const onFinishAdd = (data) => {
-    const add = new FormData();
-    add.append("Name", data.name)
-    add.append("EcomerceId", data.EcomerceId)
-   
-    add.append("Description", data.description)   
-    add.append("ImageUrl", data.image[0])  
+const add={
+  Name:data.name,
+  Description:data.description,
+  image:data.image
+}
     dispatch(brandAdd(add))
     setIsModalAdd(false)
     formAdd.resetFields()
@@ -178,10 +177,8 @@ const Brand = () => {
     const editform = {
       id: record.Id,
       name: record.Name,
-      ecomerceid: record.EcomerceId,
-      
       description: record.Description,
-      files: record.ImageUrl
+      image: record.ImageUrl
       
     
     }
@@ -190,11 +187,12 @@ const Brand = () => {
 
   }, [formEdit])
   const onFinishEdit = (data) => {
-    const edit = new FormData();
-    edit.append("Name", data.name)
-    edit.append("EcomerceId", data.EcomerceId)
-    edit.append("Description", data.description)   
-    edit.append("ImageUrl", data.image[0])  
+    const edit={
+      Id:data.id,
+      Name:data.name,
+  Description:data.description,
+  image:data.image
+    }
     dispatch(brandEdit(edit))
     setIsModalEdit(false)
     formAdd.resetFields()
@@ -225,7 +223,9 @@ const Brand = () => {
         />
       </Modal>
 
-      <Table scroll={{ x: 900 }} loading={loadingbrand} columns={columns} dataSource={brandlist} rowKey={record => record.id} bordered />
+      <Table scroll={{ x: 900 }} 
+       pagination= {{defaultCurrent:30,defaultPageSize:10,hideOnSinglePage:true,pageSizeOptions:[10,30,50,100]}}
+      loading={loadingbrand} columns={columns} dataSource={brandlist} rowKey={record => record.id} bordered />
 
     </div>
   )

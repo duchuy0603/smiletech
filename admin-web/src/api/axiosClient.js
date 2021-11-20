@@ -6,18 +6,20 @@ import queryString from 'query-string';
 
 const axiosClient = axios.create({ 
     baseURL: process.env.REACT_APP_API_URL, 
-    headers: { 
-        'content-type': ' application / json; charset=utf-8', 
-    }, 
-    paramsSerializer: params => queryString.stringify(params), 
+    //  headers: { 
+    //     'Content-Type': ' multipart/form-data',
+    //  }
+    // paramsSerializer: params => queryString.stringify(params)
 }); 
 
 axiosClient.interceptors.request.use(async (config) => {  
+    
     // Handle token here ...  
     return config; 
 }) 
 
 axiosClient.interceptors.response.use((response) => { 
+    console.log('response', response);
     if (response && response.data && response.data.data && response.data.data.rows) { 
         return response.data.data.rows
     }
@@ -27,7 +29,6 @@ axiosClient.interceptors.response.use((response) => {
     if (response && response.data) { 
         return response.data
     }   
-
     return response; 
 }, (error) => { 
     // Handle errors 

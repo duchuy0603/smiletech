@@ -1,32 +1,29 @@
-import CategoriesAPI from "../../api/category";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
-
-export const categoriesgetAll = createAsyncThunk('categories/categoriesgetAll', async () => {
-    const listcategories = await CategoriesAPI.getAll();
-    console.log(listcategories)
+import CategoriesAPI from "../../api/category";
+export const categoriesgetAll = createAsyncThunk('categories/categoriesgetAllAction', async () => {
+    const listcategories = await CategoriesAPI.getAll();  
     return listcategories;
+    
 })
-export const categoriesAdd = createAsyncThunk('categories/categoriesgetAdd', async (data,thunkAPI) => {
-    await CategoriesAPI.create(data);
+export const categoriesAdd = createAsyncThunk('categories/categoriesAdd', async (newdata,thunkAPI) => {
+    await CategoriesAPI.create(newdata);
     thunkAPI.dispatch(categoriesgetAll())
 })
-export const categoriesgetEdit = createAsyncThunk('categories/categoriesgetEdit', async (data,thunkAPI) => {
-    await CategoriesAPI.Edit(data);
+export  const categoriesEdit=createAsyncThunk('categories/categoriesEdit',async(newdata,thunkAPI)=>{
+    await CategoriesAPI.Edit(newdata);
     thunkAPI.dispatch(categoriesgetAll())
 })
-export const categoriesgetDelete = createAsyncThunk('categories/categoriesgetDelete', async (Id,thunkAPI) => {
+export  const categoriesDelete=createAsyncThunk('categories/categoriesDelete',async(Id,thunkAPI)=>{
     await CategoriesAPI.Delete(Id);
     thunkAPI.dispatch(categoriesgetAll())
 })
-
 const categoriesslide = createSlice({
-    name: "categoriesslide",
+    name: "categoriesSlide",
     initialState: {
-        loadingcategories: false,
         categorieslist: [],
+        loadingcategories: false,
         error: ''
-
     },
     reducers: {},
     extraReducers: {
@@ -34,13 +31,13 @@ const categoriesslide = createSlice({
             state.loadingcategories = true;
         },
         [categoriesgetAll.rejected]: (state, action) => {
-            state.loadingcategories = false;
+                  state.loadingcategories=false
         },
         [categoriesgetAll.fulfilled]: (state, action) => {
             state.loadingcategories=false;
-           state.categorieslist=action.payload
-        },
+            state.categorieslist=action.payload;
+         },
     }
 })
-const { reducer: categoriesReducer } = categoriesslide;
+const {reducer:categoriesReducer}=categoriesslide;
 export default categoriesReducer;

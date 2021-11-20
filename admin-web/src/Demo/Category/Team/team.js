@@ -7,26 +7,28 @@ import reactRouterDom, { useHistory } from 'react-router-dom';
 import { Button, Form, Modal, Space, Table, Popconfirm, Tag, Input } from 'antd';
 import Highlighter from 'react-highlight-words';
 import { Pagination } from 'antd';
-import { SearchOutlined, SyncOutlined, EditOutlined, DeleteOutlined, PlusOutlined,LoadingOutlined } from '@ant-design/icons';
+import { SearchOutlined, SyncOutlined, EditOutlined, DeleteOutlined, PlusOutlined, LoadingOutlined } from '@ant-design/icons';
 import TeamForm from './teamForm';
 import './team.scss'
 
 const Team = () => {
   // const { register,reset ,handleSubmit, setValue,formState:{errors}, } = useForm();
-  
+
   const { teamlist, loadingteam } = useSelector(state => state.teamReducer)
+
+  console.log(teamlist)
   const dispatch = useDispatch();
-  
+
   useEffect(() => {
     dispatch(teamgetAll())
   }, [dispatch])
-  
+
   const [searchText, setsearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   //modal
   const [isModalAdd, setIsModalAdd] = useState(false);
   const [isModalEdit, setIsModalEdit] = useState(false);
-  const [formAdd] = Form.useForm();    
+  const [formAdd] = Form.useForm();
   const [formEdit] = Form.useForm();
   const getColumnSearchProps = dataIndex => ({
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
@@ -96,12 +98,12 @@ const Team = () => {
     },
     {
       title: 'Image',
-      
- dataIndex: 'ImageUrl',
+
+      dataIndex: 'ImageUrl',
       key: 'Image',
-      width: '20%',
-    
-      render: text => <img src={`${process.env.REACT_APP_API_URL}/${text}` }  style={{width:"100%",height:"40%"}} alt=""/>
+      width: '10%',
+
+      render: text => <img src={`${process.env.REACT_APP_API_URL}/${text}`} style={{ width: "100%", height: "40%" }} alt="" />
     },
 
     {
@@ -120,15 +122,15 @@ const Team = () => {
       width: '20%',
       ...getColumnSearchProps('Email'),
     },
-    {
-      title: 'Owner',
-      dataIndex: 'Owner',
-      key: 'Owner',
-      width: '20%',
-      ...getColumnSearchProps('Owner'),
-      sorter: (a, b) => a.Owner.length - b.Owner.length,
-      sortDirections: ['descend', 'ascend'],
-    },
+    // {
+    //   title: 'Owner',
+    //   dataIndex: 'Owner',
+    //   key: 'Owner',
+    //   width: '20%',
+    //   ...getColumnSearchProps('Owner'),
+    //   sorter: (a, b) => a.Owner.length - b.Owner.length,
+    //   sortDirections: ['descend', 'ascend'],
+    // },
     {
       title: 'Description',
       dataIndex: 'Description',
@@ -136,27 +138,21 @@ const Team = () => {
       width: '20%',
       ...getColumnSearchProps('Description'),
     },
+    // {
+    //   title: 'EcomerceId',
+    //   dataIndex: 'EcomerceId',
+    //   key: 'EcomerceId',
+    //   width: '20%',
+    //   ...getColumnSearchProps('EcomerceId'),
+    // },
     {
-      title: 'EcomerceId',
-      dataIndex: 'EcomerceId',
-      key: 'EcomerceId',
+      title: 'Status',
+      dataIndex: 'Status',
+      key: 'Status',
       width: '20%',
-      ...getColumnSearchProps('EcomerceId'),
+      ...getColumnSearchProps('Status'),
     },
-    {
-    title:'Status',
-    dataIndex: 'Status',
-    key: 'Status',
-    width: '20%',
-    ...getColumnSearchProps('Status'),
-  },
-  {
-    title:'Deleted',
-    dataIndex: 'Deleted',
-    key: 'Deleted',
-    width: '20%',
-    ...getColumnSearchProps('Deleted'),
-  },
+
     {
       key: 'Action',
       title: <SyncOutlined onClick={() => dispatch(teamgetAll())} />,
@@ -170,7 +166,7 @@ const Team = () => {
             title={`Bạn muốn xóa ${record.Name} ?`}
             onConfirm={() => handleDelete(record.Id)}
             okText="Xóa"
-        
+
             cancelText="Hủy"
           >
             <DeleteOutlined style={{ color: "red" }} />
@@ -182,51 +178,46 @@ const Team = () => {
   ];
   // actionform
   const onFinishAdd = (data) => {
-   
-    const files = new FormData();
-    files.append("Name", data.name)
-    files.append("Email", data.email)
-    files.append("Phone", data.phone)
-    files.append("Address", data.address)
-    files.append("Description", data.description)   
-    files.append("ImageUrl", data.files[0])  
+    const add = {
+      Name: data.name,
+      Email: data.email,
+      Phone: data.phone,
+      Status: data.status,
+      Description: data.description,
+      image: data.image,
+    }
     console.log(data.files);
-    console.log(files.getAll('ImageUrl'))
     console.log(data)
-    dispatch(teamAdd(files))
-   
+    dispatch(teamAdd(add))
     setIsModalAdd(false)
-    formAdd.resetFields()
-   }
-
-   const handleEditForm = (record) => {
-    const editform = {    
+    formAdd.resetFields();
+  }
+  const handleEditForm = (record) => {
+    const editform = {
       id: record.Id,
       name: record.Name,
       email: record.Email,
       phone: record.Phone,
-      address: record.Address,
+      status: record.Status,
       description: record.Description,
-      //  files: record.ImageUrl
+      image: record.ImageUrl,
     }
     formEdit.setFieldsValue(editform)
     setIsModalEdit(true)
   }
-
   const onFinishEdit = (data) => {
-    const edit = new FormData();
-    edit.append("Id", data.id)
-    edit.append("Name", data.name)
-    edit.append("Email", data.email)
-    edit.append("Phone", data.phone)
-    edit.append("Address", data.address)
-    edit.append("Description", data.description)   
-    edit.append("ImageUrl", data.files[0])  
+    const edit = {
+      Id:data.id,
+      Name: data.name,
+      Email: data.email,
+      Phone: data.phone,
+      Status: data.status,
+      Description: data.description,
+      image: data.image,
+    }
     dispatch(teamEdit(edit))
     setIsModalEdit(false)
-    
     console.log(edit)
- 
   }
   const handleDelete = (id) => {
     dispatch(teamDelete(id))
@@ -234,10 +225,9 @@ const Team = () => {
   return (
     <div>
       <div className='addecommerce' >
-        <Button type="primary" onClick={() => 
-         
+        <Button type="primary" onClick={() =>
           setIsModalAdd(true)}>
-          Thêm Brand
+          Thêm Team
         </Button>
       </div>
       <br />
@@ -252,13 +242,17 @@ const Team = () => {
           onFinish={onFinishEdit}
           form={formEdit}
           idEdit={true}
-          id={handleEditForm}
-       
         />
       </Modal>
 
-      <Table scroll={{ x: 900 }} loading={loadingteam} columns={columns} dataSource={teamlist} rowKey={record => record.id} bordered />
-
+      <Table scroll={{ x: 900 }} 
+      loading={loadingteam} 
+      columns={columns}
+       dataSource={teamlist}
+       rowKey={record => record.id} bordered 
+       pagination= {{defaultCurrent:30,defaultPageSize:10,hideOnSinglePage:true,pageSizeOptions:[10,30,50,100]}}
+       />
+     
     </div>
   )
 }

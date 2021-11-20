@@ -16,6 +16,9 @@ const Categories = React.lazy(() => import('./Demo/Category/Categories/categorie
 const Team= React.lazy(()=>import('./Demo/Category/Team/team'))
 const  Brand=React.lazy(()=>import('./Demo/Category/Brand/brand'))
 const  Property=React.lazy(()=>import('./Demo/Category/Property/property'))
+const Feature=React.lazy(()=>import('./Demo/Category/Feature/feature'))
+const  Store=React.lazy(()=>import('./Demo/Category/Store/store'))
+const  Product=React.lazy(()=>import('./Demo/Category/Product/product'))
 
 // const Age = React.lazy(() => import('./Demo/Category/Age/Age'));
 // const CategoryDance = React.lazy(() => import('./Demo/Category/CategoryDance/CategoryDance'));
@@ -41,10 +44,13 @@ const routes = [
     { path: '/sample-page', exact: true, name: 'Sample Page', component: OtherSamplePage },
     { path: '/docs', exact: true, name: 'Documentation', component: OtherDocs },
     { path: '/ecommerce', exact: true, name: 'Ecommerce', component: Ecommerce },
-    {path: '/categories', exact: true, name: 'Categories', component: Categories },
+    {path: '/categories', exact: true, name: 'categories', component: Categories },
     {path: '/team', exact: true, name: 'team', component: Team },
     {path: '/brand', exact: true, name: 'brand', component: Brand },
     {path: '/property', exact: true, name: 'property', component: Property },
+    {path: '/feature', exact: true, name: 'feature', component: Feature },
+    {path: '/store', exact: true, name: 'store', component: Store },
+    {path: '/product', exact: true, name: 'product', component: Product },
     // { path: '/category/age', exact: true, name: 'Age', component: Age },
     // { path: '/category/category-dance', exact: true, name: 'CategoryDance', component: CategoryDance },
     // { path: '/category/dance', exact: true, name: 'Dance', component: Dance },

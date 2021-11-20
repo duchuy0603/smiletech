@@ -9,12 +9,9 @@ const ecommerceApi={
         return axiosClient.get(url)
     },
     create(data){
-        const url=`/ecommerce`;
-        return axiosClient.post(url,data)
-    },
-    createUrl(data){
-        const url=`ecommerce/create-url`;
-        return axiosClient.post(url,data)
+        const url='/ecommerce';
+        console.log(data);
+        return axiosClient.post(url, data)
     },
     Edit(edit){
         const url=`/ecommerce/${edit.Id}`;
