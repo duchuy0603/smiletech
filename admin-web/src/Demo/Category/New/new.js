@@ -1,35 +1,31 @@
 import React, { useCallback } from 'react'
-import { ecommercegetAll, ecommerceAdd, ecommerceEdit, ecommerceDelete } from '../../../store/Category/ecommerce';
-
-import ecommerceApi from '../../../api/ecommerce';
+import { newAdd, newEdit, newgetAll, newDelete } from '../../../store/Category/new';
 import { useEffect } from 'react'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import reactRouterDom, { useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { Button, Form, Modal, Space, Table, Popconfirm, Tag, Input } from 'antd';
 import Highlighter from 'react-highlight-words';
 import { Pagination } from 'antd';
-import { SearchOutlined, SyncOutlined, EditOutlined, DeleteOutlined, PlusOutlined,LoadingOutlined } from '@ant-design/icons';
-import EcommerceForm from './EcommerceForm';
-import './ecommerce.scss'
+import { SearchOutlined, SyncOutlined, EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
+import './new.scss'
+import NewForm from './newForm';
 
-const Ecommerce = () => {
-  
-  const { ecommercelist, loadingecom } = useSelector(state => state.ecommerceReducer)
+const Brand = () => {
+  const { newlist, loadingnew } = useSelector(state => state.newReducer)
   const dispatch = useDispatch();
   
   useEffect(() => {
-    dispatch(ecommercegetAll())
+    dispatch(newgetAll())
   }, [dispatch])
   
   const [searchText, setsearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
-  const [idEdit,setIdEdit]=useState(0)
-  const token=localStorage.getItem('token')
   //modal
   const [isModalAdd, setIsModalAdd] = useState(false);
   const [isModalEdit, setIsModalEdit] = useState(false);
-  const [formAdd] = Form.useForm();    
+  const [idEdit,setIdEdit]=useState(0)
+  const [formAdd] = Form.useForm();    //form
   const [formEdit] = Form.useForm();
   const getColumnSearchProps = dataIndex => ({
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
@@ -64,17 +60,21 @@ const Ecommerce = () => {
         : '',
 
 
-    render: text =>
-      searchedColumn === dataIndex ? (
-        <Highlighter
-          highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
-          searchWords={[searchText]}
-          autoEscape
-          textToHighlight={text ? text.toString() : ''}
-        />
-      ) : (
-        text
-      ),
+        render: text =>{
+          if( searchedColumn === dataIndex ){
+            return     <Highlighter
+            highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
+            searchWords={[searchText]}
+            autoEscape
+            textToHighlight={text ? text.toString() : ''}
+          />
+          }else{
+            if(dataIndex==='ecommerce'){
+              return text?.Name
+            }
+            return text;
+          }
+        }
   });
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
@@ -98,40 +98,24 @@ const Ecommerce = () => {
       ...getColumnSearchProps('Name'),
     },
     {
+        title: 'Content',
+        dataIndex: 'Content',
+        key: 'Content',
+        width: '20%',
+        ...getColumnSearchProps('Content'),
+      },
+    {
       title: 'Image',
-      
- dataIndex: 'ImageUrl',
-      key: 'Image',
-      width: '12%',
-    
-      render: text => <img src={`${process.env.REACT_APP_API_URL}/${text}` }  style={{width:"100%",height:"40%"}} alt=""/>
+      // dataIndex: <img src="ImageUrl" alt=""/>,
+      dataIndex: 'ImageUrl',
+      key: 'ImageUrl',
+      width:'5%',
+      render: text =>  <img src={`${process.env.REACT_APP_API_URL}/${text}` }  style={{width:"100%",height:"100%"}} alt=""/>
+        
     },
 
-    {
-      title: 'Phone',
-      dataIndex: 'Phone',
-      key: 'Phone',
-      width: '20%',
-      sorter: (a, b) => a.Phone - b.Phone,
-      sortDirections: ['descend', 'ascend'],
-      ...getColumnSearchProps('Phone'),
-    },
-    {
-      title: 'Email',
-      dataIndex: 'Email',
-      key: 'Email',
-      width: '20%',
-      ...getColumnSearchProps('Email'),
-    },
-    {
-      title: 'Address',
-      dataIndex: 'Address',
-      key: 'Address',
-      width: '20%',
-      ...getColumnSearchProps('Address'),
-      sorter: (a, b) => a.Address.length - b.Address.length,
-      sortDirections: ['descend', 'ascend'],
-    },
+
+
     {
       title: 'Description',
       dataIndex: 'Description',
@@ -140,8 +124,17 @@ const Ecommerce = () => {
       ...getColumnSearchProps('Description'),
     },
     {
+      title: 'EcommerceId',
+      dataIndex: 'ecommerce',
+      key: 'ecommerce',
+      width: '20%',
+      sorter: (a, b) => a.ecommerce - b.ecommerce,
+        sortDirections: ['descend', 'ascend'],
+      ...getColumnSearchProps('ecommerce'),
+    },
+    {
       key: 'Action',
-      title: <SyncOutlined onClick={() => dispatch(ecommercegetAll())} />,
+      title: <SyncOutlined onClick={() => dispatch(newgetAll())} />,
       align: 'center',
       width: '10%',
       render: (text, record, index) => (
@@ -152,7 +145,6 @@ const Ecommerce = () => {
             title={`Bạn muốn xóa ${record.Name} ?`}
             onConfirm={() => handleDelete(record.Id)}
             okText="Xóa"
-        
             cancelText="Hủy"
           >
             <DeleteOutlined style={{ color: "red" }} />
@@ -164,88 +156,78 @@ const Ecommerce = () => {
   ];
   // actionform
   const onFinishAdd = (data) => {
-   const dataNews = {
-    Name: data.name,
-    Email: data.email,
-    Phone: data.phone,
-    Address: data.address,
-    Description: data.description,
-    image: data.image,
-   }
-    dispatch(ecommerceAdd(dataNews,token))
-   
+const add={
+  Name:data.name,
+  Content:data.content,
+  Description:data.description,
+  EcommerceId: data.ecommerceId,
+  image:data.image
+}
+    dispatch(newAdd(add))
     setIsModalAdd(false)
     formAdd.resetFields()
+    console.log(add)
    }
 
-   const handleEditForm = (record) => {
-    const editform = {    
+  const handleEditForm = useCallback((record) => {
+    const editform = {
       id: record.Id,
       name: record.Name,
-      email: record.Email,
-      phone: record.Phone,
-      address: record.Address,
+      content:record.Content,
       description: record.Description,
-      image:`${process.env.REACT_APP_API_URL}/${record.ImageUrl} `  
+      ecommerceId: record.EcommerceId,
+      image:`${process.env.REACT_APP_API_URL}/${record.ImageUrl} `   
     }
-    console.log(editform)
-    setIdEdit(record.Id);
     formEdit.setFieldsValue(editform)
+    setIdEdit(record.Id);
     setIsModalEdit(true)
-  }
 
+  }, [formEdit])
   const onFinishEdit = (data) => {
-    const edit = {
+    const edit={
       Id:data.id,
-      Name: data.name,
-      Email: data.email,
-      Phone: data.phone,
-      Address: data.address,
-      Description: data.description,
-      image: data.image,
-     }
-    dispatch(ecommerceEdit(edit,token))
+      Name:data.name,
+      Content:data.content,
+  Description:data.description,
+  EcommerceId: data.ecommerceId,
+  image:data.image
+    }
+    dispatch(newEdit(edit))
     setIsModalEdit(false)
-    
+    formAdd.resetFields()
     console.log(edit)
- 
   }
   const handleDelete = (id) => {
-    dispatch(ecommerceDelete(id,token))
+    dispatch(newDelete(id))
   }
   return (
     <div>
       <div className='addecommerce' >
-        <Button type="primary" onClick={() => 
-         
-          setIsModalAdd(true)}>
-          Thêm Sàn
+        <Button type="primary" onClick={() => setIsModalAdd(true)}>
+          Thêm New
         </Button>
       </div>
       <br />
-      <Modal className='modal-add' title="Thêm Sàn" visible={isModalAdd} footer="" centered onCancel={() => setIsModalAdd(false)}>
-        <EcommerceForm
+      <Modal className='modal-add' title="Thêm New" visible={isModalAdd} footer="" centered onCancel={() => setIsModalAdd(false)}>
+        <NewForm
           onFinish={onFinishAdd}
           form={formAdd} />
       </Modal>
 
-      <Modal className='modal-edit' title="Sửa Sàn" visible={isModalEdit} onCancel={() => setIsModalEdit(false)} centered footer="">
-        <EcommerceForm
+      <Modal className='modal-edit' title="Sửa New" visible={isModalEdit} onCancel={() => setIsModalEdit(false)} centered footer="">
+        <NewForm
           onFinish={onFinishEdit}
           form={formEdit}
-        
           idEdit={idEdit}
-         
-       
         />
       </Modal>
 
-      <Table scroll={{ x: 900 }}
+      <Table scroll={{ x: 900 }} 
        pagination= {{defaultCurrent:30,defaultPageSize:10,hideOnSinglePage:true,pageSizeOptions:[10,30,50,100]}}
-      loading={loadingecom} columns={columns} dataSource={ecommercelist} rowKey={record => record.id} bordered />
+      loading={loadingnew} columns={columns} dataSource={newlist} rowKey={record => record.id} bordered />
 
     </div>
   )
 }
 
-export default Ecommerce;
+export default Brand;

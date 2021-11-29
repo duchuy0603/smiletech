@@ -1,4 +1,5 @@
 import axiosClient from "./axiosClient";
+
 const ecommerceApi={
     getAll(){
         const url=`/ecommerce`;

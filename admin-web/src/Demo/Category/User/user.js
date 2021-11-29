@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { productAdd,productEdit,productDelete,productgetAll } from '../../../store/Category/product';
+import { userAdd,userEdit,userDelete,usergetAll } from '../../../store/Category/user';
 
 import { useEffect } from 'react'
 import { useState } from 'react'
@@ -9,20 +9,17 @@ import { Button, Form, Modal, Space, Table, Popconfirm, Tag, Input,Select } from
 import Highlighter from 'react-highlight-words';
 import { Pagination } from 'antd';
 import { SearchOutlined, SyncOutlined, EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
-import './product.scss'
-import ProductForm from './productForm';
-import PropertyForm from '../Property/propertyForm';
+import './user.scss'
+import UserForm from './userForm';
 
-const Product = () => {
-  const { productlist, loadingproduct } = useSelector(state => state.productReducer)
-  console.log(productlist)
 
-  
-  const { Option } = Select;
+const User = () => {
+  const { userlist, loadinguser } = useSelector(state => state.userReducer)
+  const token=localStorage.getItem('token')
   const dispatch = useDispatch();
   
   useEffect(() => {
-    dispatch(productgetAll())
+    dispatch(usergetAll())
   }, [dispatch])
   
   const [searchText, setsearchText] = useState('');
@@ -104,54 +101,48 @@ const Product = () => {
 
   const columns = [
     {
-      title: 'Name',
-      dataIndex: 'Name',
-      key: 'Name',
+      title: 'UserName',
+      dataIndex: 'UserName',
+      key: 'UserName',
       width: '20%',
-      ...getColumnSearchProps('Name'),
+      ...getColumnSearchProps('UserName'),
     },
     {
-      title: 'Image',
+        title: 'FullName',
+        dataIndex: 'FullName',
+        key: 'FullName',
+        width: '20%',
+        ...getColumnSearchProps('FullName'),
+      },
+  
+    {
+      title: 'Avatar',
       // dataIndex: <img src="ImageUrl" alt=""/>,
-      dataIndex: 'ImageUrl',
-      key: 'ImageUrl',
+      dataIndex: 'Avatar',
+      key: 'Avatar',
       width:'20%',
       render: text =>  <img src={`${process.env.REACT_APP_API_URL}/${text}` }  style={{width:"100%",height:"100%"}} alt=""/>
         
     },
+    {
+        title: 'Phone',
+        dataIndex: 'Phone',
+        key: 'Phone',
+        width: '20%',
+        sorter: (a, b) => a.Phone - b.Phone,
+        sortDirections: ['descend', 'ascend'],
+        ...getColumnSearchProps('Phone'),
+      },
    
+ 
     {
-      title: 'Price',
-      dataIndex: 'Price',
-      key: 'Price',
+      title: 'Email',
+      dataIndex: 'Email',
+      key: 'Email',
       width: '20%',
-      sorter: (a, b) => a.Price - b.Price,
-      sortDirections: ['descend', 'ascend'],
-      ...getColumnSearchProps('Price'),
+      ...getColumnSearchProps('Email'),
     },
-    {
-      title: 'Content',
-      dataIndex: 'Content',
-      key: 'Content',
-      width: '20%',
-      ...getColumnSearchProps('Content'),
-    },
-    {
-      title: 'Description',
-      dataIndex: 'Description',
-      key: 'Description',
-      width: '20%',
-      ...getColumnSearchProps('Description'),
-    },
-      {
-      title: 'category',
-      dataIndex:'category',
-      key: 'category',
-      width: '20%',
-      sorter: (a, b) => a.category - b.category,
-      sortDirections: ['descend', 'ascend'],
-      ...getColumnSearchProps('category'),
-    },
+
     {
       title: 'Store',
       dataIndex: 'store',
@@ -162,17 +153,17 @@ const Product = () => {
       ...getColumnSearchProps('store'),
     },
     {
-      title: 'ParentId',
-      dataIndex: 'ParentId',
-      key: 'ParentId',
+      title: 'Type',
+      dataIndex: 'Type',
+      key: 'Type',
       width: '20%',
-      sorter: (a, b) => a.ParentId - b.ParentId,
+      sorter: (a, b) => a.Type - b.Type,
       sortDirections: ['descend', 'ascend'],
-      ...getColumnSearchProps('ParentId'),
+      ...getColumnSearchProps('Type'),
     },
     {
       key: 'Action',
-      title: <SyncOutlined onClick={() => dispatch(productgetAll())} />,
+      title: <SyncOutlined onClick={() => dispatch(usergetAll())} />,
       align: 'center',
       width: '10%',
       render: (text, record, index) => (
@@ -195,18 +186,18 @@ const Product = () => {
   // actionform
   const onFinishAdd = (data) => {
 const add={
-  Name:data.name,
-  Price:data.price,
-  Description:data.description,
-  Content:data.content,
+  UserName:data.userName,
+  FullName:data.fullName,
+  Password:data.password,
+  Email:data.email,
+  Phone:data.phone,
   StoreId:data.storeId,
-  categoryId:data.categoryId,
-  ParentId:data.parentId,
+  Type:data.type,
   image:data.image
 }
-    dispatch(productAdd(add))
+    dispatch(userAdd(add))
     setIsModalAdd(false)
-    formAdd.resetFields()
+    formAdd.resetFields();
   
 
   //   const newdata = {
@@ -228,14 +219,15 @@ const add={
   const handleEditForm = useCallback((record) => {
     const editform = {
       id:record.Id,
-      name:record.Name,
-      price:record.Price,
-      description:record.Description,
-      content:record.Content,
+      userName:record.UserName,
+      fullName:record.FullName,
+      password:record.Password,
+      email:record.Email,
+      phone:record.Phone,
       storeId:record.StoreId,
-      categoryId:record.categoryId,
-      parentId:record.ParentId,
-      image:`${process.env.REACT_APP_API_URL}/${record.ImageUrl} `  
+      type:record.Type,
+    
+      image:`${process.env.REACT_APP_API_URL}/${record.Avatar} `  
       
     
     }
@@ -246,39 +238,39 @@ const add={
   const onFinishEdit = (data) => {
     const edit={
       Id:data.id,
-      Name:data.name,
-      Price:data.price,
-      Description:data.description,
-      Content:data.content,
+      UserName:data.userName,
+      FullName:data.fullName,
+      Password:data.password,
+      Email:data.email,
+      Phone:data.phone,
       StoreId:data.storeId,
-      categoryId:data.categoryId,
-      ParentId:data.parentId,
+      Type:data.type,
       image:data.image
     }
-    dispatch(productEdit(edit))
+    dispatch(userEdit(edit))
     setIsModalEdit(false)
     formAdd.resetFields()
   
   }
   const handleDelete = (id) => {
-    dispatch(productDelete(id))
+    dispatch(userDelete(id))
   }
   return (
     <div>
       <div className='addecommerce' >
         <Button type="primary" onClick={() => setIsModalAdd(true)}>
-          Thêm Product
+          Thêm user
         </Button>
       </div>
       <br />
       <Modal className='modal-add' title="Thêm Brand" visible={isModalAdd} footer="" centered onCancel={() => setIsModalAdd(false)}>
-        <ProductForm
+        <UserForm
           onFinish={onFinishAdd}
           form={formAdd} />
       </Modal>
 
       <Modal className='modal-edit' title="Sửa Brand" visible={isModalEdit} onCancel={() => setIsModalEdit(false)} centered footer="">
-        <ProductForm
+        <UserForm
           onFinish={onFinishEdit}
           form={formEdit}
           idEdit={true}
@@ -287,10 +279,10 @@ const add={
 
       <Table scroll={{ x: 900 }} 
        pagination= {{defaultCurrent:30,defaultPageSize:10,hideOnSinglePage:true,pageSizeOptions:[10,30,50,100]}}
-      loading={loadingproduct} columns={columns} dataSource={productlist} rowKey={record => record.id} bordered />
+      loading={loadinguser} columns={columns} dataSource={userlist} rowKey={record => record.id} bordered />
 
     </div>
   )
 }
 
-export default Product;
+export default User;

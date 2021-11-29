@@ -8,6 +8,9 @@ import propertyReducer from './Category/property';
 import featureReducer from './Category/feature';
 import storeReducer from './Category/stores';
 import productReducer from './Category/product';
+import newReducer from './Category/new';
+import userReducer from './Category/user';
+import authReducer from './Category/auth';
 const store = configureStore({
     reducer: {
         mainReducer: mainReducer,
@@ -18,7 +21,10 @@ const store = configureStore({
         propertyReducer:propertyReducer,
         featureReducer:featureReducer,
         storeReducer,storeReducer,
-        productReducer:productReducer
+        productReducer:productReducer,
+        newReducer:newReducer,
+        userReducer:userReducer,
+        authReducer:authReducer
 
        
     }

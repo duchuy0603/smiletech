@@ -1,24 +1,28 @@
 import axiosClient from "./axiosClient";
-const BrandApi={
+const UserApi={
     getAll(){
-        const url=`/brands`;
+        const url=`/users/`;
         return axiosClient.get(url)
     },
     get(id){
-        const url=`/brands/${id}`;
+        const url=`/users/${id}`;
         return axiosClient.get(url)
     },
     create(data){
-        const url=`/brands`;
+        const url=`/users/register`;
+        return axiosClient.post(url,data)
+    },
+    login(data){
+        const url=`/users/login`;
         return axiosClient.post(url,data)
     },
     Edit(edit){
-        const url=`/brands/${edit.Id}`;
+        const url=`/users/${edit.Id}`;
         return axiosClient.put(url,edit)
     },
      Delete(id){
-        const url=`/brands/${id}`;
+        const url=`/users/${id}`;
         return axiosClient.delete(url)
     }
 }
-export default BrandApi;
+export default UserApi;

@@ -1,17 +1,26 @@
 import React from 'react'
-import { Input, Button, Form, InputNumber, Switch, Upload, message } from 'antd';
+import { Input, Button, Form, InputNumber, Switch, Upload, message,Select } from 'antd';
 import { UploadOutlined, InboxOutlined, PlusOutlined, LoadingOutlined } from '@ant-design/icons';
+import { ecommercegetAll } from '../../../store/Category/ecommerce';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import './brand.scss'
 import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
 
 
 const BrandForm = ({ onFinish, form, idEdit }) => {
     const { TextArea } = Input;
+    const {Option}=Select;
+    const dispatch=useDispatch();
+    const {ecommercelist}=useSelector(state=>state.ecommerceReducer)
     const [showAgeTotal, setShowAgeTotal] = useState(false);
     const [showAgeMore, setShowAgeMore] = useState(false);
 
+    useEffect(() => {
+    
+        dispatch(ecommercegetAll())
+    }, [])
     const validateMessages = {
         required: 'Không được để trống !',
         types: {
@@ -114,7 +123,29 @@ const BrandForm = ({ onFinish, form, idEdit }) => {
                     style={{ width: '50%', paddingRight: "10px" }}>
                     <TextArea></TextArea>
                 </Form.Item>
-             
+                <Form.Item name="ecommerceId" label="EcommerceId" required rules={[{ required: true }]}
+                    style={{ width: '50%', paddingRight: "10px"  }}>
+                    <Select
+                       
+                        showSearch
+                        style={{ width: 200 }}
+                        placeholder="EcommerceId"
+                        optionFilterProp="children"
+                        filterOption={(input, option) =>
+                            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                        }
+                        filterSort={(optionA, optionB) =>
+                            optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())
+                        }>
+                      
+
+                        {ecommercelist.map((x,index)=>(
+                            <Option value={x.Id} >{x.Name}</Option>
+                        ))}
+                        
+                       
+                    </Select>
+                </Form.Item>
       <Form.Item name="new_img" label="Ảnh tin tức" valuePropName="file" getValueFromEvent={normFile}
                     rules={[{ required: true }]} style={{ width: '50%'}} >
                         <Upload

@@ -63,17 +63,21 @@ const Team = () => {
         : '',
 
 
-    render: text =>
-      searchedColumn === dataIndex ? (
-        <Highlighter
-          highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
-          searchWords={[searchText]}
-          autoEscape
-          textToHighlight={text ? text.toString() : ''}
-        />
-      ) : (
-        text
-      ),
+        render: text =>{
+          if( searchedColumn === dataIndex ){
+            return     <Highlighter
+            highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
+            searchWords={[searchText]}
+            autoEscape
+            textToHighlight={text ? text.toString() : ''}
+          />
+          }else{
+            if(dataIndex==='ecommerce'){
+              return text?.Name
+            }
+            return text;
+          }
+        }
   });
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
@@ -122,15 +126,22 @@ const Team = () => {
       width: '20%',
       ...getColumnSearchProps('Email'),
     },
-    // {
-    //   title: 'Owner',
-    //   dataIndex: 'Owner',
-    //   key: 'Owner',
-    //   width: '20%',
-    //   ...getColumnSearchProps('Owner'),
-    //   sorter: (a, b) => a.Owner.length - b.Owner.length,
-    //   sortDirections: ['descend', 'ascend'],
-    // },
+    {
+      title: 'Owner',
+      dataIndex: 'Owner',
+      key: 'Owner',
+      width: '20%',
+      ...getColumnSearchProps('Owner'),
+      sorter: (a, b) => a.Owner.length - b.Owner.length,
+      sortDirections: ['descend', 'ascend'],
+    },
+    {
+      title: 'EcommerceId',
+      dataIndex: 'ecommerce',
+      key: 'ecommerce',
+      width: '20%',
+      ...getColumnSearchProps('ecommerce'),
+    },
     {
       title: 'Description',
       dataIndex: 'Description',
@@ -185,6 +196,8 @@ const Team = () => {
       Status: data.status,
       Description: data.description,
       image: data.image,
+      Status:data.status,
+      EcommerceId:data.ecommerceId
     }
     console.log(data.files);
     console.log(data)
@@ -200,7 +213,7 @@ const Team = () => {
       phone: record.Phone,
       status: record.Status,
       description: record.Description,
-      image: record.ImageUrl,
+      image:`${process.env.REACT_APP_API_URL}/${record.ImageUrl} `  
     }
     formEdit.setFieldsValue(editform)
     setIsModalEdit(true)

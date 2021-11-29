@@ -155,7 +155,7 @@ export default {
                     id: 'accounts-list',
                     title: 'Quản Lý Người Dùng',
                     type: 'item',
-                    url: '/',
+                    url: '/user',
                     icon: 'feather icon-user-plus'
                 },
                 {
@@ -191,6 +191,13 @@ export default {
                     title: 'Quản Lý Trang',
                     type: 'item',
                     url: '/accounts/accounts-list',
+                    icon: 'feather icon-user-plus'
+                },
+                {
+                    id: 'accounts-new',
+                    title: 'Quản Lý Tin Tức',
+                    type: 'item',
+                    url: '/new',
                     icon: 'feather icon-user-plus'
                 },
             ]

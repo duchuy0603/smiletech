@@ -17,7 +17,7 @@ const StoreApi={
         return axiosClient.put(url,edit)
     },
      Delete(id){
-        const url=`/stores/delete/${id}`;
+        const url=`/stores/${id}`;
         return axiosClient.delete(url)
     }
 }

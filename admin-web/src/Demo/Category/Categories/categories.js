@@ -7,7 +7,7 @@ import { Button, Form, Modal, Space, Table, Popconfirm, Tag, Input } from 'antd'
 import Highlighter from 'react-highlight-words';
 import { Pagination } from 'antd';
 import { SearchOutlined, SyncOutlined, EditOutlined, DeleteOutlined, PlusOutlined,LoadingOutlined } from '@ant-design/icons';
-import CategoriesForm from './catogoriesForm';
+import CategoriesForm from './categoriesForm';
 import './categories.scss'
 
 const Categories = () => {
@@ -62,17 +62,23 @@ const Categories = () => {
         : '',
 
 
-    render: text =>
-      searchedColumn === dataIndex ? (
-        <Highlighter
-          highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
-          searchWords={[searchText]}
-          autoEscape
-          textToHighlight={text ? text.toString() : ''}
-        />
-      ) : (
-        text
-      ),
+    render: text =>{
+      if( searchedColumn === dataIndex ){
+        return     <Highlighter
+        highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
+        searchWords={[searchText]}
+        autoEscape
+        textToHighlight={text ? text.toString() : ''}
+      />
+      }else{
+        if(dataIndex==='ecommerce'){
+          return text?.Name
+        }
+        return text;
+      }
+    }
+
+     
   });
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
@@ -123,11 +129,11 @@ const Categories = () => {
     },
     {
       title: 'EcomerceId',
-      dataIndex: 'EcomerceId',
-      key: 'EcomerceId',
+      dataIndex: 'ecommerce',
+      key: 'ecommerce',
       width: '20%',
-      ...getColumnSearchProps('EcomerceId'),
-      sorter: (a, b) => a.EcomerceId.length - b.EcomerceId.length,
+      ...getColumnSearchProps('ecommerce'),
+      sorter: (a, b) => a.ecommerce.length - b.ecommerce.length,
       sortDirections: ['descend', 'ascend'],
     },
     {
@@ -165,8 +171,8 @@ const Categories = () => {
    const dataNews = {
     Name: data.name,
     Content: data.content,
-    ParentlId: data.parentId,
-    EcomerceId: data.ecomerceId,
+    ParentId: data.parentId,
+    EcommerceId: data.ecommerceId,
     Description: data.description,
     image: data.image,
    }
@@ -182,9 +188,9 @@ const Categories = () => {
       name: record.Name,
       content: record.Content,
       ecommerceId: record.EcommerceId,
-      address: record.Address,
+     parentId:record.ParentId,
       description: record.Description,
-      image: record.ImageUrl,
+      image:`${process.env.REACT_APP_API_URL}/${record.ImageUrl} `  
     }
     console.log(editform)
     setIdEdit(record.Id);
@@ -197,8 +203,8 @@ const Categories = () => {
       Id:data.id,
       Name: data.name,
       Content: data.content,
-      ParentlId: data.parentId,
-      EcomerceId: data.ecomerceId,
+      ParentId: data.parentId,
+      EcommerceId: data.ecommerceId,
       Description: data.description,
       image: data.image,
      }
@@ -217,7 +223,7 @@ const Categories = () => {
         <Button type="primary" onClick={() => 
          
           setIsModalAdd(true)}>
-          Thêm Sàn
+          Thêm Category
         </Button>
       </div>
       <br />

@@ -1,17 +1,22 @@
 import React from 'react'
-import { Input, Button, Form, InputNumber, Switch, Upload, message } from 'antd';
+import { Input, Button, Form, InputNumber, Switch, Upload, message,Select } from 'antd';
 import { UploadOutlined, InboxOutlined ,LoadingOutlined,PlusOutlined} from '@ant-design/icons';
+import { ecommercegetAll } from '../../../store/Category/ecommerce';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import './store.scss'
 import { useEffect } from 'react';
 import axios from 'axios';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { select } from 'underscore';
 
 const StoreForm = ({ onFinish, form, idEdit}) => {
-   
+   const {Option}=Select;
     const dispatch = useDispatch();
- 
+ useEffect(() => {
+ dispatch(ecommercegetAll())
+ }, [])
+ const {ecommercelist}=useSelector(state=>state.ecommerceReducer)
     const { TextArea } = Input;
     const validateMessages = {
         required: 'Không được để trống !',
@@ -34,7 +39,7 @@ const StoreForm = ({ onFinish, form, idEdit}) => {
     const [loading, setLoading] = useState(false);
     const [fileList, setFileList] = useState([]);
   
-    //  method='POST' encType='multipart/form-data'
+   
     return (
         <div>
        
@@ -87,7 +92,27 @@ const StoreForm = ({ onFinish, form, idEdit}) => {
                     style={{ width: '50%' }}>
                     <Input placeholder="Ví dụ: Nguyễn Đức Huy" />
                 </Form.Item>
-               
+                <Form.Item name="ecommerceId" label="EcommerceId" required rules={[{ required: true }]}
+                    style={{ width: '50%' }}>
+                    <Select
+                       
+                        showSearch
+                        style={{ width: 200 }}
+                        placeholder="ecommerceId"
+                        optionFilterProp="children"
+                       
+                        filterOption={(input, option) =>
+                            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                        }
+                        filterSort={(optionA, optionB) =>
+                            optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())
+                        }>
+                        {ecommercelist.map((x,index)=>(
+                                <Option  key={index} value={x.Id}>{x.Name}</Option>
+                                
+                            ))}
+                    </Select>
+                </Form.Item>
             
                     <Form.Item  style={{width:'90%'}}>
                         

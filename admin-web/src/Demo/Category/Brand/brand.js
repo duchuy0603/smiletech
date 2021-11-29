@@ -27,6 +27,7 @@ const Brand = () => {
   //modal
   const [isModalAdd, setIsModalAdd] = useState(false);
   const [isModalEdit, setIsModalEdit] = useState(false);
+  const [idEdit,setIdEdit]=useState(0)
   const [formAdd] = Form.useForm();    //form
   const [formEdit] = Form.useForm();
   const getColumnSearchProps = dataIndex => ({
@@ -62,17 +63,21 @@ const Brand = () => {
         : '',
 
 
-    render: text =>
-      searchedColumn === dataIndex ? (
-        <Highlighter
-          highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
-          searchWords={[searchText]}
-          autoEscape
-          textToHighlight={text ? text.toString() : ''}
-        />
-      ) : (
-        text
-      ),
+        render: text =>{
+          if( searchedColumn === dataIndex ){
+            return     <Highlighter
+            highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
+            searchWords={[searchText]}
+            autoEscape
+            textToHighlight={text ? text.toString() : ''}
+          />
+          }else{
+            if(dataIndex==='ecommerce'){
+              return text?.Name
+            }
+            return text;
+          }
+        }
   });
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
@@ -105,16 +110,7 @@ const Brand = () => {
         
     },
 
-    // {
-    //   title: 'EcomerceId',
-    //   dataIndex: 'EcomerceId',
-    //   key: 'EcomerceId',
-    //   width: '20%',
-    //   sorter: (a, b) => a.EcomerceId - b.EcomerceId,
-    //   sortDirections: ['descend', 'ascend'],
-    //   ...getColumnSearchProps('EcomerceId'),
-    // },
-   
+
 
     {
       title: 'Description',
@@ -122,6 +118,15 @@ const Brand = () => {
       key: 'Description',
       width: '20%',
       ...getColumnSearchProps('Description'),
+    },
+    {
+      title: 'EcommerceId',
+      dataIndex: 'ecommerce',
+      key: 'ecommerce',
+      width: '20%',
+      sorter: (a, b) => a.ecommerce - b.ecommerce,
+        sortDirections: ['descend', 'ascend'],
+      ...getColumnSearchProps('ecommerce'),
     },
     {
       key: 'Action',
@@ -150,6 +155,7 @@ const Brand = () => {
 const add={
   Name:data.name,
   Description:data.description,
+  EcommerceId: data.ecommerceId,
   image:data.image
 }
     dispatch(brandAdd(add))
@@ -178,11 +184,11 @@ const add={
       id: record.Id,
       name: record.Name,
       description: record.Description,
-      image: record.ImageUrl
-      
-    
+      ecommerceId: record.EcommerceId,
+      image:`${process.env.REACT_APP_API_URL}/${record.ImageUrl} `   
     }
     formEdit.setFieldsValue(editform)
+    setIdEdit(record.Id);
     setIsModalEdit(true)
 
   }, [formEdit])
@@ -191,6 +197,7 @@ const add={
       Id:data.id,
       Name:data.name,
   Description:data.description,
+  EcommerceId: data.ecommerceId,
   image:data.image
     }
     dispatch(brandEdit(edit))
@@ -219,7 +226,7 @@ const add={
         <BrandForm
           onFinish={onFinishEdit}
           form={formEdit}
-          idEdit={true}
+          idEdit={idEdit}
         />
       </Modal>
 

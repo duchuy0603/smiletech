@@ -7,18 +7,13 @@ import { useForm } from 'react-hook-form';
 import './team'
 import { useEffect } from 'react';
 import axios from 'axios';
-import { teamAdd } from '../../../store/Category/team';
-import { useDispatch } from 'react-redux';
+import { ecommercegetAll } from '../../../store/Category/ecommerce';
+import { useDispatch, useSelector } from 'react-redux';
 
 const TeamForm = ({ onFinish, form, idEdit }) => {
     const { Option } = Select;
+    const {ecommercelist}=useSelector(state=>state.ecommerceReducer)
     const dispatch = useDispatch();
-    const handleSubmit2 = (values) => {
-        console.log(values);
-        dispatch(teamAdd(values))
-
-    }
-
     const { TextArea } = Input;
     const validateMessages = {
         required: 'Không được để trống !',
@@ -48,6 +43,7 @@ const TeamForm = ({ onFinish, form, idEdit }) => {
             setImageUrl(imageUrl)
             console.log(imageUrl);
         }
+        dispatch(ecommercegetAll())
     }, [form, idEdit])
 
     const handleChange = info => {
@@ -137,7 +133,7 @@ const TeamForm = ({ onFinish, form, idEdit }) => {
                     <Select
                        
                         showSearch
-                        style={{ width: 200 }}
+                        style={{ width:"100%" }}
                         placeholder="Status"
                         optionFilterProp="children"
                         filterOption={(input, option) =>
@@ -154,7 +150,29 @@ const TeamForm = ({ onFinish, form, idEdit }) => {
                     style={{ width: '50%', paddingRight: "10px" }}>
                     <TextArea></TextArea>
                 </Form.Item>
+                <Form.Item name="ecommerceId" label="EcommerceId" required rules={[{ required: true }]}
+                    style={{ width: '50%', paddingRight: "10px"  }}>
+                    <Select
+                       
+                        showSearch
+                        style={{ width:"100%" }}
+                        placeholder="EcommerceId"
+                        optionFilterProp="children"
+                        filterOption={(input, option) =>
+                            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                        }
+                        filterSort={(optionA, optionB) =>
+                            optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())
+                        }>
+                      
 
+                        {ecommercelist.map((x,index)=>(
+                            <Option value={x.Id} >{x.Name}</Option>
+                        ))}
+                        
+                       
+                    </Select>
+                </Form.Item>
                 <Form.Item name="new_img" label="Ảnh tin tức" valuePropName="file" getValueFromEvent={normFile}
                     style={{ width: '50%' }} >
                     <Upload

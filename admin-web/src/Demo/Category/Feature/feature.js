@@ -63,17 +63,22 @@ const Feature = () => {
         : '',
 
 
-    render: text =>
-      searchedColumn === dataIndex ? (
-        <Highlighter
-          highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
-          searchWords={[searchText]}
-          autoEscape
-          textToHighlight={text ? text.toString() : ''}
-        />
-      ) : (
-        text
-      ),
+        render: text =>{
+          if(searchedColumn === dataIndex){
+            return <Highlighter
+            highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
+            searchWords={[searchText]}
+            autoEscape
+            textToHighlight={text ? text.toString() : ''}
+          />
+          }else{
+            if(dataIndex==='ecommerce'){
+              return text?.Name
+            }
+            return text;
+          }
+        
+        }
   });
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
@@ -97,15 +102,15 @@ const Feature = () => {
       ...getColumnSearchProps('Name'),
     },
 
-    // {
-    //   title: 'EcomerceId',
-    //   dataIndex: 'EcomerceId',
-    //   key: 'EcomerceId',
-    //   width: '20%',
-    //   sorter: (a, b) => a.EcomerceId - b.EcomerceId,
-    //   sortDirections: ['descend', 'ascend'],
-    //   ...getColumnSearchProps('EcomerceId'),
-    // },
+    {
+      title: 'EcomerceId',
+      dataIndex: 'ecommerce',
+      key: 'ecommerce',
+      width: '20%',
+      sorter: (a, b) => a.ecommerce - b.ecommerce,
+      sortDirections: ['descend', 'ascend'],
+      ...getColumnSearchProps('ecommerce'),
+    },
    
 
     {
@@ -142,39 +147,20 @@ const Feature = () => {
 const add={
   Name:data.name,
   Description:data.description,
- // ecomerceid: record.EcomerceId,
+ EcommerceId: data.ecommerceId,
 }
     dispatch(featureAdd(add))
     setIsModalAdd(false)
     formAdd.resetFields()
     console.log(add)
-
-  //   const newdata = {
-  //     Name: data.name,
-  //     Email: data.email,
-  //     Phone: data.phone,
-  //     Address: data.address,
-  //     Description: data.description,
-  //     // ImageUrl:data.files[0]
-
-  //   }
-  //   console.log(data)
-  //   dispatch(ecommerceAdd(newdata))
-   
-  //   setIsModalAdd(false)
-  //   formAdd.resetFields()
    }
 
   const handleEditForm = useCallback((record) => {
     const editform = {
       id: record.Id,
       name: record.Name,
-      // ecomerceid: record.EcomerceId,
-      
+      ecommerceId: record.EcommerceId,
       description: record.Description,
-   
-      
-    
     }
     formEdit.setFieldsValue(editform)
     setIsModalEdit(true)
@@ -185,7 +171,7 @@ const add={
       Id:data.id,
       Name:data.name,
       Description:data.description,
-     // ecomerceid: record.EcomerceId,
+      EcommerceId: data.ecommerceId,
     }
     dispatch(featureEdit(edit))
     setIsModalEdit(false)

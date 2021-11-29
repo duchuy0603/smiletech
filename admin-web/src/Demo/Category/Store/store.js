@@ -12,6 +12,7 @@ import { Pagination } from 'antd';
 import { SearchOutlined, SyncOutlined, EditOutlined, DeleteOutlined, PlusOutlined,LoadingOutlined } from '@ant-design/icons';
 import StoreForm from './storeForm';
 import './store.scss'
+import { ecommercegetAll } from '../../../store/Category/ecommerce';
 
 const Store = () => {
   // const { register,reset ,handleSubmit, setValue,formState:{errors}, } = useForm();
@@ -64,17 +65,25 @@ const Store = () => {
         : '',
 
 
-    render: text =>
-      searchedColumn === dataIndex ? (
-        <Highlighter
-          highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
-          searchWords={[searchText]}
-          autoEscape
-          textToHighlight={text ? text.toString() : ''}
-        />
-      ) : (
-        text
-      ),
+    render: text =>{
+      if(searchedColumn === dataIndex){
+        return <Highlighter
+        highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
+        searchWords={[searchText]}
+        autoEscape
+        textToHighlight={text ? text.toString() : ''}
+      />
+      }else{
+        if(dataIndex==="ecommerce"){
+          return text?.Name;
+        }
+        return text;
+      }
+    
+    }
+   
+       
+ 
   });
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
@@ -159,6 +168,14 @@ const Store = () => {
     width: '20%',
     ...getColumnSearchProps('Youtube'),
   },
+  {
+    title: 'Ecommerce',
+    dataIndex: 'ecommerce',
+    key: 'ecommerce',
+    width: '20%',
+    ...getColumnSearchProps('ecommerce'),
+  },
+
   
     {
       key: 'Action',
@@ -192,6 +209,7 @@ const Store = () => {
     Content: data.content,
     Description: data.description,
     GMap: data.gmap,
+    EcommerceId:data.ecommerceId,
     Facebook: data.facebook,
     Shopee: data.shopee,
     Youtube: data.youtube,
@@ -211,6 +229,7 @@ const Store = () => {
       content: record.Content,
       description: record.Description,
       gmap: record.GMap,
+      ecommerceId:record.EcommerceId,
       facebook: record.Facebook,
       youtube: record.Description,
       shopee: record.Description,
@@ -225,11 +244,12 @@ const Store = () => {
     const edit = {
       Id:data.id,
       Name: data.name,
-    Email: data.email,
+      Email: data.email,
     Phone: data.phone,
     Content: data.content,
     Description: data.description,
     GMap: data.gmap,
+    EcommerceId:data.ecommerceId,
     Facebook: data.facebook,
     Shopee: data.shopee,
     Youtube: data.youtube,
@@ -249,7 +269,7 @@ const Store = () => {
         <Button type="primary" onClick={() => 
          
           setIsModalAdd(true)}>
-          Thêm Sàn
+          Thêm Store
         </Button>
       </div>
       <br />

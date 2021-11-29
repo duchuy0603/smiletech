@@ -1,16 +1,23 @@
 import React from 'react'
-import { Input, Button, Form, InputNumber, Switch, Upload, message } from 'antd';
+import { Input, Button, Form, InputNumber, Switch, Upload, message, Select } from 'antd';
 import { UploadOutlined, InboxOutlined ,LoadingOutlined,PlusOutlined} from '@ant-design/icons';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import './property.scss'
+import { ecommercegetAll } from '../../../store/Category/ecommerce';
 import { useEffect } from 'react';
 import axios from 'axios';
 import { ecommerceAdd } from '../../../store/Category/ecommerce';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 const PropertyForm = ({ onFinish, form, idEdit}) => {
     const { TextArea } = Input;
+    const {Option}=Select;
+    const dispatch=useDispatch();
+    const {ecommercelist}=useSelector(state=>state.ecommerceReducer)
+    useEffect(() => {
+      dispatch(ecommercegetAll())
+    }, [])
     const validateMessages = {
         required: 'Không được để trống !',
         types: {
@@ -51,6 +58,29 @@ const PropertyForm = ({ onFinish, form, idEdit}) => {
                     style={{ width: '50%', paddingRight: "10px" }}>
                     <TextArea></TextArea>
                 </Form.Item>
+               
+                 
+                 <Form.Item name="ecommerceId" label="EcommerceId" required rules={[{ required: true }]}
+                 style={{ width: '50%' }}>
+                 <Select
+                    
+                     showSearch
+                     style={{ width: 200 }}
+                     placeholder="ecommerceId"
+                     optionFilterProp="children"
+                    
+                     filterOption={(input, option) =>
+                         option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                     }
+                     filterSort={(optionA, optionB) =>
+                         optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())
+                     }>
+                     {ecommercelist.map((x,index)=>(
+                             <Option  key={index} value={x.Id}>{x.Name}</Option>
+                             
+                         ))}
+                 </Select>
+             </Form.Item>
                  <Form.Item
                     style={{ width: '90%' }}>
 

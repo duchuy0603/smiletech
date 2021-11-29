@@ -1,19 +1,26 @@
 import React from 'react'
-import { Input, Button, Form, InputNumber, Switch, Upload, message ,Select} from 'antd';
-import { UploadOutlined, InboxOutlined ,LoadingOutlined,PlusOutlined} from '@ant-design/icons';
-import { useSelector } from 'react-redux';
-import { useState } from 'react';
-import './categories.scss'
+import { Input, Button, Form, InputNumber, Switch, Upload, message,Select } from 'antd';
+import { UploadOutlined, InboxOutlined, PlusOutlined, LoadingOutlined } from '@ant-design/icons';
+import { ecommercegetAll } from '../../../store/Category/ecommerce';
 import { useEffect } from 'react';
+import { useState } from 'react';
+import './new.scss'
 import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { useDispatch } from 'react-redux';
 
-const CategoriesForm = ({ onFinish, form, idEdit}) => {
-    const { Option } = Select;
-    const dispatch = useDispatch();
- const {ecommercelist}=useSelector(state=>state.ecommerceReducer)
+const NewForm = ({ onFinish, form, idEdit }) => {
     const { TextArea } = Input;
+    const {Option}=Select;
+    const dispatch=useDispatch();
+    const {ecommercelist}=useSelector(state=>state.ecommerceReducer)
+    const [showAgeTotal, setShowAgeTotal] = useState(false);
+    const [showAgeMore, setShowAgeMore] = useState(false);
+
+    useEffect(() => {
+    
+        dispatch(ecommercegetAll())
+    }, [])
     const validateMessages = {
         required: 'Không được để trống !',
         types: {
@@ -54,10 +61,10 @@ const CategoriesForm = ({ onFinish, form, idEdit}) => {
     const propsUpload = {
         name: 'file',
         maxCount: 1,
-        action: `${process.env.REACT_APP_API_URL}/categories/create-url`,
+        action: `${process.env.REACT_APP_API_URL}/News/create-url`,
     
         onSuccess: (result, file) => {
-            console.log('okk', result);
+            console.log('ok', result);
             if(result.success) {
                 form.setFieldsValue({
                     image: result.url,
@@ -96,49 +103,36 @@ const CategoriesForm = ({ onFinish, form, idEdit}) => {
     const normFile = (e) => {
         return e && e.file;
     };
-    //  method='POST' encType='multipart/form-data'
     return (
         <div>
-       
-
-             <Form className="ecommerce-form"
-            
-                onFinish={onFinish }
-               
-                validateMessages={validateMessages}
-                form={form} >
+            <Form className="ecommerce-form" validateMessages={validateMessages} onFinish={onFinish} form={form} method='POST' encType='multipart/form-data' >
                 {
                     idEdit &&
                     <Form.Item name="id" hidden={true}>
                         <Input />
                     </Form.Item>
                 }
+
                 <Form.Item name="name" label="Tên" required rules={[{ required: true, whitespace: true }, { type: 'string', max: 255 }]}
                     style={{ width: '50%', paddingRight: "10px" }}>
                     <Input placeholder="Ví dụ: Eplaza" />
                 </Form.Item>
-               
-                <Form.Item name="content" label="Content" required rules={[{ required: true }, { pattern: /((09|03|07|08|05)+([0-9]{8})\b)/g }]}
+                <Form.Item name="content" label="content" required rules={[{ required: true, whitespace: true }, { type: 'string', max: 255 }]}
                     style={{ width: '50%', paddingRight: "10px" }}>
-                    <Input style={{ width: '100%' }} placeholder="Ví dụ: 0902174492" />
+                    <Input placeholder="Ví dụ: Eplaza" />
                 </Form.Item>
-                <Form.Item name="parentId" label="ParentId" required rules={[{ required: true }, { type: 'string', min: 0, max: 255 }]}
-                    style={{ width: '50%' }}>
-                    <Input placeholder="Ví dụ: 172A Yên Lãng" />
-                </Form.Item>
-                
+
                 <Form.Item name="description" label="Description" required rules={[{ required: true }, { type: 'string', max: 255 }]}
                     style={{ width: '50%', paddingRight: "10px" }}>
                     <TextArea></TextArea>
                 </Form.Item>
-
-                <Form.Item name="ecomerceId" label="EcomerceId" required rules={[{ required: true }]}
-                    style={{ width: '50%' }}>
+                <Form.Item name="ecommerceId" label="EcommerceId" required rules={[{ required: true }]}
+                    style={{ width: '50%', paddingRight: "10px"  }}>
                     <Select
                        
                         showSearch
                         style={{ width: 200 }}
-                        placeholder="EcomerceId"
+                        placeholder="EcommerceId"
                         optionFilterProp="children"
                         filterOption={(input, option) =>
                             option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
@@ -155,8 +149,8 @@ const CategoriesForm = ({ onFinish, form, idEdit}) => {
                        
                     </Select>
                 </Form.Item>
-                <Form.Item name="new_img" label="Ảnh tin tức" valuePropName="file" getValueFromEvent={normFile}
-                  style={{ width: '50%'}} >
+      <Form.Item name="new_img" label="Ảnh tin tức" valuePropName="file" getValueFromEvent={normFile}
+                    rules={[{ required: true }]} style={{ width: '50%'}} >
                         <Upload
                             {...propsUpload}
                             listType="picture-card"
@@ -171,20 +165,20 @@ const CategoriesForm = ({ onFinish, form, idEdit}) => {
                                     </div>}
                         </Upload>
                     </Form.Item>
-                    <Form.Item  style={{width:'90%'}}>
-                        
-                    </Form.Item>
-                    <Form.Item name="image" hidden={true}>
-                        <Input />
-                    </Form.Item>
-              
-                <Form.Item className='button'>
-                    <Button htmlType="submit"
-                        type="primary">Lưu lại</Button>
+                
+                <Form.Item name="image" hidden={true}>
+                    <Input />
                 </Form.Item>
-            </Form>  
+                <Form.Item
+                    style={{ width: '90%' }}>
+
+                </Form.Item>
+                <Form.Item className='button'>
+                    <Button htmlType="submit" type="primary">Lưu lại</Button>
+                </Form.Item>
+            </Form>
         </div>
     )
 }
 
-export default CategoriesForm;
+export default NewForm

@@ -10,7 +10,7 @@ const ProductApi={
     },
     create(dataAdd){
         const url=`/products`;
-      
+      console.log(dataAdd)
         return axiosClient.post(url, dataAdd)
     },
     Edit(edit){

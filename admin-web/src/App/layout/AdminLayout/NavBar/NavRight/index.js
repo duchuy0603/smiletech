@@ -1,26 +1,29 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import {Dropdown} from 'react-bootstrap';
-
 import ChatList from './ChatList';
 import Aux from "../../../../../hoc/_Aux";
 import DEMO from "../../../../../store/constant";
-
 import Avatar1 from '../../../../../assets/images/user/avatar-1.jpg';
 import Avatar2 from '../../../../../assets/images/user/avatar-2.jpg';
 import Avatar3 from '../../../../../assets/images/user/avatar-3.jpg';
+import { useHistory } from 'react-router-dom';
+const NavRight =({rtlLayout})=> {
 
-class NavRight extends Component {
-    state = {
-        listOpen: false
-    };
+ const [listOpen,setlistOpen]=useState(false)
+ const history=useHistory()
+ const logout=()=>{
+    localStorage.removeItem('token')
+   history.push('/auth/signin')
+    
+}
+   
 
-    render() {
-
+  
         return (
             <Aux>
                 <ul className="navbar-nav ml-auto">
                     <li>
-                        <Dropdown alignRight={!this.props.rtlLayout}>
+                        <Dropdown alignRight={!rtlLayout}>
                             <Dropdown.Toggle variant={'link'} id="dropdown-basic">
                                 <i className="icon feather icon-bell"/> <i className="icon feather icon-chevron-down"/>
                             </Dropdown.Toggle>
@@ -78,10 +81,10 @@ class NavRight extends Component {
                     </li>
                     {/* <li className={this.props.rtlLayout ? 'm-r-15' : 'm-l-15'}> */}
                     <li>
-                        <a href={DEMO.BLANK_LINK} className="displayChatbox" onClick={() => {this.setState({listOpen: true});}}><i className="icon feather icon-mail"/></a>
+                        <a href={DEMO.BLANK_LINK} className="displayChatbox" onClick={() => setlistOpen}><i className="icon feather icon-mail"/></a>
                     </li>
                     <li>
-                        <Dropdown alignRight={!this.props.rtlLayout} className="drp-user">
+                        <Dropdown alignRight={!rtlLayout} className="drp-user">
                             <Dropdown.Toggle variant={'link'} id="dropdown-basic">
                                 <i className="icon feather icon-user"/> <i className="icon feather icon-chevron-down"/>
                             </Dropdown.Toggle>
@@ -89,7 +92,8 @@ class NavRight extends Component {
                                 <div className="pro-head">
                                     <img src={Avatar2} className="img-radius" alt="User Profile"/>
                                     <span>Smile Tech</span>
-                                    <a href={DEMO.BLANK_LINK} className="dud-logout" title="Logout">
+                                    <a href={DEMO.BLANK_LINK} onClick={()=>logout()} className="dud-logout" title="Logout">
+                                        
                                         <i className="feather icon-log-out"/>
                                     </a>
                                 </div>
@@ -103,10 +107,10 @@ class NavRight extends Component {
                         </Dropdown>
                     </li>
                 </ul>
-                <ChatList listOpen={this.state.listOpen} closed={() => {this.setState({listOpen: false});}} />
+                <ChatList listOpen={listOpen} closed={() => setlistOpen} />
             </Aux>
         );
     }
-}
+
 
 export default NavRight;

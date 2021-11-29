@@ -61,17 +61,23 @@ const Property = () => {
         : '',
 
 
-    render: text =>
-      searchedColumn === dataIndex ? (
-        <Highlighter
-          highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
-          searchWords={[searchText]}
-          autoEscape
-          textToHighlight={text ? text.toString() : ''}
-        />
-      ) : (
-        text
-      ),
+    render: text =>{
+      if(searchedColumn === dataIndex ){
+        return    <Highlighter
+        highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
+        searchWords={[searchText]}
+        autoEscape
+        textToHighlight={text ? text.toString() : ''}
+      />
+      }else{
+      if(dataIndex==="ecommerce"){
+        return text?.Name
+      }
+      return text
+      }
+    }
+      
+   
   });
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
@@ -104,6 +110,13 @@ const Property = () => {
       ...getColumnSearchProps('Description'),
     },
     {
+      title: 'EcommerceId',
+      dataIndex: 'ecommerce',
+      key: 'ecommerce',
+      width: '20%',
+      ...getColumnSearchProps('ecommerce'),
+    },
+    {
       key: 'Action',
       title: <SyncOutlined onClick={() => dispatch(propertygetAll())} />,
       align: 'center',
@@ -134,6 +147,7 @@ const Property = () => {
     const dataAdd ={
       Name: values.name,
       Description: values.description,
+      EcommerceId:values.ecommerceId
     }
     dispatch(propertyAdd(dataAdd))
    
@@ -146,6 +160,7 @@ const Property = () => {
       id:record.Id,
        name:record.Name,
       description:record.Description,
+      ecommerceId:record.EcommerceId
       
     }
     
@@ -158,6 +173,7 @@ const Property = () => {
     Id:values.id,
       Name: values.name,
       Description: values.description,
+      EcommerceId:values.ecommerceId
     }
    
     dispatch(propertyEdit(dataEdit))
