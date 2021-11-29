@@ -5,6 +5,7 @@ import './../../../assets/scss/style.scss';
 import Aux from "../../../hoc/_Aux";
 import Breadcrumb from "../../../App/layout/AdminLayout/Breadcrumb";
 import '../../Category/User/user.scss'
+
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import UserApi from '../../../api/user';
@@ -38,7 +39,7 @@ const SignUp1 = () => {
       const respone=await UserApi.login(user)
       console.log(respone.AccessToken)
       if(respone.success){
-dispatch(savetoken(respone.AccessToken))
+dispatch(savetoken(respone))
 history.push('/ecommerce')
       }
     

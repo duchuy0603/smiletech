@@ -16,25 +16,25 @@ const AdminLayout = Loadable({
 
 class App extends Component {
     render() {
-        // const menu = routes.map((route, index) => {
-        //   return (route.component) ? (
-        //       <Route
-        //           key={index}
-        //           path={route.path}
-        //           exact={route.exact}
-        //           name={route.name}
-        //           render={props => (
-        //               <route.component {...props} />
-        //           )} />
-        //   ) : (null);
-        // });
+        const menu = routes.map((route, index) => {
+          return (route.component) ? (
+              <Route
+                  key={index}
+                  path={route.path}
+                  exact={route.exact}
+                  name={route.name}
+                  render={props => (
+                      <route.component {...props} />
+                  )} />
+          ) : (null);
+        });
 
         return (
             <Aux>
                 <ScrollToTop>
                     <Suspense fallback={<Loader/>}>
                         <Switch>
-                            {/* {menu} */}
+                            {menu}
                             <Route path="/" component={AdminLayout} />
                         </Switch>
                     </Suspense>

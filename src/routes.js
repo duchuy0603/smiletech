@@ -1,6 +1,6 @@
 import React from 'react';
 import $ from 'jquery';
-
+import { Redirect } from 'react-router-dom';
 window.jQuery = $;
 window.$ = $;
 global.jQuery = $;
@@ -21,8 +21,10 @@ const  Store=React.lazy(()=>import('./Demo/Category/Store/store'))
 const  Product=React.lazy(()=>import('./Demo/Category/Product/product'))
 const  New=React.lazy(()=>import('./Demo/Category/New/new'))
 const  User=React.lazy(()=>import('./Demo/Category/User/user'))
-const SignUp1 = React.lazy(() => import('./Demo/Authentication/SignUp/SignUp1'));
-const Signin1 = React.lazy(() => import('./Demo/Authentication/SignIn/SignIn1'));
+// const SignUp1 = React.lazy(() => import('./Demo/Authentication/SignUp/SignUp1'));
+// const Signin1 = React.lazy(() => import('./Demo/Authentication/SignIn/SignIn1'));
+
+
 // const Age = React.lazy(() => import('./Demo/Category/Age/Age'));
 // const CategoryDance = React.lazy(() => import('./Demo/Category/CategoryDance/CategoryDance'));
 // const Dance = React.lazy(() => import('./Demo/Category/Dance/Dance'));
@@ -37,6 +39,7 @@ const Signin1 = React.lazy(() => import('./Demo/Authentication/SignIn/SignIn1'))
 
 // const NewThemes = React.lazy(() => import('./Demo/News/NewsThemes/NewThemes'));
 // const NewList = React.lazy(() => import('./Demo/News/NewsList/NewList'));
+
 
 
 
@@ -55,8 +58,10 @@ const routes = [
     {path: '/product', exact: true, name: 'product', component: Product },
     {path: '/new', exact: true, name: 'new', component: New },
     {path: '/user', exact: true, name: 'user', component: User },
-    { path: '/auth/signup', exact: true, name: 'Signup 1', component: SignUp1 },
-    { path: '/auth/signin', exact: true, name: 'Signin 1', component: Signin1 }
+
+    // { path: '/auth/signup', exact: true, name: 'Signup 1', component: SignUp1 },
+    // { path: '/auth/signin', exact: true, name: 'Signin 1', component: Signin1 }
+
     // {path: '/signin', exact: true, name: 'signin', component: Signin },
     // {path: '/signup', exact: true, name: 'signin', component: Signup },
     // { path: '/category/age', exact: true, name: 'Age', component: Age },
