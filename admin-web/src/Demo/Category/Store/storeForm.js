@@ -3,12 +3,10 @@ import { Input, Button, Form, InputNumber, Switch, Upload, message,Select } from
 import { UploadOutlined, InboxOutlined ,LoadingOutlined,PlusOutlined} from '@ant-design/icons';
 import { ecommercegetAll } from '../../../store/Category/ecommerce';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
 import './store.scss'
 import { useEffect } from 'react';
-import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-import { select } from 'underscore';
+
 
 const StoreForm = ({ onFinish, form, idEdit}) => {
    const {Option}=Select;
