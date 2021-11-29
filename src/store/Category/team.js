@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 
-import TeamApi from "../../api/team";
+import TeamApi from "../../api/team123";
 export const teamgetAll = createAsyncThunk('team/teamgetAllAction', async () => {
     const listteam = await TeamApi.getAll();  
     return listteam;
