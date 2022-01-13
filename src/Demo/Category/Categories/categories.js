@@ -191,9 +191,9 @@ const Categories = () => {
       name: record.name,
       content: record.content,
       // ecommerce: record.ecommerce,
-      ` parent_id:record.parent_id,
+       parent_id:record.parent_id,
         des: record.des,
-        image:`${process.env.REACT_APP_API_URL}/${record.image_url} `  `
+        image:`${process.env.REACT_APP_API_URL}/${record.image_url} `  
     }
     console.log(editform)
     setIdEdit(record.Id);
