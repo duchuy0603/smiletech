@@ -6,7 +6,6 @@ import { useForm } from 'react-hook-form';
 import './ecommerce.scss'
 import { useEffect } from 'react';
 import axios from 'axios';
-import { ecommerceAdd } from '../../../store/Category/ecommerce';
 import { useDispatch } from 'react-redux';
 
 const EcommerceForm = ({ onFinish, form, idEdit}) => {

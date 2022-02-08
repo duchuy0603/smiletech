@@ -23,13 +23,14 @@ const Product = () => {
   
   useEffect(() => {
     dispatch(productgetAll())
-  }, [dispatch])
+  }, [dispatch,idEdit])
   
   const [searchText, setsearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   //modal
   const [isModalAdd, setIsModalAdd] = useState(false);
   const [isModalEdit, setIsModalEdit] = useState(false);
+  const [idEdit, setIdEdit] = useState(0)
   const [formAdd] = Form.useForm();    //form
   const [formEdit] = Form.useForm();
   const getColumnSearchProps = dataIndex => ({
@@ -63,8 +64,6 @@ const Product = () => {
       record[dataIndex]
         ? record[dataIndex].toString().toLowerCase().includes(value.toLowerCase())
         : '',
-
-
     render: text =>{
       if(searchedColumn === dataIndex  ){
      
@@ -75,13 +74,13 @@ const Product = () => {
         textToHighlight={text ? text.toString() : ''}
       />
       }  else{
-        if(dataIndex==="store"){
-          return text?.name
-        }
-     if(dataIndex==="category"){
-          return text?.name
-        }
-        return text
+    //     if(dataIndex==="store_id"){
+    //       return text?.name
+    //     }
+    //  if(dataIndex==="category_id"){
+    //       return text?.name
+    //     }
+        return text;
       }  
     }
      
@@ -116,7 +115,7 @@ const Product = () => {
       dataIndex: 'image_url',
       key: 'image_url',
       width:'20%',
-      render: text =>  <img src={`${process.env.REACT_APP_API_URL}/${text}` }  style={{width:"100%",height:"100%"}} alt=""/>
+      render: text =>  <img src={text}  style={{width:"100%",height:"100%"}} alt=""/>
         
     },
    
@@ -204,10 +203,11 @@ const add={
   parent_id:data.parent_id,
   image_url:data.image
 }
+
     dispatch(productAdd(add))
-    setIsModalAdd(false)
     formAdd.resetFields()
-  
+    setIsModalAdd(false)
+    
 
   //   const newdata = {
   //     Name: data.name,
@@ -281,6 +281,7 @@ const add={
           onFinish={onFinishEdit}
           form={formEdit}
           idEdit={true}
+          
         />
       </Modal>
 

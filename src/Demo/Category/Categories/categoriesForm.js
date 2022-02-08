@@ -6,8 +6,6 @@ import { useSelector } from 'react-redux';
 import { useState } from 'react';
 import './categories.scss'
 import { useEffect } from 'react';
-import axios from 'axios';
-
 import { useDispatch } from 'react-redux';
 
 const CategoriesForm = ({ onFinish, form, idEdit}) => {
@@ -46,7 +44,7 @@ const CategoriesForm = ({ onFinish, form, idEdit}) => {
             console.log(imageUrl);
         }
         dispatch(ecommercegetAll())
-    }, [form, idEdit])
+    }, [form,idEdit])
 
     const handleChange = info => {
         console.log(info.file);
@@ -151,8 +149,8 @@ const CategoriesForm = ({ onFinish, form, idEdit}) => {
                         }>
                       
 
-                        {ecommercelist.map((x,index)=>(
-                            <Option value={x.id} >{x.name}</Option>
+                        {ecommercelist.map((x)=>(
+                            <Option key={x} value={x.id} >{x.name}</Option>
                         ))}
                         
                        

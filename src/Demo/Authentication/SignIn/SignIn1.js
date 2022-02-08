@@ -48,7 +48,7 @@ const SignUp1 = () => {
          setloading(false)
         message.error(respone.error.message)
     }
-    else if(respone.type==1||respone.type==2){
+    else if(respone.user_infor.type==1||respone.user_infor.type==2){
             setTimeout(() => {
             history.push('/dashboard')
         }, 1000);

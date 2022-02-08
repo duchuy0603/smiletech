@@ -35,7 +35,8 @@ class Navigation extends Component {
             'pcoded-navbar',
         ];
         const data=getUserFromLocalStorage();
-        const role=data.type;
+        const role=data.user_infor.type;
+        
        
 
         if (this.props.preLayout !== null && this.props.preLayout !== '' && this.props.preLayout !== 'layout-6' && this.props.preLayout !== 'layout-8') {
