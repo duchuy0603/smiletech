@@ -15,6 +15,7 @@ const Categories = () => {
   
   const { categorieslist, loadingcategories } = useSelector(state => state.categoriesReducer)
 
+
   const dispatch = useDispatch();
   
   useEffect(() => {
@@ -108,7 +109,7 @@ const Categories = () => {
       key: 'Image',
       width: '12%',
     
-      render: text => <img src={text}  style={{width:"100%",height:"40%"}} alt=""/>
+      render: text => <img src={`${process.env.REACT_APP_API_URL}/${text}`}  style={{width:"100%",height:"40%"}} alt=""/>
     },
 
     {
@@ -130,7 +131,7 @@ const Categories = () => {
     {
       title: 'EcomerceId',
       dataIndex: 'ecommerce_id',
-      key: 'ecommerce',
+      key: 'ecommerce_id',
       width: '20%',
       ...getColumnSearchProps('ecommerce_id'),
       sorter: (a, b) => a.ecommerce_id.length - b.ecommerce_id.length,
@@ -188,7 +189,7 @@ const Categories = () => {
   
       name: record.name,
       content: record.content,
-      ecommerce_id: record.ecommerce_id,
+      // ecommerce_id: record.ecommerce_id,
        parent_id:record.parent_id,
         des: record.des,
         image:record.image_url 
@@ -211,8 +212,8 @@ const Categories = () => {
      }
     
     dispatch(categoriesEdit(edit))
-    setIsModalEdit(false)   
-    console.log(edit)
+    setIsModalEdit(false)   ;
+    console.log(edit);
   }
   const handleDelete = (id) => {
     dispatch(categoriesDelete(id))

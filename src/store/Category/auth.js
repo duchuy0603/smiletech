@@ -18,7 +18,7 @@ const authslide = createSlice({
         saveuser:(state,action)=>{
             saveUser(action.payload)         
             state.authlist = action.payload
-            localStorage.setItem('role', action.payload.user_infor.type)
+            // localStorage.setItem('role', action.payload.user_infor.type)
            
         }
     },

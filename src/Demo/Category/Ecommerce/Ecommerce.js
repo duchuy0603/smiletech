@@ -13,16 +13,8 @@ import EcommerceForm from './EcommerceForm';
 import './ecommerce.scss'
 const Ecommerce = () => {
   const { ecommercelist, loadingecom } = useSelector(state => state.ecommerceReducer)
-
-  const role = localStorage.getItem('role');
   const dispatch = useDispatch();
-  //   function checkButton(){
-  // const button=document.getElementById("hidden-ecommerce")
-  //     if(role==2){
-  // button.style.visibility="hidden"
-  //     }
-  //   }
-  //   checkButton()
+ 
   useEffect(() => {
     dispatch(ecommercegetAll())
   }, [dispatch])
@@ -115,7 +107,7 @@ const Ecommerce = () => {
       key: 'image_url',
       width: '12%',
 
-      render: text => <img src={text} style={{ width: "100%", height: "40%" }} alt="" />
+      render: text => <img src={`${process.env.REACT_APP_API_URL}/${text}`} style={{ width: "100%", height: "40%" }} alt="" />
     },
 
     {

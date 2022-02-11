@@ -16,7 +16,7 @@ const NavRight =({rtlLayout})=> {
  const [listOpen,setlistOpen]=useState(false)
  const history=useHistory()
  const data=getUserFromLocalStorage()
- const name=data.user_infor.user_name
+ const name=data.user_name
  const logout=()=>{
     localStorage.clear();
     history.push('/auth/signin')

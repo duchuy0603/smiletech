@@ -123,7 +123,7 @@ const CategoriesForm = ({ onFinish, form, idEdit}) => {
                     style={{ width: '50%', paddingRight: "10px" }}>
                     <Input style={{ width: '100%' }} placeholder="Ví dụ: 0902174492" />
                 </Form.Item>
-                <Form.Item name="parent_id" label="ParentId" required rules={[{ required: true }, { type: 'string', min: 0 }]}
+                <Form.Item name="parent_id" label="ParentId"  rules={[{ required: true }, { type: 'number',min:0,max:99 }]}
                     style={{ width: '50%', paddingRight: "10px"  }}>
                     <Input placeholder="Ví dụ: 172A Yên Lãng" />
                 </Form.Item>

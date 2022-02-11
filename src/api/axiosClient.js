@@ -1,6 +1,7 @@
 // api/axiosClient.js 
 import axios from 'axios'; 
 import queryString from 'query-string'; 
+import { getUserFromLocalStorage } from '../helpers/common';
 
 // Set up default config for http requests here 
 // Please have a look at here `https://github.com/axios/axios#request config` for the full list of configs 
@@ -15,10 +16,16 @@ const axiosClient = axios.create({
 }); 
 
 axiosClient.interceptors.request.use(async (config) => {  
-    const token=localStorage.getItem('token')
+    const data=getUserFromLocalStorage();
+    const token=data.access_token;
+    const ecommerce=data.ecommerce_id
+
     
     if(token) {
-        config.headers['Authorization'] = 'Bearer ' + token;
+        config.headers['Authorization'] = 'Bearer ' + token ;
+        if(data.type!==1){
+            config.headers['Ecommerce_id'] = ecommerce;
+        }
     }
     return config; 
 })
