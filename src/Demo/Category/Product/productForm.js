@@ -62,9 +62,9 @@ const ProductForm = ({ onFinish, form, idEdit }) => {
     
 
     const propsUpload = {
-        name: 'file',
+        name: 'files',
         maxCount: 1,
-        action: `${process.env.REACT_APP_API_URL}/upload/upload-single `,
+        action: `${process.env.REACT_APP_API_URL}/upload/upload-array `,
     
         onSuccess: (result, file) => {
             console.log('ok', result);
@@ -201,7 +201,7 @@ const ProductForm = ({ onFinish, form, idEdit }) => {
                             showUploadList={false}
                             onChange={handleChange}
                         >
-                            {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> 
+                            {imageUrl ? <img src={`${process.env.REACT_APP_API_URL}/${imageUrl}`} alt="avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> 
                                     : <div>
                                         {loading ? <LoadingOutlined /> : <PlusOutlined />}
                                         <div style={{ marginTop: 8 }}>Upload</div>

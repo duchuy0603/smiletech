@@ -7,18 +7,16 @@ import './ecommerce.scss'
 import { useEffect } from 'react';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
-
+import { useTranslate } from 'react-redux-multilingual';
 const EcommerceForm = ({ onFinish, form, idEdit}) => {
-   
-    const dispatch = useDispatch();
- 
+   const trans=useTranslate();
+    const dispatch = useDispatch(); 
     const { TextArea } = Input;
     const validateMessages = {
         required: 'Không được để trống !',
         types: {
             string: '${label} không hợp lệ !',
             number: '${label} không hợp lệ !',
-
         },
         string: {
             max: '${label} tối đa 255 ký tự !',
@@ -30,12 +28,9 @@ const EcommerceForm = ({ onFinish, form, idEdit}) => {
             mismatch: '${label} không hợp lệ !',
         },
     };
-
     const [loading, setLoading] = useState(false);
     const [fileList, setFileList] = useState([]);
     const [imageUrl, setImageUrl] = useState('');
-
- 
     useEffect(() => {
         if(idEdit) {
             const imageUrl = form.getFieldValue('image');
@@ -54,10 +49,7 @@ const EcommerceForm = ({ onFinish, form, idEdit}) => {
         name: 'file',
         maxCount: 1,
         action: `${process.env.REACT_APP_API_URL}/upload/upload-single `,
-       
-    
-        onSuccess: (result, file) => {
-           
+        onSuccess: (result, file) => {          
             if(result.success) {
                 form.setFieldsValue({
                     image: result.url,
@@ -140,7 +132,7 @@ const EcommerceForm = ({ onFinish, form, idEdit}) => {
                             showUploadList={false}
                             onChange={handleChange}
                         >
-                            {imageUrl ? <img src={ `${process.env.REACT_APP_API_URL}/${imageUrl}`} alt="avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> 
+                            {imageUrl ? <img src={`${process.env.REACT_APP_API_URL}/${imageUrl}` } alt="avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> 
                                     : <div>
                                         {loading ? <LoadingOutlined /> : <PlusOutlined />}
                                         <div style={{ marginTop: 8 }}>Upload</div>

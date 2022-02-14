@@ -40,6 +40,7 @@ const SignUp1 = () => {
     const respone = await UserApi.login(user);
     console.log(respone);
     dispatch(saveuser(respone));
+    dispatch(savetoken(respone))
     if (respone?.error) {
       setloading(false);
       if (respone.error?.message == "USERNAME_NOT_EXIST") {

@@ -189,7 +189,7 @@ const Categories = () => {
   
       name: record.name,
       content: record.content,
-      // ecommerce_id: record.ecommerce_id,
+      ecommerce_id: record.ecommerce_id.id,
        parent_id:record.parent_id,
         des: record.des,
         image:record.image_url 
