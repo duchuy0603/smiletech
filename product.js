@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { productAdd,productEdit,productDelete,productgetAll } from '../../../store/Category/product';
+import { productAdd,productEdit,productDelete,productgetAll } from './src/store/Category/product';
 import { useEffect } from 'react'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
@@ -7,7 +7,7 @@ import { Button, Form, Modal, Space, Table, Popconfirm, Tag, Input,Select } from
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined, SyncOutlined, EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import './product.scss'
-import ProductForm from './productForm';
+import ProductForm from './src/Demo/Category/Product/productForm';
 
 
 const Product = () => {
@@ -152,7 +152,7 @@ const Product = () => {
       dataIndex:'category',
       key: 'category',
       width: '20%',
-      sorter: (a, b) => a.category_id - b.category_id,
+      sorter: (a, b) => a.category - b.category,
       sortDirections: ['descend', 'ascend'],
       ...getColumnSearchProps('category'),
     },
@@ -240,7 +240,7 @@ const add={
       store_id:record.store.id,
       category_id:record.category.id,
       parent_id:record.parent_id,
-      image:record.image_url  
+      image:record.image_url 
       
     
     }

@@ -1,7 +1,6 @@
 import React from 'react'
 import { Input, Button, Form, InputNumber, Switch, Upload, message,Select } from 'antd';
 import { UploadOutlined, InboxOutlined, PlusOutlined, LoadingOutlined } from '@ant-design/icons';
-
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -46,7 +45,7 @@ const ProductForm = ({ onFinish, form, idEdit }) => {
     useEffect(() => {
         if(idEdit) {
             const imageUrl = form.getFieldValue('image');
-            setImageUrl(imageUrl)
+            setImageUrl(imageUrl[0])
             console.log(imageUrl);
         }
         dispatch(categoriesgetAll())
