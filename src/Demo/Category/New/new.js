@@ -176,6 +176,7 @@ content:data.content,
     setIsModalAdd(false)
     formAdd.resetFields()
     console.log(add)
+  
    }
 
   const handleEditForm = useCallback((record) => {
@@ -185,7 +186,7 @@ content:data.content,
       content:record.content,
       description: record.des,
       ecommerceId: record.ecommerce?.id,
-      image:record.image_url[0].url  
+      image:record.image_url
     }
     formEdit.setFieldsValue(editform)
     setIdEdit(record.id);

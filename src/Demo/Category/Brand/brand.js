@@ -33,7 +33,7 @@ console.log(brandlist)
     if(img===null){
       return
     }else{
-      return process.env.REACT_APP_API_URL+img[0].url
+      return process.env.REACT_APP_API_URL + img[0].url
     }
   }
   const getColumnSearchProps = dataIndex => ({
@@ -188,7 +188,7 @@ const add={
       name: record.name,
       des: record.des,
       ecommerce_id: record.ecommerce.id,
-      image:record.ImageUrl   
+      image:record.image_url   
     }
     formEdit.setFieldsValue(editform)
     setIdEdit(record.id);

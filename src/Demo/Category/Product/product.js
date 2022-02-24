@@ -262,6 +262,7 @@ const add={
     dispatch(productEdit(edit))
     setIsModalEdit(false)
     formAdd.resetFields()
+    console.log('edit',data)
   
   }
   const handleDelete = (id) => {

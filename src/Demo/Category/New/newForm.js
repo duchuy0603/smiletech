@@ -43,7 +43,7 @@ const NewForm = ({ onFinish, form, idEdit }) => {
 
     const [loading, setLoading] = useState(false);
     const [fileList, setFileList] = useState([]);
-    const [imageUrl, setImageUrl] = useState('');
+    const [imageUrl, setImageUrl] = useState([]);
 
  
     useEffect(() => {
