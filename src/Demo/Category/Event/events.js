@@ -8,6 +8,7 @@ import Highlighter from 'react-highlight-words';
 import { Pagination } from 'antd';
 import { SearchOutlined, SyncOutlined, EditOutlined, DeleteOutlined, PlusOutlined,LoadingOutlined } from '@ant-design/icons';
 import EventsForm from './eventForm';
+import moment from 'moment';
 import './events.scss'
 
 const Events = () => {
@@ -22,7 +23,13 @@ const Events = () => {
   useEffect(() => {
     dispatch(eventsgetAll())
   }, [dispatch])
-  
+  const checkstart=(data)=>{
+if(data==null){
+  return
+}else{
+  return data[0]
+}
+  }
   const [searchText, setsearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   const [idEdit,setIdEdit]=useState(0);
@@ -39,6 +46,7 @@ if(img==null){
 }
 
   }
+  
   const getColumnSearchProps = dataIndex => ({
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
       <div style={{ padding: 12 }}>
@@ -197,28 +205,31 @@ if(img==null){
     },
   ];
   // actionform
-  const onFinishAdd = (data) => {
+  const onFinishAdd = (values) => {
+   
    const dataNews = {
-    name: data.name,
-    cost: data.cost,
-    address:data.address,
-    start_time:data.start_time,
-    end_time:data.end_time,
-    ecommerce_id: data.ecommerce_id,
-    des: data.des,
-    image_url: data.image,
+    name: values.name,
+    cost: values.cost,
+    address:values.address,
+    start_time: values.date[0].format("HH:mm DD-MM-YYYY"),
+    end_time: values.date[1].format("HH:mm DD-MM-YYYY"), 
+    ecommerce_id: values.ecommerce_id,
+    des: values.des,
+    image_url: values.image,
    }
+  
     dispatch(eventsAdd(dataNews))
     formAdd.resetFields()
     setIsModalAdd(false)
-console.log(data)
+    console.log("date555",values.date)
+console.log(values)
    }
 
    const handleEditForm = (record) => {
     const editform = {    
       id: record.id,
-  
-      name: record.name,
+      name:record.name,
+      date: [moment(record.start_time,'HH-mm DD-MM-YYYY'),moment(record.end_time,'HH-mm DD-MM-YYYY')],
       address:record.address,
       ecommerce_id: record.ecommerce.id,
        cost:record.cost,
@@ -231,17 +242,17 @@ console.log(data)
     setIsModalEdit(true)
   }
 
-  const onFinishEdit = (data) => {
+  const onFinishEdit = (values) => {
     const edit = {
-      id:data.id,
-      name: data.name,
-    cost: data.cost,
-    address:data.address,
-    start_time:data.start_time,
-    end_time:data.end_time,
-    ecommerce_id: data.ecommerce_id,
-    des: data.des,
-    image_url: data.image,
+    id:values.id,
+    name: values.name,
+    cost: values.cost,
+    address:values.address,
+    start_time: values.date[0].format("HH:mm YYYY-MM-DD"),
+    end_time: values.date[1].format("HH:mm YYYY-MM-DD"),  
+    ecommerce_id: values.ecommerce_id,
+    des: values.des,
+    image_url: values.image,
      }
     
     dispatch(eventsEdit(edit))

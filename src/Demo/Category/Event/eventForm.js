@@ -8,6 +8,8 @@ import './events.scss'
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserFromLocalStorage } from '../../../helpers/common';
 import { DatePicker, Space } from 'antd';
+import moment from 'moment';
+import locale_vi from 'antd/es/date-picker/locale/vi_VN';
 const { RangePicker } = DatePicker;
 const EventsForm = ({ onFinish, form, idEdit }) => {
     const datauser=getUserFromLocalStorage();
@@ -21,10 +23,7 @@ const EventsForm = ({ onFinish, form, idEdit }) => {
 function onChange(value, dateString) {
      console.log('Selected Time: ', value);
      console.log('Formatted Selected Time: ', dateString);
-     form.setFieldsValue({
-     start_time:dateString[0],
-     end_time:dateString[1],
- })
+
       }
       
       function onOk(value) {
@@ -169,15 +168,19 @@ function onChange(value, dateString) {
                 </Form.Item>
                 <Form.Item name="date" label="Date" 
                     style={{ width: '50%', paddingRight: "10px" }}>
-                    <Space direction="vertical" size={12}>
-   
+                   
+                   
                     <RangePicker
+                    locale={locale_vi}
+                    disabledDate={(currentdate)=>{
+                    return currentdate&&currentdate < moment().startOf('day')
+                        }}
                         showTime={{ format: 'HH:mm' }}
-                        format="YYYY-MM-DD HH:mm"
+                        format="HH:mm DD/MM/YYYY "
                         onChange={onChange}
                         onOk={onOk}
                     />
-                    </Space>,
+                   
                 </Form.Item>
 
                 <Form.Item name="des" label="Description" required rules={[{ required: true }, { type: 'string'}]}

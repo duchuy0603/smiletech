@@ -5,7 +5,7 @@ import { ecommercegetAll } from '../../../store/Category/ecommerce';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
+import axios from 'axios';
 const BrandForm = ({ onFinish, form, idEdit }) => {
     const { TextArea } = Input;
     const {Option}=Select;
@@ -13,7 +13,8 @@ const BrandForm = ({ onFinish, form, idEdit }) => {
     const {ecommercelist}=useSelector(state=>state.ecommerceReducer)
     const [showAgeTotal, setShowAgeTotal] = useState(false);
     const [showAgeMore, setShowAgeMore] = useState(false);
- 
+    const [fileList, setFileList] = useState([])
+   console.log(fileList);
     useEffect(() => {
         dispatch(ecommercegetAll())
     }, [])
@@ -49,7 +50,7 @@ const BrandForm = ({ onFinish, form, idEdit }) => {
     }, [form, idEdit])
 
     const handleChange = info => {
-        console.log(info.file);
+     
         if (info.file.status === 'uploading') {
             setLoading(true);
           }
@@ -94,27 +95,61 @@ const BrandForm = ({ onFinish, form, idEdit }) => {
 
     const handleadd = ()=>{
        
-      
-    };
+        var formData = new FormData();
+
+   
+    fileList.forEach(file => {
+    
+      formData.append("files", new Blob([file]) , file.name);
+    });
+
+    axios
+      .post(`${process.env.REACT_APP_API_URL}/upload/upload-array`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
+      })
+      .then((response) => {
+       
+      if(  response.data.message=="UPLOAD_SUCCESS"){
+        form.setFieldsValue({
+            image: response.data.url,
+        })
+        message.success("upload thành công")
+     }
+         
+      }
+      )
+      .catch((error) => {
+        form.setFieldsValue({
+            image: " ",
+        })
+        message.error("upload thất bại",error)
+      });
+  };
     const normContent = (value) => {
         return value.text;
     };
     const normFile = (e) => {
         return e && e.file;
     };
-    const [fileList, setFileList] = useState([
- 
-      ]);
+  
+
+      
       
     
       const onChange = ({ fileList:newFileList }) => {
         setFileList(newFileList);
 
-      const dataimg=fileList.map((x)=>{return encodeURI(x.name)})
-      console.log('first',dataimg)
-      form.setFieldsValue({
-          image:dataimg
-      })
+    //   const dataimg=fileList.map((x)=>{return encodeURI(x.name)})
+    //   console.log('first',dataimg)
+    //   form.setFieldsValue({
+    //       image:dataimg
+    //   })
+      };
+      const handleBeforeUpload = (file) => {
+        setFileList([...fileList, file]);
+        return false;
       };
     
       const onPreview = async file => {
@@ -191,24 +226,26 @@ const BrandForm = ({ onFinish, form, idEdit }) => {
                         </Upload> */}
  
       <Upload
-        action={`${process.env.REACT_APP_API_URL}/upload/upload-array`}
+        // action={`${process.env.REACT_APP_API_URL}/upload/upload-array`}
         listType="picture-card"
         name='files'
+        beforeUpload={handleBeforeUpload}
         fileList={fileList}
         onChange={onChange}
         onPreview={onPreview}
+        
       >
         {fileList.length < 6 && '+ Upload'}
       </Upload>
   
                     </Form.Item>
-                    <Form.Item  style={{ width: '50%'}}>
+                    <Form.Item  style={{ width: '58%'}}>
                         
                       
                     </Form.Item>
-                    <Form.Item  style={{ width: '50%'}}>
+                    <Form.Item  style={{ width: '42%'}}>
                         
-                    <Button icon={<UploadOutlined />} onClick={handleadd()}>Upload</Button>
+                    <Button icon={<UploadOutlined />} disabled={fileList==0} onClick={handleadd}>Upload</Button>
                         </Form.Item>
                 
                 <Form.Item name="image" hidden={true}>
