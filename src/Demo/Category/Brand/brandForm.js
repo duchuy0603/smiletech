@@ -110,12 +110,15 @@ const BrandForm = ({ onFinish, form, idEdit }) => {
         }
       })
       .then((response) => {
-       
-      if(  response.data.message=="UPLOAD_SUCCESS"){
+          console.log('cc',response)
+        
+      if( response.data.url!==" " &&  response.data.message=="UPLOAD_SUCCESS"){
         form.setFieldsValue({
             image: response.data.url,
         })
         message.success("upload thành công")
+     }else{
+         message.error("Mời thêm dữ liệu")
      }
          
       }
@@ -141,11 +144,6 @@ const BrandForm = ({ onFinish, form, idEdit }) => {
       const onChange = ({ fileList:newFileList }) => {
         setFileList(newFileList);
 
-    //   const dataimg=fileList.map((x)=>{return encodeURI(x.name)})
-    //   console.log('first',dataimg)
-    //   form.setFieldsValue({
-    //       image:dataimg
-    //   })
       };
       const handleBeforeUpload = (file) => {
         setFileList([...fileList, file]);
@@ -235,18 +233,13 @@ const BrandForm = ({ onFinish, form, idEdit }) => {
         onPreview={onPreview}
         
       >
-        {fileList.length < 6 && '+ Upload'}
+          + Upload
       </Upload>
   
+        <br/>
+        <Button icon={<UploadOutlined />} disabled={fileList==0} onClick={handleadd}>Upload</Button>
                     </Form.Item>
-                    <Form.Item  style={{ width: '58%'}}>
-                        
-                      
-                    </Form.Item>
-                    <Form.Item  style={{ width: '42%'}}>
-                        
-                    <Button icon={<UploadOutlined />} disabled={fileList==0} onClick={handleadd}>Upload</Button>
-                        </Form.Item>
+               
                 
                 <Form.Item name="image" hidden={true}>
                     <Input />
