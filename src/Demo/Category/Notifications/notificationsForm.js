@@ -150,22 +150,7 @@ const NotificationsForm = ({ onFinish, form, idEdit}) => {
                        
                     </Select>
                 </Form.Item>
-                <Form.Item name="new_img" label="Ảnh tin tức" valuePropName="file" getValueFromEvent={normFile}
-                  style={{ width: '50%'}} >
-                        <Upload
-                            {...propsUpload}
-                            listType="picture-card"
-                            className="avatar-uploader"
-                            showUploadList={false}
-                            onChange={handleChange}
-                        >
-                            {imageUrl ? <img src={`${process.env.REACT_APP_API_URL}/${imageUrl}`} alt="avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> 
-                                    : <div>
-                                        {loading ? <LoadingOutlined /> : <PlusOutlined />}
-                                        <div style={{ marginTop: 8 }}>Upload</div>
-                                    </div>}
-                        </Upload>
-                    </Form.Item>
+             
                     <Form.Item  style={{width:'90%'}}>
                         
                     </Form.Item>
