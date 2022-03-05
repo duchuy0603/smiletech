@@ -2,7 +2,6 @@
   "name": "ecommerce",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://smiletech.github.io/deploy-github",
   "dependencies": {
     "@ckeditor/ckeditor5-build-classic": "^30.0.0",
     "@ckeditor/ckeditor5-react": "^3.0.2",
@@ -36,7 +35,8 @@
     "react-uuid": "^1.0.2",
     "react-window-size": "^1.2.2",
     "reactstrap": "^9.0.0",
-    "redux": "^4.1.1"
+    "redux": "^4.1.1",
+    "sass": "^1.49.9"
   },
   "scripts": {
     "start": "react-app-env --env-file=config/development.env start",
@@ -58,7 +58,6 @@
   "devDependencies": {
     "@types/query-string": "^6.3.0",
     "fslightbox-react": "^1.5.0",
-    "node-sass": "^4.14.1",
     "react-app-env": "^1.2.3",
     "react-to-print": "^2.1.1"
   }
