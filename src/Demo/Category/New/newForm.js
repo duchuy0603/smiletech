@@ -8,7 +8,7 @@ import './new.scss'
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserFromLocalStorage } from '../../../helpers/common';
-import { RMIUploader } from "react-multiple-image-uploader";
+
 const NewForm = ({ onFinish, form, idEdit }) => {
     const datauser=getUserFromLocalStorage();
     const { TextArea } = Input;
