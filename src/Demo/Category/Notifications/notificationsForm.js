@@ -7,12 +7,14 @@ import { useState } from 'react';
 import './notifications.scss'
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { min } from 'moment';
-
+import { storegetAll } from './../../../store/Category/stores';
+import { productgetAll } from './../../../store/Category/product';
 const NotificationsForm = ({ onFinish, form, idEdit}) => {
     const { Option } = Select;
     const dispatch = useDispatch();
  const {ecommercelist}=useSelector(state=>state.ecommerceReducer)
+ const {storelist}=useSelector(state=>state.storeReducer)
+ const {productlist}=useSelector(state=>state.productReducer)
  
     const { TextArea } = Input;
     const validateMessages = {
@@ -45,6 +47,8 @@ const NotificationsForm = ({ onFinish, form, idEdit}) => {
             console.log(imageUrl);
         }
         dispatch(ecommercegetAll())
+        dispatch(productgetAll())
+        dispatch(storegetAll())
     }, [form,idEdit])
 
     const handleChange = info => {
@@ -144,6 +148,52 @@ const NotificationsForm = ({ onFinish, form, idEdit}) => {
                       
 
                         {ecommercelist.map((x)=>(
+                            <Option key={x} value={x.id} >{x.name}</Option>
+                        ))}
+                        
+                       
+                    </Select>
+                </Form.Item>
+                <Form.Item name="store" label="store" required rules={[{ required: true }]}
+                    style={{ width: '50%', paddingRight: "10px"  }}>
+                    <Select
+                       
+                        showSearch
+                        style={{ width: "100%" }}
+                        placeholder="store"
+                        optionFilterProp="children"
+                        filterOption={(input, option) =>
+                            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                        }
+                        filterSort={(optionA, optionB) =>
+                            optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())
+                        }>
+                      
+
+                        {storelist.map((x)=>(
+                            <Option key={x} value={x.id} >{x.name}</Option>
+                        ))}
+                        
+                       
+                    </Select>
+                </Form.Item>
+                <Form.Item name="product" label="product" required rules={[{ required: true }]}
+                    style={{ width: '50%', paddingRight: "10px"  }}>
+                    <Select
+                       
+                        showSearch
+                        style={{ width: "100%" }}
+                        placeholder="product"
+                        optionFilterProp="children"
+                        filterOption={(input, option) =>
+                            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                        }
+                        filterSort={(optionA, optionB) =>
+                            optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())
+                        }>
+                      
+
+                        {productlist.map((x)=>(
                             <Option key={x} value={x.id} >{x.name}</Option>
                         ))}
                         
