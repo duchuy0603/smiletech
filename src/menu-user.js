@@ -81,10 +81,10 @@ export default {
                
                 {
                     id: 'athletes-event',
-                    title: 'Quản Lý Đơn Hàng',
+                    title: 'Quản Lý Booking',
                     type: 'item',
                     icon: 'feather icon-user-check',
-                    url: ''
+                    url: '/bookings'
                 },
                 {
                     id: 'competition-program',

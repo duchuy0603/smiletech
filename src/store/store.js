@@ -14,6 +14,7 @@ import authReducer from './Category/auth';
 import eventsReducer from './Category/event';
 import voucherReducer from './Category/vouchers';
 import notificationsReducer from './Category/notifications';
+import bookingReducer from './Category/booking';
 import { IntlReducer as Intl } from 'react-redux-multilingual';
 
 const store = configureStore({
@@ -32,6 +33,7 @@ const store = configureStore({
         authReducer:authReducer,
         eventsReducer:eventsReducer,
         voucherReducer:voucherReducer,
+        bookingReducer:bookingReducer,
         notificationsReducer:notificationsReducer,
         Intl
     },
