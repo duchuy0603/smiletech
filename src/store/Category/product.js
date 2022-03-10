@@ -15,8 +15,8 @@ export  const productEdit=createAsyncThunk('product/productEdit',async(dataEdit,
     await ProductApi.Edit(dataEdit);
     thunkAPI.dispatch(productgetAll())
 })
-export  const productDelete=createAsyncThunk('product/productDelete',async(Id,thunkAPI)=>{
-    await ProductApi.Delete(Id);
+export  const productDelete=createAsyncThunk('product/productDelete',async(id,thunkAPI)=>{
+    await ProductApi.Delete(id);
     thunkAPI.dispatch(productgetAll())
 })
 const productslide = createSlice({

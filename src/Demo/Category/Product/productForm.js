@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import "./product"
 import axios from 'axios';
+
 import { storegetAll } from './../../../store/Category/stores';
 import { categoriesgetAll } from './../../../store/Category/categories';
 
@@ -109,7 +110,7 @@ const ProductForm = ({ onFinish, form, idEdit }) => {
             console.log(info.file, info.fileList);
           }
           if (status === 'done') {
-            const list=info.fileList.map(item=>{return encodeURI(item.name)});
+            const list=info.fileList.map(item=>{return (item.name)});
             console.log(list)
             form.setFieldsValue({
                                  image: list,
@@ -137,7 +138,7 @@ const ProductForm = ({ onFinish, form, idEdit }) => {
     };
     return (
         <div>
-            <Form className="ecommerce-form" validateMessages={validateMessages} onFinish={onFinish} form={form} method='POST' encType='multipart/form-data' >
+            <Form className="ecommerce-form" validateMessages={validateMessages} onFinish={onFinish} form={form}  >
                 {
                     idEdit &&
                     <Form.Item name="id" hidden={true}>

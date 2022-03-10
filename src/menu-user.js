@@ -64,7 +64,7 @@ export default {
                     url: '/product'
                 },
                 {
-                    id: 'manage-product',
+                    id: 'manage-products2',
                     title: 'Quản Lý Thông Báo',
                     type: 'item',
                     icon: 'feather icon-edit',
