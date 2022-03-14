@@ -53,8 +53,9 @@ const EcommerceForm = ({ onFinish, form, idEdit}) => {
         name: 'file',
         maxCount: 1,
         action: `${process.env.REACT_APP_API_URL}/upload/upload-single `,
-        onSuccess: (result, file) => {          
-            if(result.success) {
+        onSuccess: (result, file) => {      
+            console.log("hahah",result);    
+            if(result.message=='UPLOAD_SUCCESS') {
                 form.setFieldsValue({
                     image: result.url,
                  

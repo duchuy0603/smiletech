@@ -112,7 +112,7 @@ export default {
                     id: 'ecommerce-client',
                     title: 'Quản Lý Khách Hàng',
                     type: 'item',
-                    url: '',
+                    url: '/customers',
                     icon: 'feather icon-users'
                 },
                 {

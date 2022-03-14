@@ -60,7 +60,7 @@ const TeamForm = ({ onFinish, form, idEdit }) => {
         },
         onSuccess: (result) => {
             console.log(result);
-            if (result.success) {
+          if (result.message=='UPLOAD_SUCCESS'){
                 form.setFieldsValue({
                     image: result.url,
                 })

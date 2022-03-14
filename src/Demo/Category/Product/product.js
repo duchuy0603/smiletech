@@ -36,7 +36,8 @@ import ProductForm from "./productForm";
 import { storegetAll } from "../../../store/Category/stores";
 import { TreeSelect } from "antd";
 import ProductApi from "../../../api/product";
-
+import { sortProduct } from "../../../helpers/common";
+import { saveFilter } from "../../../store/Category/product";
 const Product = () => {
   const [searchText, setsearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
@@ -44,12 +45,29 @@ const Product = () => {
   const [store, setstore] = useState([]);
   const [category, setcategory] = useState([]);
   const [product, setproduct] = useState([]);
-  const [checkquery, setcheckquery] = useState([]);
- 
-  const { productlist, loadingproduct } = useSelector(
+  const [checkquery, setcheckquery] = useState('');
+ console.log(checkquery);
+
+  const {  loadingproduct } = useSelector(
     (state) => state.productReducer
   );
-
+  const { filter} = useSelector(
+    (state) => state.productReducer
+  );
+  const productlist=useSelector((state)=>{
+    const filter=state.productReducer.filter;
+    const all=state.productReducer.productlist;
+    
+    if(filter==null||filter==0||filter==undefined||filter== " "){
+      return all
+    }else if(filter) {
+      
+        return all.filter(data=>data.store.id==filter.store&&data.category.id==filter.category)
+    }
+ 
+  })
+console.log(filter);
+console.log('huy',productlist)
   const { Option } = Select;
   const history = useHistory();
   const { TreeNode } = TreeSelect;
@@ -73,37 +91,12 @@ const Product = () => {
   const storequery = getParameterByName("store");
   const categoryquery = getParameterByName("category");
   useEffect(() => {
-    const listproduct = async () => {
-      const data = await ProductApi.getAll();
-      if (
-        checkquery == null ||
-        checkquery == undefined ||
-        checkquery == 0 ||
-        checkquery == " " ||
-        storequery == 0 ||
-        categoryquery == 0 ||
-        store == 0 ||
-        category == 0
-      ) {
-        setproduct(data);
-      } else if (checkquery) {
-        var setfillter = product.filter(function (el) {
-          return el.category.id == categoryquery && el.store.id == storequery;
-        });
 
-        setproduct(setfillter);
-      }
-    };
-    listproduct();
     dispatch(productgetAll());
     dispatch(categoriesgetAll());
     dispatch(storegetAll());
-  }, [checkquery, store, category, idEdit]);
-useEffect(() => {
-  return () => {
-    
-  };
-}, [])
+  }, [ idEdit]);
+
   const [isModalAdd, setIsModalAdd] = useState(false);
   const [isModalEdit, setIsModalEdit] = useState(false);
   const [idEdit, setIdEdit] = useState(0);
@@ -322,6 +315,10 @@ try {
   console.log(error)
 }
   }
+  // const addProduct2=(add)=>{
+  //   const dataadd=dispatch(productAdd(add));
+  //   setproduct([...product,dataadd]);
+  //     }
   const onFinishAdd = (data) => {
     const add = {
       name: data.name,
@@ -333,6 +330,7 @@ try {
       parent_id: data.parent_id,
       image_url: data.image,
     };
+    // addProduct2(add)
     dispatch(productAdd(add))
    
     
@@ -388,17 +386,20 @@ try {
   };
   const handleDelete = (id) => {
     dispatch(productDelete(id));
-    const newdata = product.filter((x) => x.id !== id);
-    setproduct(newdata);
+    // const newdata = product.filter((x) => x.id !== id);
+    // setproduct(newdata);
   };
-  let param = {
-    store: store,
-    category: category,
-  };
+ 
   const addfillter = () => {
-    const query = objToQueryString(param);
-    setcheckquery(param);
-    history.push(`/product/?${query}`);
+    let param = {
+      store: store,
+      category: category,
+    };
+  dispatch(saveFilter(param))
+    // const query = objToQueryString(param);
+    // setcheckquery(query);
+    // history.push(`/product/?${query}`)
+    
 
     // var setfillter = data.filter(function (el) {
     //   return el.category.id ==param.category &&
@@ -420,13 +421,13 @@ try {
           <Form className="ecommerce-form" onFinish={addfillter}>
             <Form.Item name="category" style={{ width: "50%" }}>
               <Select
-                mode="multiple"
+               
                 showSearch
                 style={{ width: 200 }}
                 placeholder="categoryId"
                 optionFilterProp="children"
                 onChange={onchangecategory}
-                onClear
+                allowClear
                 filterOption={(input, option) =>
                   option.children.toLowerCase().indexOf(input.toLowerCase()) >=
                   0
@@ -446,12 +447,12 @@ try {
             </Form.Item>
             <Form.Item name="store" style={{ width: "50%" }}>
               <Select
-                mode="multiple"
+               
                 showSearch
                 style={{ width: 200 }}
                 placeholder="storeId"
                 optionFilterProp="children"
-                onClear
+                allowClear
                 onChange={onchangestore}
                 filterOption={(input, option) =>
                   option.children.toLowerCase().indexOf(input.toLowerCase()) >=
