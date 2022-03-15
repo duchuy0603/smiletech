@@ -177,8 +177,8 @@ const Notifications = () => {
     name: data.name,
     content: data.content,
     
-    product: data.product,
-    store: data.store,
+    product_id: data.product,
+    store_id: data.store,
     ecommerce_id: data.ecommerce_id,
 
    }
@@ -211,8 +211,8 @@ const Notifications = () => {
       name: record.name,
       content: record.content,  
       ecommerce_id: record.ecommerce_id,   
-      product: record.product,
-      store: record.store,
+      product_id: record.product,
+      store_id: record.store,
      }
     
     dispatch(notificationsEdit(edit))

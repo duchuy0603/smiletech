@@ -162,10 +162,7 @@ const add={
   price:data.price,
   des:data.des,
   content:data.content,
-  store_id:data.store_id,
-  category_id:data.category_id,
-  parent_id:data.parent_id,
-  image_url:data.image
+
 }
 
     dispatch(bookingAdd(add))

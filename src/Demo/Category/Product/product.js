@@ -58,10 +58,9 @@ const Product = () => {
     const filter=state.productReducer.filter;
     const all=state.productReducer.productlist;
     
-    if(filter==null||filter==0||filter==undefined||filter== " "){
+    if(filter==null||filter==0||filter==undefined||filter== " " ||store==undefined||category==undefined){
       return all
-    }else if(filter) {
-      
+    }else if(filter) {     
         return all.filter(data=>data.store.id==filter.store&&data.category.id==filter.category)
     }
  
@@ -74,11 +73,7 @@ console.log('huy',productlist)
   const dispatch = useDispatch();
   const { categorieslist } = useSelector((state) => state.categoriesReducer);
   const { storelist } = useSelector((state) => state.storeReducer);
-  // useEffect(() => {
-  //   dispatch(productgetAll());
-  //   dispatch(categoriesgetAll());
-  //   dispatch(storegetAll());
-  // }, [ idEdit]);
+
   function getParameterByName(name, url) {
     if (!url) url = window.location.href;
     name = name.replace(/[\[\]]/g, "\\$&");
@@ -91,7 +86,6 @@ console.log('huy',productlist)
   const storequery = getParameterByName("store");
   const categoryquery = getParameterByName("category");
   useEffect(() => {
-
     dispatch(productgetAll());
     dispatch(categoriesgetAll());
     dispatch(storegetAll());

@@ -3,28 +3,47 @@ import { categoriesAdd, categoriesEdit, categoriesDelete, categoriesgetAll } fro
 import { useEffect } from 'react'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, Form, Modal, Space, Table, Popconfirm, Tag, Input } from 'antd';
+import { Button, Form, Modal, Space, Table, Popconfirm, Tag, Input ,Select} from 'antd';
 import Highlighter from 'react-highlight-words';
-import { Pagination } from 'antd';
 import { SearchOutlined, SyncOutlined, EditOutlined, DeleteOutlined, PlusOutlined,LoadingOutlined } from '@ant-design/icons';
 import CategoriesForm from './categoriesForm';
+import { ecommercegetAll } from '../../../store/Category/ecommerce';
+import { saveFilter } from '../../../store/Category/categories';
 import './categories.scss'
 
 const Categories = () => {
+  const[ecommerce,setecommerce]=useState([])
+  const {Option}=Select;
+  const {  loadingcategories } = useSelector(state => state.categoriesReducer)
+ const {ecommercelist}=useSelector(state=>state.ecommerceReducer)
 
-  
-  const { categorieslist, loadingcategories } = useSelector(state => state.categoriesReducer)
-
+  const categorieslist=useSelector((state)=>{
+    const filter=state.categoriesReducer.filter;
+    
+    const all=state.categoriesReducer.categorieslist;
+    
+    if(filter==null||filter==0||filter==undefined|| ecommerce==undefined){
+      return all
+    }else if(filter) {     
+        return all.filter(data=>data.ecommerce.id==filter.ecommerce)
+    }
+ 
+  })
+ 
+  console.log(categorieslist)
 
   const dispatch = useDispatch();
   
   useEffect(() => {
     dispatch(categoriesgetAll())
+    dispatch(ecommercegetAll())
   }, [dispatch])
   
   const [searchText, setsearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   const [idEdit,setIdEdit]=useState(0);
+ 
+
   //modal
   const [isModalAdd, setIsModalAdd] = useState(false);
   const [isModalEdit, setIsModalEdit] = useState(false);
@@ -81,7 +100,9 @@ const Categories = () => {
 
      
   });
-
+  const onchangeeommerce = (data) => {
+    setecommerce(data);
+  };
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
 
     confirm();
@@ -91,7 +112,8 @@ const Categories = () => {
   };
   const handleReset = clearFilters => {
     clearFilters();
-    setsearchText('')
+    
+    
   };
 
   const columns = [
@@ -103,9 +125,8 @@ const Categories = () => {
       ...getColumnSearchProps('name'),
     },
     {
-      title: 'Image',
-      
- dataIndex: 'image_url',
+      title: 'Image',    
+      dataIndex: 'image_url',
       key: 'Image',
       width: '12%',
     
@@ -117,6 +138,7 @@ const Categories = () => {
       dataIndex: 'content',
       key: 'content',
       width: '20%',
+    
       sorter: (a, b) => a.content - b.content,
       sortDirections: ['descend', 'ascend'],
       ...getColumnSearchProps('content'),
@@ -218,14 +240,57 @@ const Categories = () => {
   const handleDelete = (id) => {
     dispatch(categoriesDelete(id))
   }
+    const addfillter = () => {
+    let param = {
+    ecommerce:ecommerce
+    };
+  dispatch(saveFilter(param))
+    }
   return (
     <div>
       <div className='addecommerce' >
-        <Button type="primary" onClick={() => 
+    <div className='btn-add'>
+    <Button type="primary" onClick={() => 
          
-          setIsModalAdd(true)}>
-          Thêm Category
-        </Button>
+         setIsModalAdd(true)}>
+         Thêm Category
+       </Button>
+    </div>
+        <div className="fillter">
+          <Form className="ecommerce-form" onFinish={addfillter}>
+            <Form.Item name="ecommerce" style={{ width: "50%" }}>
+              <Select
+               
+                showSearch
+                style={{ width: 200 }}
+                placeholder="ecommerceId"
+                optionFilterProp="children"
+                onChange={onchangeeommerce}
+                allowClear
+                filterOption={(input, option) =>
+                  option.children.toLowerCase().indexOf(input.toLowerCase()) >=
+                  0
+                }
+                filterSort={(optionA, optionB) =>
+                  optionA.children
+                    .toLowerCase()
+                    .localeCompare(optionB.children.toLowerCase())
+                }
+              >
+                {ecommercelist.map((x, index) => (
+                  <Option key={index} value={x.id}>
+                    {x.name}
+                  </Option>
+                ))}
+              </Select>
+            </Form.Item>
+           
+          </Form>
+
+          <button className="btn btn-success btn-sm" onClick={addfillter}>
+            Fillter
+          </button>
+        </div>
       </div>
       <br />
       <Modal className='modal-add' title="Thêm Danh Mục" visible={isModalAdd} footer="" centered onCancel={() => setIsModalAdd(false)}>

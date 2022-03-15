@@ -94,7 +94,7 @@ export default {
                     title: 'Quản Lý Đơn Hàng',
                     type: 'item',
                     icon: 'feather icon-user-check',
-                    url: ''
+                    url: '/bookings'
                 },
                 {
                     id: 'competition-program',
