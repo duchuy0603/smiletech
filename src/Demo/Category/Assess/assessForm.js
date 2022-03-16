@@ -1,18 +1,18 @@
 import React from 'react'
 import { Input, Button, Form, InputNumber, Switch, Upload, message ,Select} from 'antd';
 import { UploadOutlined, InboxOutlined ,LoadingOutlined,PlusOutlined} from '@ant-design/icons';
-import { ecommercegetAll } from '../../../store/Category/ecommerce';
+import { assessgetAll } from '../../../store/Category/assess';
 import { useSelector } from 'react-redux';
 import { useState } from 'react';
-import './categories.scss'
+import './assess.scss'
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { min } from 'moment';
 
-const CategoriesForm = ({ onFinish, form, idEdit}) => {
+const AssessForm = ({ onFinish, form, idEdit}) => {
     const { Option } = Select;
     const dispatch = useDispatch();
- const {ecommercelist}=useSelector(state=>state.ecommerceReducer)
+ const {assesslist}=useSelector(state=>state.assessReducer)
  
     const { TextArea } = Input;
     const validateMessages = {
@@ -44,7 +44,7 @@ const CategoriesForm = ({ onFinish, form, idEdit}) => {
             setImageUrl(imageUrl)
             console.log(imageUrl);
         }
-        dispatch(ecommercegetAll())
+        dispatch(assessgetAll())
     }, [form,idEdit])
 
     const handleChange = info => {
@@ -103,7 +103,7 @@ const CategoriesForm = ({ onFinish, form, idEdit}) => {
         <div>
        
 
-             <Form className="ecommerce-form"
+             <Form className="assess-form"
             
                 onFinish={onFinish }
                
@@ -134,13 +134,13 @@ const CategoriesForm = ({ onFinish, form, idEdit}) => {
                     <TextArea></TextArea>
                 </Form.Item>
 
-                <Form.Item name="ecommerce_id" label="EcommerceId" required rules={[{ required: true }]}
+                <Form.Item name="assess_id" label="assessId" required rules={[{ required: true }]}
                     style={{ width: '50%', paddingRight: "10px"  }}>
                     <Select
                        
                         showSearch
                         style={{ width: "100%" }}
-                        placeholder="EcommerceId"
+                        placeholder="assessId"
                         optionFilterProp="children"
                         filterOption={(input, option) =>
                             option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
@@ -150,7 +150,7 @@ const CategoriesForm = ({ onFinish, form, idEdit}) => {
                         }>
                       
 
-                        {ecommercelist.map((x)=>(
+                        {assesslist.map((x)=>(
                             <Option key={x} value={x.id} >{x.name}</Option>
                         ))}
                         
@@ -189,4 +189,4 @@ const CategoriesForm = ({ onFinish, form, idEdit}) => {
     )
 }
 
-export default CategoriesForm;
+export default AssessForm;

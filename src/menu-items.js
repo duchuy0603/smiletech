@@ -129,7 +129,7 @@ export default {
                     id: 'ecommerce-evaluate',
                     title: 'Quản Lý Đánh Giá',
                     type: 'item',
-                    url: '',
+                    url: '/assess',
                     icon: 'feather icon-users'
                 },
                 {

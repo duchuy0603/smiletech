@@ -24,6 +24,8 @@ const Voucher=React.lazy(()=>import('./Demo/Category/Voucher/voucher'))
 const Notifications=React.lazy(()=>import('./Demo/Category/Notifications/notifications'))
 const Bookings=React.lazy(()=>import ('./Demo/Category/Booking/bookings.js'))
 const Customers=React.lazy(()=>import('./Demo/Category/Customers/customers.js'))
+const Assess=React.lazy(()=>import('./Demo/Category/Assess/assess.js'))
+
 // const SignUp1 = React.lazy(() => import('./Demo/Authentication/SignUp/SignUp1'));
 // const Signin1 = React.lazy(() => import('./Demo/Authentication/SignIn/SignIn1'));
 
@@ -66,6 +68,7 @@ const routes = [
     {path: '/notifications', exact: true, name: 'notifications', component: Notifications },
     {path: '/bookings', exact: true, name: 'bookings', component: Bookings },
     {path: '/customers', exact: true, name: 'customers', component: Customers },
+    {path: '/assess', exact: true, name: 'assess', component: Assess },
 
 
     // { path: '/auth/signup', exact: true, name: 'Signup 1', component: SignUp1 },
