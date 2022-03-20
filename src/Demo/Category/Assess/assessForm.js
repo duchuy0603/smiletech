@@ -7,7 +7,7 @@ import { useState } from 'react';
 import './assess.scss'
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { min } from 'moment';
+
 
 const AssessForm = ({ onFinish, form, idEdit}) => {
     const { Option } = Select;
@@ -115,21 +115,33 @@ const AssessForm = ({ onFinish, form, idEdit}) => {
                         <Input />
                     </Form.Item>
                 }
-                <Form.Item name="name" label="Tên" required rules={[{ required: true, whitespace: true }, { type: 'string', max: 255 }]}
+                <Form.Item name="fullname" label="Tên" required rules={[{ required: true, whitespace: true }, { type: 'string', max: 255 }]}
                     style={{ width: '50%', paddingRight: "10px" }}>
-                    <Input placeholder="Ví dụ: Eplaza" />
+                     <Select
+                       
+                       showSearch
+                       style={{ width: "100%" }}
+                       placeholder="assessId"
+                       optionFilterProp="children"
+                       filterOption={(input, option) =>
+                           option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                       }
+                       filterSort={(optionA, optionB) =>
+                           optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())
+                       }>
+                     
+
+                       {assesslist.map((x)=>(
+                           <Option key={x} value={x.id} >{x.name}</Option>
+                       ))}
+                       
+                      
+                   </Select>
                 </Form.Item>
                
-                <Form.Item name="content" label="Content" required rules={[{ required: true }]}
-                    style={{ width: '50%', paddingRight: "10px" }}>
-                    <Input style={{ width: '100%' }} placeholder="Ví dụ: 0902174492" />
-                </Form.Item>
-                <Form.Item name="parent_id" label="ParentId" required rules={[{ required: true}]}
-                    style={{ width: '50%', paddingRight: "10px"  }}>
-                    <Input placeholder="Ví dụ: 172A Yên Lãng" />
-                </Form.Item>
+               
                 
-                <Form.Item name="des" label="Description" required rules={[{ required: true }, { type: 'string', max: 255 }]}
+                <Form.Item name="rate" label="Rate" required rules={[{ required: true }, { type: 'string', max: 255 }]}
                     style={{ width: '50%', paddingRight: "10px" }}>
                     <TextArea></TextArea>
                 </Form.Item>

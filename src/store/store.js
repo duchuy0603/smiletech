@@ -17,6 +17,7 @@ import notificationsReducer from './Category/notifications';
 import bookingReducer from './Category/booking';
 import customerReducer from './Category/customers';
 import assessReducer from './Category/assess';
+import bannerReducer from './Category/banners';
 import { IntlReducer as Intl } from 'react-redux-multilingual';
 
 const store = configureStore({
@@ -39,6 +40,7 @@ const store = configureStore({
         notificationsReducer:notificationsReducer,
         customerReducer:customerReducer,
         assessReducer:assessReducer,
+        bannerReducer:bannerReducer,
         Intl
     },
     preloadedState: { Intl: { locale: 'vi'}}

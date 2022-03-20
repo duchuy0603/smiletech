@@ -7,30 +7,23 @@ import { Button, Form, Modal, Space, Table, Popconfirm, Tag, Input ,Select} from
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined, SyncOutlined, EditOutlined, DeleteOutlined, PlusOutlined,LoadingOutlined } from '@ant-design/icons';
 import AssessForm from './assessForm';
-
 import './assess.scss'
 
-const Assess = () => {
-  const[ecommerce,setecommerce]=useState([])
-  const {Option}=Select;
-  const { assesslist, loadingassess } = useSelector(state => state.assessReducer)
- const {ecommercelist}=useSelector(state=>state.ecommerceReducer)
-
- 
- 
-  console.log(assesslist)
-
-  const dispatch = useDispatch();
+   const Assess = () => {
+   const[ecommerce,setecommerce]=useState([])
+   const {Option}=Select;
+   const { assesslist, loadingassess } = useSelector(state => state.assessReducer)
+   const {ecommercelist}=useSelector(state=>state.ecommerceReducer)
+   const dispatch = useDispatch();
   
-  useEffect(() => {
-    dispatch(assessgetAll())
-   
-  }, [dispatch])
-  
-  const [searchText, setsearchText] = useState('');
-  const [searchedColumn, setSearchedColumn] = useState('');
-  const [idEdit,setIdEdit]=useState(0);
- 
+    useEffect(() => {
+      dispatch(assessgetAll())
+    
+    }, [dispatch])
+    
+    const [searchText, setsearchText] = useState('');
+    const [searchedColumn, setSearchedColumn] = useState('');
+    const [idEdit,setIdEdit]=useState(0);
 
   //modal
   const [isModalAdd, setIsModalAdd] = useState(false);
@@ -166,7 +159,7 @@ const Assess = () => {
           <EditOutlined style={{ color: "blue" }} onClick={() => handleEditForm(record)} />
           <Popconfirm
             placement="bottomRight"
-            title={`Bạn muốn xóa ${record.product.name} ?`}
+            title={`Bạn muốn xóa ${record.product?.name} ?`}
             onConfirm={() => handleDelete(record.id)}
             okText="Xóa"
         
@@ -201,9 +194,9 @@ const Assess = () => {
   
       name: record.name,
       content: record.content,
-      ecommerce_id: record.ecommerce.id,
+      ecommerce_id: record.ecommerce?.id,
        parent_id:record.parent_id,
-        des: record.des,
+        rate: record.rate,
         image:record.image_url 
     }
   

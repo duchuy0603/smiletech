@@ -150,7 +150,7 @@ export default {
                     id: 'ecommerce-Banner',
                     title: 'Quản Lý Banner',
                     type: 'item',
-                    url: '',
+                    url: '/banners',
                     icon: 'feather icon-users'
                 },
 

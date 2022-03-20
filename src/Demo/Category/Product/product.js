@@ -36,7 +36,6 @@ import ProductForm from "./productForm";
 import { storegetAll } from "../../../store/Category/stores";
 import { TreeSelect } from "antd";
 import ProductApi from "../../../api/product";
-import { sortProduct } from "../../../helpers/common";
 import { saveFilter } from "../../../store/Category/product";
 const Product = () => {
   const [searchText, setsearchText] = useState("");
