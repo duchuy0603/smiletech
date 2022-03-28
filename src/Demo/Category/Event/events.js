@@ -211,7 +211,7 @@ if(img==null){
     name: values.name,
     cost: values.cost,
     address:values.address,
-    start_time: values.date[0].format("YYYY-MM-DDTHH:mm"),
+    start_time: values.date[0]?.format("YYYY-MM-DDTHH:mm"),
     end_time: values.date[1].format("YYYY-MM-DDTHH:mm"), 
     ecommerce_id: values.ecommerce_id,
     des: values.des,

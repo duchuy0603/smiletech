@@ -182,12 +182,12 @@ const ProductForm = ({ onFinish, form, idEdit }) => {
                     style={{ width: '50%', paddingRight: "10px" }}>
                     <TextArea></TextArea>
                 </Form.Item>
-                <Form.Item name="category_id" label="categoryId" required rules={[{ required: true }]}
-                    style={{ width: '50%' }}>
+                <Form.Item name="category_id" label="Danh Mục" required rules={[{ required: true }]}
+                               style={{ width: '50%', paddingRight: "10px"  }}>
                     <Select
                        
                         showSearch
-                        style={{ width: 200 }}
+                        style={{ width: "100%" }}
                         placeholder="categoryId"
                         optionFilterProp="children"
                        
@@ -203,11 +203,11 @@ const ProductForm = ({ onFinish, form, idEdit }) => {
                             ))}
                     </Select>
                 </Form.Item>
-                <Form.Item name="store_id" label="storeId" required rules={[{ required: true }]}
-                    style={{ width: '50%' }}>
+                <Form.Item name="store_id" label="Store" required rules={[{ required: true }]}
+                                style={{ width: '50%', paddingRight: "10px"  }}>
                     <Select
                         showSearch
-                        style={{ width: 200 }}
+                          style={{ width: "100%" }}
                         placeholder="storeId"
                         optionFilterProp="children"
                         
@@ -223,11 +223,11 @@ const ProductForm = ({ onFinish, form, idEdit }) => {
                     </Select>
                 </Form.Item>
                 <Form.Item name="parent_id" label="parentId" required rules={[{ required: true }]}
-                    style={{ width: '50%' }}>
+                              style={{ width: '50%', paddingRight: "10px"  }}>
                     <Select
                        
                         showSearch
-                        style={{ width: 200 }}
+                          style={{ width: "100%" }}
                         placeholder="parentId"
                         optionFilterProp="children"
                         filterOption={(input, option) =>

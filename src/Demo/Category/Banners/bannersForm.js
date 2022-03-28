@@ -24,8 +24,7 @@ import { getUserFromLocalStorage } from "../../../helpers/common";
 import { DatePicker, Space } from "antd";
 import axios from "axios";
 // import locale_vi from "antd/es/date-picker/locale/vi_VN";
-import { categoriesgetAll } from './../../../store/Category/categories';
-
+import { categoriesgetAll } from "./../../../store/Category/categories";
 
 const BannersForm = ({ onFinish, form, idEdit }) => {
   const datauser = getUserFromLocalStorage();
@@ -161,18 +160,17 @@ const BannersForm = ({ onFinish, form, idEdit }) => {
         >
           <Input placeholder="Ví dụ: Eplaza" />
         </Form.Item>
-     
-   
+
         <Form.Item
           name="category_id"
-          label="categoryid"
+          label="Danh Mục"
           required
           rules={[{ required: true }]}
           style={{ width: "50%", paddingRight: "10px" }}
         >
           <Select
             showSearch
-            style={{ width: 200 }}
+            style={{ width: "100%", paddingRight: "10px" }}
             placeholder=" categoryid"
             optionFilterProp="children"
             filterOption={(input, option) =>
@@ -193,14 +191,14 @@ const BannersForm = ({ onFinish, form, idEdit }) => {
         </Form.Item>
         <Form.Item
           name="ecommerce_id"
-          label="EcommerceId"
+          label="Sàn"
           required
           rules={[{ required: true }]}
           style={{ width: "50%", paddingRight: "10px" }}
         >
           <Select
             showSearch
-            style={{ width: 200 }}
+            style={{ width: "100%" }}
             placeholder="EcommerceId"
             optionFilterProp="children"
             filterOption={(input, option) =>

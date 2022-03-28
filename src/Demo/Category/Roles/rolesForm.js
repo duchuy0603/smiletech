@@ -3,14 +3,14 @@ import { Input, Button, Form, InputNumber, Switch, Upload, message, Select } fro
 import { UploadOutlined, InboxOutlined ,LoadingOutlined,PlusOutlined} from '@ant-design/icons';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import './property.scss'
+import './roles.scss'
 import { ecommercegetAll } from '../../../store/Category/ecommerce';
 import { useEffect } from 'react';
 import axios from 'axios';
 import { ecommerceAdd } from '../../../store/Category/ecommerce';
 import { useDispatch, useSelector } from 'react-redux';
 
-const PropertyForm = ({ onFinish, form, idEdit}) => {
+const RoleForm = ({ onFinish, form, idEdit}) => {
     const { TextArea } = Input;
     const {Option}=Select;
     const dispatch=useDispatch();
@@ -40,7 +40,7 @@ const PropertyForm = ({ onFinish, form, idEdit}) => {
         <div>
        
 
-             <Form className="property-form"
+             <Form className="Role-form"
                 onFinish={onFinish }
                 validateMessages={validateMessages}
                 form={form} >
@@ -51,11 +51,11 @@ const PropertyForm = ({ onFinish, form, idEdit}) => {
                     </Form.Item>
                 }
                 <Form.Item name="name" label="Tên" required rules={[{ required: true, whitespace: true }, { type: 'string', max: 255 }]}
-                    style={{ width: '50%', paddingRight: "10px" }}>
+                    style={{ width: '50%' }}>
                     <Input placeholder="Ví dụ: Eplaza" />
                 </Form.Item>
                 <Form.Item name="des" label="Description" required rules={[{ required: true }, { type: 'string', max: 255 }]}
-                    style={{ width: '50%', paddingRight: "10px" }}>
+                    style={{ width: '50%' }}>
                     <TextArea></TextArea>
                 </Form.Item>
                
@@ -94,4 +94,4 @@ const PropertyForm = ({ onFinish, form, idEdit}) => {
     )
 }
 
-export default PropertyForm
+export default RoleForm

@@ -157,7 +157,7 @@ const NewForm = ({ onFinish, form, idEdit }) => {
                     style={{ width: '50%', paddingRight: "10px" }}>
                     <TextArea></TextArea>
                 </Form.Item>
-                {datauser.ecommerce_id==2?null:     <Form.Item name="ecommerceId" label="EcommerceId" required rules={[{ required: true }]}
+                {datauser.ecommerce_id==2?null:     <Form.Item name="ecommerceId" label="Sàn" required rules={[{ required: true }]}
                     style={{ width: '50%', paddingRight: "10px"  }}>
                     <Select
                        

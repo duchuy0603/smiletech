@@ -132,7 +132,7 @@ const CustomersForm = ({ onFinish, form, idEdit }) => {
 
                 
       
-                <Form.Item name="ecommerce" label="Ecommerce" required rules={[{ required: true }]}
+                <Form.Item name="ecommerce" label="Sàn" required rules={[{ required: true }]}
                     style={{ width: '50%',paddingRight: "10px"  }}>
                     <Select
                         showSearch

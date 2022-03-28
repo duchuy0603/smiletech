@@ -217,7 +217,7 @@ const EventsForm = ({ onFinish, form, idEdit }) => {
           <Select
             showSearch
             style={{ width: 200 }}
-            placeholder="EcommerceId"
+            placeholder="Sàn"
             optionFilterProp="children"
             filterOption={(input, option) =>
               option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0

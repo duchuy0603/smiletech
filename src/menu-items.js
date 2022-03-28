@@ -187,23 +187,10 @@ export default {
                     id: 'accounts-permission',
                     title: 'Quản Lý Quyền ',
                     type: 'item',
-                    url: '/accounts/accounts-list',
+                    url: '/roles',
                     icon: 'feather icon-user-plus'
                 },
-                {
-                    id: 'accounts-menu',
-                    title: 'Quản lý Menu',
-                    type: 'item',
-                    url: '/accounts/accounts-list',
-                    icon: 'feather icon-user-plus'
-                },
-                {
-                    id: 'accounts-page',
-                    title: 'Quản Lý Trang',
-                    type: 'item',
-                    url: '/accounts/accounts-list',
-                    icon: 'feather icon-user-plus'
-                },
+          
                 {
                     id: 'accounts-new',
                     title: 'Quản Lý Tin Tức',
@@ -235,57 +222,57 @@ export default {
         //         }
         //     ]
         // },
-        {
-            id: 'setting',
-            title: 'Cài đặt',
-            type: 'group',
-            icon: 'icon-group',
-            children: [
-                {
-                    id: 'introduce',
-                    title: 'Giới thiệu',
-                    type: 'item',
-                    icon: 'feather icon-credit-card',
-                    url: '/setting/introduce'
-                },
-                {
-                    id: 'info-contact',
-                    title: 'Thông tin liên hệ',
-                    type: 'item',
-                    icon: 'feather icon-phone-call',
-                    url: '/setting/info-contact'
-                },
-                {
-                    id: 'list-contact',
-                    title: 'Danh sách liên hệ',
-                    type: 'item',
-                    icon: 'feather icon-list',
-                    url: '/setting/list-contact'
-                },
-                {
-                    id: 'slide',
-                    title: 'Slide',
-                    type: 'item',
-                    icon: 'feather icon-feather',
-                    url: '/setting/slide'
-                },
-            ]
-        },
-        {
-            id: 'chart-maps',
-            title: 'Chart & Maps',
-            type: 'group',
-            icon: 'icon-charts',
-            children: [
-                {
-                    id: 'charts',
-                    title: 'Charts',
-                    type: 'item',
-                    icon: 'feather icon-pie-chart',
-                    url: '/charts/nvd3'
-                },
-            ]
-        },
+        // {
+        //     id: 'setting',
+        //     title: 'Cài đặt',
+        //     type: 'group',
+        //     icon: 'icon-group',
+        //     children: [
+        //         {
+        //             id: 'introduce',
+        //             title: 'Giới thiệu',
+        //             type: 'item',
+        //             icon: 'feather icon-credit-card',
+        //             url: '/setting/introduce'
+        //         },
+        //         {
+        //             id: 'info-contact',
+        //             title: 'Thông tin liên hệ',
+        //             type: 'item',
+        //             icon: 'feather icon-phone-call',
+        //             url: '/setting/info-contact'
+        //         },
+        //         {
+        //             id: 'list-contact',
+        //             title: 'Danh sách liên hệ',
+        //             type: 'item',
+        //             icon: 'feather icon-list',
+        //             url: '/setting/list-contact'
+        //         },
+        //         {
+        //             id: 'slide',
+        //             title: 'Slide',
+        //             type: 'item',
+        //             icon: 'feather icon-feather',
+        //             url: '/setting/slide'
+        //         },
+        //     ]
+        // },
+        // {
+        //     id: 'chart-maps',
+        //     title: 'Chart & Maps',
+        //     type: 'group',
+        //     icon: 'icon-charts',
+        //     children: [
+        //         {
+        //             id: 'charts',
+        //             title: 'Charts',
+        //             type: 'item',
+        //             icon: 'feather icon-pie-chart',
+        //             url: '/charts/nvd3'
+        //         },
+        //     ]
+        // },
         {
             id: 'pages',
             title: 'Pages',

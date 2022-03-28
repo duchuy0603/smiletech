@@ -131,7 +131,7 @@ const NotificationsForm = ({ onFinish, form, idEdit}) => {
               
              
 
-                <Form.Item name="ecommerce_id" label="EcommerceId" required rules={[{ required: true }]}
+                <Form.Item name="ecommerce_id" label="Sàn" required rules={[{ required: true }]}
                     style={{ width: '50%', paddingRight: "10px"  }}>
                     <Select
                        

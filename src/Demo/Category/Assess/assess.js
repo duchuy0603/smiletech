@@ -15,7 +15,7 @@ import './assess.scss'
    const { assesslist, loadingassess } = useSelector(state => state.assessReducer)
    const {ecommercelist}=useSelector(state=>state.ecommerceReducer)
    const dispatch = useDispatch();
-  
+
     useEffect(() => {
       dispatch(assessgetAll())
     
